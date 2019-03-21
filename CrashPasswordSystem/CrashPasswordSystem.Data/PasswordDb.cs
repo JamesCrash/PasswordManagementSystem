@@ -550,10 +550,6 @@ namespace CrashPasswordSystem.Data
         // Reverse navigation
 
         /// <summary>
-        /// Parent (One-to-One) Product pointed by [Products].[ProductID] (FK_Products_Products)
-        /// </summary>
-        public virtual Product Product2 { get; set; } // Products.FK_Products_Products
-        /// <summary>
         /// Child UpdateHistories where [UpdateHistory].[ProductID] point to this entity (FK_UpdateHistory_Products)
         /// </summary>
         public virtual System.Collections.Generic.ICollection<UpdateHistory> UpdateHistories { get; set; } // UpdateHistory.FK_UpdateHistory_Products
@@ -564,11 +560,6 @@ namespace CrashPasswordSystem.Data
         /// Parent CrashCompany pointed by [Products].([Ccid]) (FK_tblProducts_tblCrashCompany)
         /// </summary>
         public virtual CrashCompany CrashCompany { get; set; } // FK_tblProducts_tblCrashCompany
-
-        /// <summary>
-        /// Parent Product pointed by [Products].([ProductId]) (FK_Products_Products)
-        /// </summary>
-        public virtual Product Product1 { get; set; } // FK_Products_Products
 
         /// <summary>
         /// Parent ProductCategory pointed by [Products].([Pcid]) (FK_tblProducts_tblProductCategory)
@@ -750,7 +741,6 @@ namespace CrashPasswordSystem.Data
 
             // Foreign keys
             HasRequired(a => a.CrashCompany).WithMany(b => b.Products).HasForeignKey(c => c.Ccid).WillCascadeOnDelete(false); // FK_tblProducts_tblCrashCompany
-            HasRequired(a => a.Product1).WithOptional(b => b.Product2).WillCascadeOnDelete(false); // FK_Products_Products
             HasRequired(a => a.ProductCategory).WithMany(b => b.Products).HasForeignKey(c => c.Pcid).WillCascadeOnDelete(false); // FK_tblProducts_tblProductCategory
             HasRequired(a => a.Supplier).WithMany(b => b.Products).HasForeignKey(c => c.SupplierId).WillCascadeOnDelete(false); // FK_tblProducts_tblSuppliers
             HasRequired(a => a.User).WithMany(b => b.Products).HasForeignKey(c => c.StaffId).WillCascadeOnDelete(false); // FK_tblProducts_tblStaff

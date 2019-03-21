@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CrashPasswordSystem.UI.ViewModels;
+using CrashPasswordSystem.UI.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,15 @@ namespace CrashPasswordSystem.UI
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            var vm = new LoginViewModel();
+            Login login = new Login
+            {
+                DataContext = vm
+            };
+            vm.OnRequestClose += (s, e) => login.Close();
+            login.ShowDialog();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,8 +18,17 @@ namespace CrashPasswordSystem.UI.ViewModels
             get { return _products; }
             set { _products = value; OnPropertyChanged(); }
         }
+        private Product _SelectedItem;
+
+        public Product SelectedItem
+        {
+            get { return _SelectedItem; }
+            set { _SelectedItem = value; OnPropertyChanged(); }
+        }
+
 
         public ICommand ClearFiltersCommand { get; set; }
+        public ICommand OpenDetailsCommand { get; set; }
 
         public List<string> Companies { get; set; }
         public List<string> Categories { get; set; }
@@ -48,11 +58,25 @@ namespace CrashPasswordSystem.UI.ViewModels
             set { _SelectedSupplier = value; OnPropertyChanged(); if(!string.IsNullOrWhiteSpace(value))FilterData("SelectedSupplier", value); }
         }
 
+        private string _SearchBox;
+
+        public string SearchBox
+        {
+            get { return _SearchBox; }
+            set { _SearchBox = value;
+                OnPropertyChanged();
+                if(value != null)
+                {
+                    FilterData("SearchBox", value);
+                }
+            }
+        }
         #endregion
 
         public HomeViewModel()
         {
             ClearFiltersCommand = new RelayCommand(ClearFilters);
+            OpenDetailsCommand = new RelayCommand(OpenDetails);
             LoadFilters();
             LoadData();
         }
@@ -92,24 +116,33 @@ namespace CrashPasswordSystem.UI.ViewModels
                     Products = new ObservableCollection<Product>(p);
                     SelectedSupplier = null;
                     SelectedCategory = null;
+                    SearchBox = null;
                 }
                 else if (filter == "SelectedCategory")
                 {
                     var id = dBContext.ProductCategories.Where(c => c.PcName == value).Select(c => c.Pcid).FirstOrDefault();
-                    System.Diagnostics.Debug.Write(id);
                     var p = dBContext.Products.Where(s => s.Pcid == id).ToList();
                     Products = new ObservableCollection<Product>(p);
                     SelectedCompany = null;
                     SelectedSupplier = null;
+                    SearchBox = null;
                 }
                 else if (filter == "SelectedSupplier")
                 {
                     var id = dBContext.Suppliers.Where(c => c.SupplierName == value).Select(c => c.SupplierId).FirstOrDefault();
-                    System.Diagnostics.Debug.Write(id);
                     var p = dBContext.Products.Where(s => s.SupplierId == id).ToList();
                     Products = new ObservableCollection<Product>(p);
                     SelectedCompany = null;
                     SelectedCategory = null;
+                    SearchBox = null;
+                }
+                else if (filter == "SearchBox")
+                {
+                    var p = dBContext.Products.Where(s => s.ProductDescription.Contains(value)).ToList();
+                    Products = new ObservableCollection<Product>(p);
+                    SelectedCompany = null;
+                    SelectedCategory = null;
+                    SelectedSupplier = null;
                 }
             }
 
@@ -122,7 +155,18 @@ namespace CrashPasswordSystem.UI.ViewModels
             SelectedCompany = null;
             SelectedCategory = null;
             SelectedSupplier = null;
+            SearchBox = null;
             LoadData();
+        }
+        #endregion
+
+        #region Open Details
+        public async void OpenDetails(object parameter)
+        {
+            new ProductDetails
+            {
+                DataContext = new ProductDetailsViewModel(SelectedItem)
+            }.Show();
         }
         #endregion
     }

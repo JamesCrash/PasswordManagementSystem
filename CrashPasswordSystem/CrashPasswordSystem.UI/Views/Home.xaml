@@ -46,7 +46,7 @@
             <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding SearchBox, UpdateSourceTrigger=PropertyChanged}">
                 
             </TextBox>
-            <Button Content="Clear Filter" Grid.Column="3" Grid.Row="3" Command="{Binding ClearFiltersCommand}"></Button>
+            <Button Content="Clear Filter" Grid.Column="3" Grid.Row="3" Margin="0,0,0,2" Command="{Binding ClearFiltersCommand}"></Button>
 
 
 
@@ -70,10 +70,17 @@
             </DataGrid>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1" Margin="10">
-            <StackPanel>
-                <Button Content="Suppliers" Width="100" Margin="5"></Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <!--<Button Content="Suppliers" Width="100" Margin="5"></Button>
                 <Button Content="Companies" Width="100" Margin="5"></Button>
-                <Button Content="Categories" Width="100" Margin="5"></Button>
+                <Button Content="Categories" Width="100" Margin="5"></Button>-->
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <Button Content="Add new product" Background="Green" Foreground="White" Width="100" Margin="5" Command="{Binding OpenAddProductCommand}"></Button>
             </StackPanel>
         </Grid>
     </Grid>

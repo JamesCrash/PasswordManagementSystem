@@ -29,6 +29,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public ICommand ClearFiltersCommand { get; set; }
         public ICommand OpenDetailsCommand { get; set; }
+        public ICommand OpenAddProductCommand { get; set; }
 
         public List<string> Companies { get; set; }
         public List<string> Categories { get; set; }
@@ -77,6 +78,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             ClearFiltersCommand = new RelayCommand(ClearFilters);
             OpenDetailsCommand = new RelayCommand(OpenDetails);
+            OpenAddProductCommand = new RelayCommand(OpenNewProduct);
             LoadFilters();
             LoadData();
         }
@@ -163,10 +165,29 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Open Details
         public async void OpenDetails(object parameter)
         {
-            new ProductDetails
+            var vm = new ProductDetailsViewModel(SelectedItem);
+            var productDetails = new ProductDetails
             {
-                DataContext = new ProductDetailsViewModel(SelectedItem)
-            }.Show();
+                DataContext = vm
+            };
+            vm.OnRequestClose += (s, e) => productDetails.Close();
+            productDetails.ShowDialog();
+            LoadData();
+        }
+        #endregion
+
+        #region Open Add New product
+        public async void OpenNewProduct(object parameter)
+        {
+            var vm = new AddProductViewModel();
+            var addProduct = new AddProduct
+            {
+                DataContext = vm
+            };
+            vm.OnRequestClose += (s, e) => addProduct.Close();
+            addProduct.ShowDialog();
+            LoadData();
+
         }
         #endregion
     }

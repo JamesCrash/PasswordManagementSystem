@@ -14,7 +14,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Props
         //ITDatabaseContext dBContext = new ITDatabaseContext();
         public event EventHandler OnRequestClose;
-
+        private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
 
 
         private string _Username;
@@ -97,9 +97,7 @@ namespace CrashPasswordSystem.UI.ViewModels
                 else
                 {
 
-
-
-                    bool isValid = _encryption.VerifyHash(Password, "SHA256",
+                    bool isValid = _login.VerifyHash(Password, "SHA256",
                         user.UserHash, user.UserSalt);
 
                     Debug.Assert(false, isValid ? "Valid User" : "Not a Valid User");

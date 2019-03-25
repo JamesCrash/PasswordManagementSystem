@@ -9,7 +9,7 @@
 // The following connection settings were used to generate this file:
 //     Configuration file:     "CrashPasswordSystem.Data\App.config"
 //     Connection String Name: "ITDatabaseContext"
-//     Connection String:      "Data Source=CR-JMTLPC\SQLEXPRESS;Initial Catalog=ITDatabase;Integrated Security=True"
+//     Connection String:      "Data Source=CR-JMTLPC\SQLEXPRESS; Initial Catalog=ITDatabase;Integrated Security=True"
 // ------------------------------------------------------------------------------------------------
 // Database Edition        : Express Edition (64-bit)
 // Database Engine Edition : Express
@@ -28,6 +28,8 @@
 // TargetFrameworkVersion = 4.6
 #pragma warning disable 1591    //  Ignore "Missing XML Comment" warning
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CrashPasswordSystem.Data
 {
@@ -512,10 +514,22 @@ namespace CrashPasswordSystem.Data
     #region POCO classes
 
     // CrashCompany
+    [Table("CrashCompany", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class CrashCompany
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"CCID", Order = 1, TypeName = "int")]
+        [Index(@"PK_tblCrashCompany", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Ccid")]
         public int Ccid { get; set; } // CCID (Primary key)
+
+        [Column(@"CCName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "Ccn ame")]
         public string CcName { get; set; } // CCName (length: 50)
 
         // Reverse navigation
@@ -532,19 +546,75 @@ namespace CrashPasswordSystem.Data
     }
 
     // Products
+    [Table("Products", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class Product
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"ProductID", Order = 1, TypeName = "int")]
+        [Index(@"PK_tblProducts", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Product ID")]
         public int ProductId { get; set; } // ProductID (Primary key)
+
+        [Column(@"PCID", Order = 2, TypeName = "int")]
+        [Required]
+        [Display(Name = "Pcid")]
         public int Pcid { get; set; } // PCID
+
+        [Column(@"CCID", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Ccid")]
         public int Ccid { get; set; } // CCID
+
+        [Column(@"SupplierID", Order = 4, TypeName = "int")]
+        [Required]
+        [Display(Name = "Supplier ID")]
         public int SupplierId { get; set; } // SupplierID
+
+        [Column(@"StaffID", Order = 5, TypeName = "int")]
+        [Required]
+        [Display(Name = "Staff ID")]
         public int StaffId { get; set; } // StaffID
+
+        [Column(@"ProductDescription", Order = 6, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Product description")]
         public string ProductDescription { get; set; } // ProductDescription (length: 100)
+
+        [Column(@"ProductURL", Order = 7, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
+        [MaxLength(200)]
+        [StringLength(200)]
+        [Display(Name = "Product url")]
         public string ProductUrl { get; set; } // ProductURL (length: 200)
+
+        [Column(@"ProductUsername", Order = 8, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
+        [MaxLength(40)]
+        [StringLength(40)]
+        [Display(Name = "Product username")]
         public string ProductUsername { get; set; } // ProductUsername (length: 40)
+
+        [Column(@"ProductPassword", Order = 9, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Product password")]
         public string ProductPassword { get; set; } // ProductPassword (length: 100)
+
+        [Column(@"ProductDateAdded", Order = 10, TypeName = "datetime")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Product date added")]
         public System.DateTime ProductDateAdded { get; set; } // ProductDateAdded
+
+        [Column(@"ProductExpiry", Order = 11, TypeName = "datetime")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Product expiry")]
         public System.DateTime? ProductExpiry { get; set; } // ProductExpiry
 
         // Reverse navigation
@@ -559,22 +629,22 @@ namespace CrashPasswordSystem.Data
         /// <summary>
         /// Parent CrashCompany pointed by [Products].([Ccid]) (FK_tblProducts_tblCrashCompany)
         /// </summary>
-        public virtual CrashCompany CrashCompany { get; set; } // FK_tblProducts_tblCrashCompany
+        [ForeignKey("Ccid"), Required] public virtual CrashCompany CrashCompany { get; set; } // FK_tblProducts_tblCrashCompany
 
         /// <summary>
         /// Parent ProductCategory pointed by [Products].([Pcid]) (FK_tblProducts_tblProductCategory)
         /// </summary>
-        public virtual ProductCategory ProductCategory { get; set; } // FK_tblProducts_tblProductCategory
-
-        /// <summary>
-        /// Parent Supplier pointed by [Products].([SupplierId]) (FK_tblProducts_tblSuppliers)
-        /// </summary>
-        public virtual Supplier Supplier { get; set; } // FK_tblProducts_tblSuppliers
+        [ForeignKey("Pcid"), Required] public virtual ProductCategory ProductCategory { get; set; } // FK_tblProducts_tblProductCategory
 
         /// <summary>
         /// Parent User pointed by [Products].([StaffId]) (FK_tblProducts_tblStaff)
         /// </summary>
-        public virtual User User { get; set; } // FK_tblProducts_tblStaff
+        [ForeignKey("StaffId"), Required] public virtual User User { get; set; } // FK_tblProducts_tblStaff
+
+        /// <summary>
+        /// Parent Supplier pointed by [Products].([SupplierId]) (FK_tblProducts_tblSuppliers)
+        /// </summary>
+        [ForeignKey("SupplierId"), Required] public virtual Supplier Supplier { get; set; } // FK_tblProducts_tblSuppliers
 
         public Product()
         {
@@ -584,10 +654,22 @@ namespace CrashPasswordSystem.Data
     }
 
     // ProductCategory
+    [Table("ProductCategory", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class ProductCategory
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"PCID", Order = 1, TypeName = "int")]
+        [Index(@"PK_tblProductCategory", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Pcid")]
         public int Pcid { get; set; } // PCID (Primary key)
+
+        [Column(@"PCName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Pcn ame")]
         public string PcName { get; set; } // PCName (length: 100)
 
         // Reverse navigation
@@ -604,15 +686,53 @@ namespace CrashPasswordSystem.Data
     }
 
     // Suppliers
+    [Table("Suppliers", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class Supplier
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"SupplierID", Order = 1, TypeName = "int")]
+        [Index(@"PK_tblSuppliers", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Supplier ID")]
         public int SupplierId { get; set; } // SupplierID (Primary key)
+
+        [Column(@"SupplierName", Order = 2, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Supplier name")]
         public string SupplierName { get; set; } // SupplierName (length: 100)
+
+        [Column(@"SupplierAddress", Order = 3, TypeName = "nvarchar")]
+        [MaxLength(200)]
+        [StringLength(200)]
+        [Display(Name = "Supplier address")]
         public string SupplierAddress { get; set; } // SupplierAddress (length: 200)
+
+        [Column(@"SupplierContactNumber", Order = 4, TypeName = "nvarchar")]
+        [MaxLength(30)]
+        [StringLength(30)]
+        [Display(Name = "Supplier contact number")]
         public string SupplierContactNumber { get; set; } // SupplierContactNumber (length: 30)
+
+        [Column(@"SupplierEmail", Order = 5, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Supplier email")]
         public string SupplierEmail { get; set; } // SupplierEmail (length: 100)
+
+        [Column(@"SupplierWebsite", Order = 6, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "Supplier website")]
         public string SupplierWebsite { get; set; } // SupplierWebsite (length: 100)
+
+        [Column(@"SupplierDateAdded", Order = 7, TypeName = "datetime")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Supplier date added")]
         public System.DateTime SupplierDateAdded { get; set; } // SupplierDateAdded
 
         // Reverse navigation
@@ -630,27 +750,90 @@ namespace CrashPasswordSystem.Data
     }
 
     // tblUser
+    [Table("tblUser", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class TblUser
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"UserID", Order = 1, TypeName = "int")]
+        [Required]
+        [Key]
+        [Display(Name = "User ID")]
         public int UserId { get; set; } // UserID (Primary key)
+
+        [Column(@"UserFirstName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "User first name")]
         public string UserFirstName { get; set; } // UserFirstName (length: 50)
+
+        [Column(@"UserLastName", Order = 3, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "User last name")]
         public string UserLastName { get; set; } // UserLastName (length: 50)
+
+        [Column(@"UserInitials", Order = 4, TypeName = "nvarchar")]
+        [MaxLength(10)]
+        [StringLength(10)]
+        [Display(Name = "User initials")]
         public string UserInitials { get; set; } // UserInitials (length: 10)
+
+        [Column(@"UserEmail", Order = 5, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "User email")]
         public string UserEmail { get; set; } // UserEmail (length: 50)
+
+        [Column(@"UserHash", Order = 6, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "User hash")]
         public string UserHash { get; set; } // UserHash (length: 100)
+
+        [Column(@"UserSalt", Order = 7, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "User salt")]
         public string UserSalt { get; set; } // UserSalt (length: 20)
+
+        [Column(@"UserDateCreated", Order = 8, TypeName = "datetime")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "User date created")]
         public System.DateTime? UserDateCreated { get; set; } // UserDateCreated
+
+        [Column(@"UserActive", Order = 9, TypeName = "bit")]
+        [Display(Name = "User active")]
         public bool? UserActive { get; set; } // UserActive
     }
 
     // UpdateHistory
+    [Table("UpdateHistory", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class UpdateHistory
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"UHID", Order = 1, TypeName = "int")]
+        [Index(@"PK_UpdateHistory", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "Uhid")]
         public int Uhid { get; set; } // UHID (Primary key)
+
+        [Column(@"ProductID", Order = 2, TypeName = "int")]
+        [Required]
+        [Display(Name = "Product ID")]
         public int ProductId { get; set; } // ProductID
+
+        [Column(@"StaffID", Order = 3, TypeName = "int")]
+        [Required]
+        [Display(Name = "Staff ID")]
         public int StaffId { get; set; } // StaffID
+
+        [Column(@"DateUpdated", Order = 4, TypeName = "datetime")]
+        [Required]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Date updated")]
         public System.DateTime DateUpdated { get; set; } // DateUpdated
 
         // Foreign keys
@@ -658,21 +841,65 @@ namespace CrashPasswordSystem.Data
         /// <summary>
         /// Parent Product pointed by [UpdateHistory].([ProductId]) (FK_UpdateHistory_Products)
         /// </summary>
-        public virtual Product Product { get; set; } // FK_UpdateHistory_Products
+        [ForeignKey("ProductId"), Required] public virtual Product Product { get; set; } // FK_UpdateHistory_Products
     }
 
     // Users
+    [Table("Users", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
     public class User
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(@"UserID", Order = 1, TypeName = "int")]
+        [Index(@"PK_tblStaff", 1, IsUnique = true, IsClustered = true)]
+        [Required]
+        [Key]
+        [Display(Name = "User ID")]
         public int UserId { get; set; } // UserID (Primary key)
+
+        [Column(@"UserFirstName", Order = 2, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "User first name")]
         public string UserFirstName { get; set; } // UserFirstName (length: 50)
+
+        [Column(@"UserLastName", Order = 3, TypeName = "nvarchar")]
+        [MaxLength(50)]
+        [StringLength(50)]
+        [Display(Name = "User last name")]
         public string UserLastName { get; set; } // UserLastName (length: 50)
+
+        [Column(@"UserInitials", Order = 4, TypeName = "nchar")]
+        [MaxLength(10)]
+        [StringLength(10)]
+        [Display(Name = "User initials")]
         public string UserInitials { get; set; } // UserInitials (length: 10)
+
+        [Column(@"UserEmail", Order = 5, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "User email")]
         public string UserEmail { get; set; } // UserEmail (length: 100)
+
+        [Column(@"UserHash", Order = 6, TypeName = "nvarchar")]
+        [MaxLength(100)]
+        [StringLength(100)]
+        [Display(Name = "User hash")]
         public string UserHash { get; set; } // UserHash (length: 100)
+
+        [Column(@"UserSalt", Order = 7, TypeName = "nvarchar")]
+        [MaxLength(20)]
+        [StringLength(20)]
+        [Display(Name = "User salt")]
         public string UserSalt { get; set; } // UserSalt (length: 20)
+
+        [Column(@"UserDateCreated", Order = 8, TypeName = "datetime")]
+        [DataType(DataType.DateTime)]
+        [Display(Name = "User date created")]
         public System.DateTime? UserDateCreated { get; set; } // UserDateCreated
+
+        [Column(@"UserActive", Order = 9, TypeName = "bit")]
+        [Display(Name = "User active")]
         public bool? UserActive { get; set; } // UserActive
 
         // Reverse navigation
@@ -705,11 +932,7 @@ namespace CrashPasswordSystem.Data
 
         public CrashCompanyConfiguration(string schema)
         {
-            ToTable("CrashCompany", schema);
-            HasKey(x => x.Ccid);
-
-            Property(x => x.Ccid).HasColumnName(@"CCID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.CcName).HasColumnName(@"CCName").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
+            Property(x => x.CcName).IsOptional();
         }
     }
 
@@ -724,26 +947,8 @@ namespace CrashPasswordSystem.Data
 
         public ProductConfiguration(string schema)
         {
-            ToTable("Products", schema);
-            HasKey(x => x.ProductId);
+            Property(x => x.ProductExpiry).IsOptional();
 
-            Property(x => x.ProductId).HasColumnName(@"ProductID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.Pcid).HasColumnName(@"PCID").HasColumnType("int").IsRequired();
-            Property(x => x.Ccid).HasColumnName(@"CCID").HasColumnType("int").IsRequired();
-            Property(x => x.SupplierId).HasColumnName(@"SupplierID").HasColumnType("int").IsRequired();
-            Property(x => x.StaffId).HasColumnName(@"StaffID").HasColumnType("int").IsRequired();
-            Property(x => x.ProductDescription).HasColumnName(@"ProductDescription").HasColumnType("nvarchar").IsRequired().HasMaxLength(100);
-            Property(x => x.ProductUrl).HasColumnName(@"ProductURL").HasColumnType("nvarchar").IsRequired().HasMaxLength(200);
-            Property(x => x.ProductUsername).HasColumnName(@"ProductUsername").HasColumnType("nvarchar").IsRequired().HasMaxLength(40);
-            Property(x => x.ProductPassword).HasColumnName(@"ProductPassword").HasColumnType("nvarchar").IsRequired().HasMaxLength(100);
-            Property(x => x.ProductDateAdded).HasColumnName(@"ProductDateAdded").HasColumnType("datetime").IsRequired();
-            Property(x => x.ProductExpiry).HasColumnName(@"ProductExpiry").HasColumnType("datetime").IsOptional();
-
-            // Foreign keys
-            HasRequired(a => a.CrashCompany).WithMany(b => b.Products).HasForeignKey(c => c.Ccid).WillCascadeOnDelete(false); // FK_tblProducts_tblCrashCompany
-            HasRequired(a => a.ProductCategory).WithMany(b => b.Products).HasForeignKey(c => c.Pcid).WillCascadeOnDelete(false); // FK_tblProducts_tblProductCategory
-            HasRequired(a => a.Supplier).WithMany(b => b.Products).HasForeignKey(c => c.SupplierId).WillCascadeOnDelete(false); // FK_tblProducts_tblSuppliers
-            HasRequired(a => a.User).WithMany(b => b.Products).HasForeignKey(c => c.StaffId).WillCascadeOnDelete(false); // FK_tblProducts_tblStaff
         }
     }
 
@@ -758,11 +963,7 @@ namespace CrashPasswordSystem.Data
 
         public ProductCategoryConfiguration(string schema)
         {
-            ToTable("ProductCategory", schema);
-            HasKey(x => x.Pcid);
-
-            Property(x => x.Pcid).HasColumnName(@"PCID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.PcName).HasColumnName(@"PCName").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.PcName).IsOptional();
         }
     }
 
@@ -777,16 +978,10 @@ namespace CrashPasswordSystem.Data
 
         public SupplierConfiguration(string schema)
         {
-            ToTable("Suppliers", schema);
-            HasKey(x => x.SupplierId);
-
-            Property(x => x.SupplierId).HasColumnName(@"SupplierID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.SupplierName).HasColumnName(@"SupplierName").HasColumnType("nvarchar").IsRequired().HasMaxLength(100);
-            Property(x => x.SupplierAddress).HasColumnName(@"SupplierAddress").HasColumnType("nvarchar").IsOptional().HasMaxLength(200);
-            Property(x => x.SupplierContactNumber).HasColumnName(@"SupplierContactNumber").HasColumnType("nvarchar").IsOptional().HasMaxLength(30);
-            Property(x => x.SupplierEmail).HasColumnName(@"SupplierEmail").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
-            Property(x => x.SupplierWebsite).HasColumnName(@"SupplierWebsite").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
-            Property(x => x.SupplierDateAdded).HasColumnName(@"SupplierDateAdded").HasColumnType("datetime").IsRequired();
+            Property(x => x.SupplierAddress).IsOptional();
+            Property(x => x.SupplierContactNumber).IsOptional();
+            Property(x => x.SupplierEmail).IsOptional();
+            Property(x => x.SupplierWebsite).IsOptional();
         }
     }
 
@@ -801,18 +996,14 @@ namespace CrashPasswordSystem.Data
 
         public TblUserConfiguration(string schema)
         {
-            ToTable("tblUser", schema);
-            HasKey(x => x.UserId);
-
-            Property(x => x.UserId).HasColumnName(@"UserID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.UserFirstName).HasColumnName(@"UserFirstName").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
-            Property(x => x.UserLastName).HasColumnName(@"UserLastName").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
-            Property(x => x.UserInitials).HasColumnName(@"UserInitials").HasColumnType("nvarchar").IsOptional().HasMaxLength(10);
-            Property(x => x.UserEmail).HasColumnName(@"UserEmail").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
-            Property(x => x.UserHash).HasColumnName(@"UserHash").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
-            Property(x => x.UserSalt).HasColumnName(@"UserSalt").HasColumnType("nvarchar").IsOptional().HasMaxLength(20);
-            Property(x => x.UserDateCreated).HasColumnName(@"UserDateCreated").HasColumnType("datetime").IsOptional();
-            Property(x => x.UserActive).HasColumnName(@"UserActive").HasColumnType("bit").IsOptional();
+            Property(x => x.UserFirstName).IsOptional();
+            Property(x => x.UserLastName).IsOptional();
+            Property(x => x.UserInitials).IsOptional();
+            Property(x => x.UserEmail).IsOptional();
+            Property(x => x.UserHash).IsOptional();
+            Property(x => x.UserSalt).IsOptional();
+            Property(x => x.UserDateCreated).IsOptional();
+            Property(x => x.UserActive).IsOptional();
         }
     }
 
@@ -827,16 +1018,7 @@ namespace CrashPasswordSystem.Data
 
         public UpdateHistoryConfiguration(string schema)
         {
-            ToTable("UpdateHistory", schema);
-            HasKey(x => x.Uhid);
 
-            Property(x => x.Uhid).HasColumnName(@"UHID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.ProductId).HasColumnName(@"ProductID").HasColumnType("int").IsRequired();
-            Property(x => x.StaffId).HasColumnName(@"StaffID").HasColumnType("int").IsRequired();
-            Property(x => x.DateUpdated).HasColumnName(@"DateUpdated").HasColumnType("datetime").IsRequired();
-
-            // Foreign keys
-            HasRequired(a => a.Product).WithMany(b => b.UpdateHistories).HasForeignKey(c => c.ProductId).WillCascadeOnDelete(false); // FK_UpdateHistory_Products
         }
     }
 
@@ -851,18 +1033,14 @@ namespace CrashPasswordSystem.Data
 
         public UserConfiguration(string schema)
         {
-            ToTable("Users", schema);
-            HasKey(x => x.UserId);
-
-            Property(x => x.UserId).HasColumnName(@"UserID").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
-            Property(x => x.UserFirstName).HasColumnName(@"UserFirstName").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
-            Property(x => x.UserLastName).HasColumnName(@"UserLastName").HasColumnType("nvarchar").IsOptional().HasMaxLength(50);
-            Property(x => x.UserInitials).HasColumnName(@"UserInitials").HasColumnType("nchar").IsOptional().IsFixedLength().HasMaxLength(10);
-            Property(x => x.UserEmail).HasColumnName(@"UserEmail").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
-            Property(x => x.UserHash).HasColumnName(@"UserHash").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
-            Property(x => x.UserSalt).HasColumnName(@"UserSalt").HasColumnType("nvarchar").IsOptional().HasMaxLength(20);
-            Property(x => x.UserDateCreated).HasColumnName(@"UserDateCreated").HasColumnType("datetime").IsOptional();
-            Property(x => x.UserActive).HasColumnName(@"UserActive").HasColumnType("bit").IsOptional();
+            Property(x => x.UserFirstName).IsOptional();
+            Property(x => x.UserLastName).IsOptional();
+            Property(x => x.UserInitials).IsOptional().IsFixedLength();
+            Property(x => x.UserEmail).IsOptional();
+            Property(x => x.UserHash).IsOptional();
+            Property(x => x.UserSalt).IsOptional();
+            Property(x => x.UserDateCreated).IsOptional();
+            Property(x => x.UserActive).IsOptional();
         }
     }
 

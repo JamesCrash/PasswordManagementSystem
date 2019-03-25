@@ -2,6 +2,8 @@
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Views;
+using CrashPasswordSystem.UI.Wrapper;
+using Prism.Commands;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -16,20 +18,20 @@ namespace CrashPasswordSystem.UI.ViewModels
         public event EventHandler OnRequestClose;
         private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
 
-
+        private UserWrapper _user;
         private string _Username;
 
         public string Username
         {
-            get { return _Username; }
-            set { _Username = value; OnPropertyChanged(); }
+            get => _Username; 
+            set => SetProperty(ref _Username, value);
         }
         private string _Password;
 
         public string Password
         {
-            get { return _Password; }
-            set { _Password = value; OnPropertyChanged(); }
+            get => _Password;
+            set => SetProperty(ref _Password, value);
         }
 
         public ICommand LoginCommand { get; set; }
@@ -38,16 +40,16 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public string IsVisable
         {
-            get { return _IsVisable; }
-            set { _IsVisable = value; OnPropertyChanged(); }
+            get => _IsVisable;
+            set => SetProperty(ref _IsVisable, value);
         }
 
         private bool _IsValid;
 
         public bool IsValid
         {
-            get { return _IsValid; }
-            set { _IsValid = value; OnPropertyChanged(); }
+            get => _IsValid;
+            set => SetProperty(ref _IsValid, value);
         }
 
         #endregion
@@ -57,11 +59,11 @@ namespace CrashPasswordSystem.UI.ViewModels
             IsVisable = "Hidden";
             Username = "nial.mcshane@crashservices.com";
             Password = "Password1";
-            LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
+            LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
         }
 
         #region Can Execute
-        private bool CanExecuteLogin(object parameter)
+        private bool CanExecuteLogin()
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
@@ -83,43 +85,45 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Login Method
-        public async void ExecuteLogin(object parameter)
+        public async void ExecuteLogin()
         {
             using (var dBContext = new ITDatabaseContext())
             {
                 User user = dBContext.Users.FirstOrDefault(s => s.UserEmail == Username);
 
-                if (user == null)
-                {
-                    System.Diagnostics.Debug.Write("Soz");
-                    IsVisable = "Visable";
-                }
-                else
-                {
+                
 
-                    bool isValid = _login.VerifyHash(Password, "SHA256",
-                        user.UserHash, user.UserSalt);
+                //if (user == null)
+                //{
+                //    System.Diagnostics.Debug.Write("Soz");
+                //    IsVisable = "Visable";
+                //}
+                //else
+                //{
 
-                    Debug.Assert(false, isValid ? "Valid User" : "Not a Valid User");
+                //    bool isValid = _login.VerifyHash(Password, "SHA256",
+                //        user.UserHash, user.UserSalt);
 
-                    if (isValid == true)
-                    {
-                        var home = new Home()
-                        {
-                            DataContext = new HomeViewModel()
-                        };
-                        home.Show();
-                        OnRequestClose(this, new EventArgs());
-                        IsVisable = "Hidden";
-                    }
-                    else
-                    {
-                        IsVisable = "Visable";
-                    }
+                //    Debug.Assert(false, isValid ? "Valid User" : "Not a Valid User");
 
-                    ;
+                //    if (isValid == true)
+                //    {
+                //        var home = new Home()
+                //        {
+                //            DataContext = new HomeViewModel()
+                //        };
+                //        home.Show();
+                //        OnRequestClose(this, new EventArgs());
+                //        IsVisable = "Hidden";
+                //    }
+                //    else
+                //    {
+                //        IsVisable = "Visable";
+                //    }
+
+                //    ;
                     
-                }
+                //}
             }
         }
         #endregion

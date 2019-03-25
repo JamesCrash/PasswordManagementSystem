@@ -1,4 +1,4 @@
-﻿using CrashPasswordSystem.BusinessLogic.Encryption;
+﻿using CrashPasswordSystem.BusinessLogic.Validation;
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Views;
@@ -14,6 +14,8 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Props
         //ITDatabaseContext dBContext = new ITDatabaseContext();
         public event EventHandler OnRequestClose;
+
+
 
         private string _Username;
 
@@ -41,7 +43,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         private bool _IsValid;
-        private readonly Encryption _encryption = new Encryption();
 
         public bool IsValid
         {
@@ -54,8 +55,8 @@ namespace CrashPasswordSystem.UI.ViewModels
         public LoginViewModel()
         {
             IsVisable = "Hidden";
-            Username = "james.mitchell@crashservices.com";
-            Password = "Password";
+            Username = "nial.mcshane@crashservices.com";
+            Password = "Password1";
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
         }
 

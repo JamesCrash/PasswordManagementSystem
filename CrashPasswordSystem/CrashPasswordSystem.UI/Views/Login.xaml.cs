@@ -25,6 +25,18 @@ namespace CrashPasswordSystem.UI.Views
         {
             InitializeComponent();
 
+            var vm = new LoginViewModel();
+            //Login login = new Login
+            //{
+            //    DataContext = vm
+            //};
+            
+            vm.OnRequestClose += (s, e) => this.Close();
+            DataContext = vm;
+            //login.ShowDialog();
+
+
+
         }
 
 

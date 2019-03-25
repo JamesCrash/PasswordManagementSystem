@@ -1,7 +1,9 @@
 ﻿<Application x:Class="CrashPasswordSystem.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CrashPasswordSystem.UI">
+             xmlns:local="clr-namespace:CrashPasswordSystem.UI"
+             Startup="Application_Startup"
+             DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <Application.Resources>
          
     </Application.Resources>

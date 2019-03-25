@@ -52,7 +52,7 @@
 
         </Grid>
         <Grid Grid.Row="2" Grid.Column="0">
-            <DataGrid ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" Margin="10" HorizontalAlignment="Center">
+            <DataGrid ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" HorizontalAlignment="Center">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="ID" IsReadOnly="True" Visibility="Hidden" Binding="{Binding ProductID}"></DataGridTextColumn>-->
                     <DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding ProductDescription}"></DataGridTextColumn>

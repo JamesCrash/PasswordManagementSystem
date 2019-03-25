@@ -1,7 +1,9 @@
-﻿using CrashPasswordSystem.Data;
+﻿using CrashPasswordSystem.BusinessLogic.Encryption;
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Views;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -36,6 +38,15 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             get { return _IsVisable; }
             set { _IsVisable = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsValid;
+        private readonly Encryption _encryption = new Encryption();
+
+        public bool IsValid
+        {
+            get { return _IsValid; }
+            set { _IsValid = value; OnPropertyChanged(); }
         }
 
         #endregion
@@ -84,7 +95,15 @@ namespace CrashPasswordSystem.UI.ViewModels
                 }
                 else
                 {
-                    if (user.UserHash == Password)
+
+
+
+                    bool isValid = _encryption.VerifyHash(Password, "SHA256",
+                        user.UserHash, user.UserSalt);
+
+                    Debug.Assert(false, isValid ? "Valid User" : "Not a Valid User");
+
+                    if (isValid == true)
                     {
                         var home = new Home()
                         {
@@ -98,6 +117,9 @@ namespace CrashPasswordSystem.UI.ViewModels
                     {
                         IsVisable = "Visable";
                     }
+
+                    ;
+                    
                 }
             }
         }

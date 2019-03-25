@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrashPasswordSystem.UI.Views"
         mc:Ignorable="d"
-        Title="ProductDetails" Height="450" Width="800">
+        Title="ProductDetails" Height="550" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -46,7 +47,11 @@
                 </Grid>
                 <Grid Margin="5">
                     <Label Content="Description: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <StackPanel>
+                        <TextBox Validation.ErrorTemplate="{x:Null}" Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"></TextBox>
+                        <TextBlock  FontWeight="Medium" Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=ProductDescription}"/>
+                    </StackPanel>
+
                 </Grid>
                 <Grid Margin="5">
                     <Label Content="URL: "></Label>
@@ -69,7 +74,7 @@
                     <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                 </Grid>
             </StackPanel>
-            
+
             <StackPanel Grid.Column="1">
                 <Grid Margin="5">
                     <Label Content="Added By: "></Label>
@@ -89,6 +94,10 @@
                 </Grid>
 
             </StackPanel>
+        </Grid>
+        <Grid Grid.Row="3">
+            <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}">
+            </ListView>
         </Grid>
     </Grid>
 </Window>

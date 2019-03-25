@@ -1,4 +1,5 @@
-﻿using CrashPasswordSystem.Data;
+﻿using CrashPasswordSystem.BusinessLogic.Validation;
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         public ProductCategory SelectedCategory
         {
             get { return _SelectedCategory; }
-            set { _SelectedCategory = value; OnPropertyChanged();}
+            set { _SelectedCategory = value; OnPropertyChanged(); }
         }
 
         private Supplier _SelectedSupplier;
@@ -57,6 +58,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             get { return _SelectedSupplier; }
             set { _SelectedSupplier = value; OnPropertyChanged(); }
+        }
+
+        private List<string> _Errors;
+
+        public List<string> Errors
+        {
+            get { return _Errors; }
+            set { _Errors = value; OnPropertyChanged(); }
         }
 
 
@@ -135,7 +144,12 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Validation
-        //??
+        public bool Validate(object parameter)
+        {
+            Errors = ProductDetailsValidation.CheckNulls(Product);
+            if (Errors.Count != 0 ) return false;
+            else return true;
+        }
         #endregion
     }
 }

@@ -77,7 +77,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             ProductOriginal = product;
             QuitCommand = new RelayCommand(Quit);
             QuitDeleteCommand = new RelayCommand(QuitDelete);
-            QuitSaveCommand = new RelayCommand(QuitSave);
+            QuitSaveCommand = new RelayCommand(QuitSave, Validate);
 
             LoadComboData();
         }

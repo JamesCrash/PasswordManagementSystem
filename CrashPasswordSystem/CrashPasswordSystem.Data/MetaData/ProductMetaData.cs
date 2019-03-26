@@ -3,17 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CrashPasswordSystem.Data.MetaData
 {
-    [MetadataType(typeof(ProductMetaData))]
-    public partial class Product
+    [MetadataType(typeof(UserMetaData))]
+    public partial class User
     {
-        static Product()
+        static User()
         {
-            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(Product), typeof(ProductMetaData)), typeof(Product));
+            TypeDescriptor.AddProviderTransparent(new AssociatedMetadataTypeTypeDescriptionProvider(typeof(User), typeof(UserMetaData)), typeof(User));
         }
     }
-    public class ProductMetaData
+    public class UserMetaData
     {
-        [Required(ErrorMessage = "Product Description is required.")]
-        public string ProductDescription { get; set; }
+        [Required(ErrorMessage = "Password is a required.")]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", ErrorMessage = "Password must be a minimum of eight characters, have at least one uppercase letter, one lowercase letter, one number and one special character.")]
+        public string UserEmail { get; set; }
+
     }
 }

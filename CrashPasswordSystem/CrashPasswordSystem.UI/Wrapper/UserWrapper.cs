@@ -16,11 +16,11 @@ namespace CrashPasswordSystem.UI.Wrapper
 
         public int UserId => Model.UserId;
         
-        public string Password
-        {
-            get => GetValue<string>();
-            set => SetValue(value);
-        }
+        //public string Password
+        //{
+        //    get => GetValue<string>();
+        //    set => SetValue(value);
+        //}
 
         public string UserFirstName
         {
@@ -69,8 +69,8 @@ namespace CrashPasswordSystem.UI.Wrapper
         {
             switch (propertyName)
             {
-                case nameof(Password):
-                    if(string.IsNullOrWhiteSpace(Password))
+                case nameof(UserFirstName):
+                    if(string.IsNullOrWhiteSpace(UserFirstName))
                     {
                         yield return "Robots are not valid friends";
                     }

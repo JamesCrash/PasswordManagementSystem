@@ -516,7 +516,7 @@ namespace CrashPasswordSystem.Data
     // CrashCompany
     [Table("CrashCompany", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class CrashCompany
+    public partial class CrashCompany
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"CCID", Order = 1, TypeName = "int")]
@@ -542,13 +542,16 @@ namespace CrashPasswordSystem.Data
         public CrashCompany()
         {
             Products = new System.Collections.Generic.List<Product>();
+            InitializePartial();
         }
+
+        partial void InitializePartial();
     }
 
     // Products
     [Table("Products", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class Product
+    public partial class Product
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"ProductID", Order = 1, TypeName = "int")]
@@ -650,13 +653,16 @@ namespace CrashPasswordSystem.Data
         {
             ProductDateAdded = System.DateTime.Now;
             UpdateHistories = new System.Collections.Generic.List<UpdateHistory>();
+            InitializePartial();
         }
+
+        partial void InitializePartial();
     }
 
     // ProductCategory
     [Table("ProductCategory", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class ProductCategory
+    public partial class ProductCategory
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"PCID", Order = 1, TypeName = "int")]
@@ -682,13 +688,16 @@ namespace CrashPasswordSystem.Data
         public ProductCategory()
         {
             Products = new System.Collections.Generic.List<Product>();
+            InitializePartial();
         }
+
+        partial void InitializePartial();
     }
 
     // Suppliers
     [Table("Suppliers", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class Supplier
+    public partial class Supplier
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"SupplierID", Order = 1, TypeName = "int")]
@@ -746,13 +755,16 @@ namespace CrashPasswordSystem.Data
         {
             SupplierDateAdded = System.DateTime.Now;
             Products = new System.Collections.Generic.List<Product>();
+            InitializePartial();
         }
+
+        partial void InitializePartial();
     }
 
     // tblUser
     [Table("tblUser", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class TblUser
+    public partial class TblUser
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"UserID", Order = 1, TypeName = "int")]
@@ -805,12 +817,19 @@ namespace CrashPasswordSystem.Data
         [Column(@"UserActive", Order = 9, TypeName = "bit")]
         [Display(Name = "User active")]
         public bool? UserActive { get; set; } // UserActive
+
+        public TblUser()
+        {
+            InitializePartial();
+        }
+
+        partial void InitializePartial();
     }
 
     // UpdateHistory
     [Table("UpdateHistory", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class UpdateHistory
+    public partial class UpdateHistory
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"UHID", Order = 1, TypeName = "int")]
@@ -842,12 +861,19 @@ namespace CrashPasswordSystem.Data
         /// Parent Product pointed by [UpdateHistory].([ProductId]) (FK_UpdateHistory_Products)
         /// </summary>
         [ForeignKey("ProductId"), Required] public virtual Product Product { get; set; } // FK_UpdateHistory_Products
+
+        public UpdateHistory()
+        {
+            InitializePartial();
+        }
+
+        partial void InitializePartial();
     }
 
     // Users
     [Table("Users", Schema = "dbo")]
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.37.2.0")]
-    public class User
+    public partial class User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(@"UserID", Order = 1, TypeName = "int")]
@@ -876,17 +902,16 @@ namespace CrashPasswordSystem.Data
         public string UserInitials { get; set; } // UserInitials (length: 10)
 
         [Column(@"UserEmail", Order = 5, TypeName = "nvarchar")]
+        [Required(AllowEmptyStrings = true)]
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "User email")]
-        [Required]
         public string UserEmail { get; set; } // UserEmail (length: 100)
 
         [Column(@"UserHash", Order = 6, TypeName = "nvarchar")]
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "User hash")]
-        [Required]
         public string UserHash { get; set; } // UserHash (length: 100)
 
         [Column(@"UserSalt", Order = 7, TypeName = "nvarchar")]
@@ -916,7 +941,10 @@ namespace CrashPasswordSystem.Data
             UserDateCreated = System.DateTime.Now;
             UserActive = true;
             Products = new System.Collections.Generic.List<Product>();
+            InitializePartial();
         }
+
+        partial void InitializePartial();
     }
 
     #endregion
@@ -1038,7 +1066,6 @@ namespace CrashPasswordSystem.Data
             Property(x => x.UserFirstName).IsOptional();
             Property(x => x.UserLastName).IsOptional();
             Property(x => x.UserInitials).IsOptional().IsFixedLength();
-            Property(x => x.UserEmail).IsOptional();
             Property(x => x.UserHash).IsOptional();
             Property(x => x.UserSalt).IsOptional();
             Property(x => x.UserDateCreated).IsOptional();

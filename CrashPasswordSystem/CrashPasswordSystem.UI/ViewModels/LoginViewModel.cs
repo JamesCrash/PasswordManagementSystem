@@ -31,13 +31,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         //    get => _Username;
         //    set => SetProperty(ref _Username, value);
         //}
-        //private string _Password;
 
-        //public string Password
-        //{
-        //    get { return _Password; }
-        //    set { _Password = value; OnPropertyChanged(); }
-        //}
+        private string _Password;
+
+        public string Password
+        {
+            get { return _Password; }
+            set { _Password = value; OnPropertyChanged(); }
+        }
 
         public ICommand LoginCommand { get; set; }
 
@@ -67,7 +68,8 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             User = new User();
             userWrap = new UserWrapper(User);
-            userWrap.UserEmail = "";
+            userWrap.UserEmail = "nial.mcshane@crashservices.com";
+            userWrap.UserHash = "Password1";
 
             userWrap.PropertyChanged += (s, e) =>
             {
@@ -115,7 +117,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
                 if (user != null)
                 {
-                    bool isValid = _login.VerifyHash(userWrap.Password, "SHA256",
+                    bool isValid = _login.VerifyHash(userWrap.UserHash, "SHA256",
                           user.UserHash, user.UserSalt);
                     if (isValid == true)
                     {

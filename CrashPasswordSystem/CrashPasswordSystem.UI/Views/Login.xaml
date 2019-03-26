@@ -29,7 +29,7 @@
 
             <TextBox Grid.Row="0" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.UserEmail, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
 
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.Password, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.UserHash, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
             
         </Grid>
         <Label Content="Incorrect Login Credentials" HorizontalContentAlignment="Center" Foreground="Red" Visibility="{Binding IsVisable}" Grid.Row="3"></Label>

@@ -24,20 +24,20 @@ namespace CrashPasswordSystem.UI.ViewModels
             set { _userWrap = value; OnPropertyChanged(); }
         }
 
-        private string _Username;
+        //private string _Username;
 
-        public string Username
-        {
-            get => _Username;
-            set => SetProperty(ref _Username, value);
-        }
-        private string _Password;
+        //public string Username
+        //{
+        //    get => _Username;
+        //    set => SetProperty(ref _Username, value);
+        //}
+        //private string _Password;
 
-        public string Password
-        {
-            get => _Password;
-            set => SetProperty(ref _Password, value);
-        }
+        //public string Password
+        //{
+        //    get { return _Password; }
+        //    set { _Password = value; OnPropertyChanged(); }
+        //}
 
         public ICommand LoginCommand { get; set; }
 
@@ -45,16 +45,16 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public string IsVisable
         {
-            get => _IsVisable;
-            set => SetProperty(ref _IsVisable, value);
+            get { return _IsVisable; }
+            set { _IsVisable = value; OnPropertyChanged(); }
         }
 
         private bool _IsValid;
 
         public bool IsValid
         {
-            get => _IsValid;
-            set => SetProperty(ref _IsValid, value);
+            get { return _IsValid; }
+            set { _IsValid = value; OnPropertyChanged(); }
         }
 
         #endregion
@@ -62,34 +62,46 @@ namespace CrashPasswordSystem.UI.ViewModels
         public LoginViewModel()
         {
             IsVisable = "Hidden";
-            Username = "nial.mcshane@crashservices.com";
-            Password = "Password1";
+
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
 
+            User = new User();
             userWrap = new UserWrapper(User);
+            userWrap.UserEmail = "";
+
+            userWrap.PropertyChanged += (s, e) =>
+            {
+                userWrap.GetErrors(e.PropertyName);
+                if (e.PropertyName == nameof(userWrap.HasErrors))
+                {
+                    ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
+                }
+            };
+            ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
         }
 
         #region Can Execute
         private bool CanExecuteLogin()
         {
+            var error = userWrap.HasErrors;
             return !userWrap.HasErrors;
 
-            //if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-            //{
-            //    return false;
-            //}
-            //else
-            //{
-            //    if (Username != "" && Password != "")
-            //    {
-            //        return true;
-            //    }
-            //    else
-            //    {
-            //        return false;
-            //    }
+          //if (string.IsNullOrEmpty(userWrap.UserEmail) || string.IsNullOrEmpty(userWrap.UserHash))
+          //  {
+          //      return false;
+          //  }
+          //  else
+          //  {
+          //      if (userWrap.UserEmail != "" && userWrap.UserHash != "")
+          //      {
+          //          return true;
+          //      }
+          //      else
+          //      {
+          //          return false;
+          //      }
 
-            //}
+          //  }
         }
         #endregion
 
@@ -101,19 +113,9 @@ namespace CrashPasswordSystem.UI.ViewModels
             {
                 User user = dBContext.Users.FirstOrDefault(s => s.UserEmail == userWrap.UserEmail);
 
-                //_user = new UserWrapper(User);
-                //_user.PropertyChanged += (s, e) =>
-                //{
-                //    if (e.PropertyName == nameof(_user.HasErrors))
-                //    {
-                //        ((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
-                //    }
-                //};
-                //((DelegateCommand)LoginCommand).RaiseCanExecuteChanged();
-
                 if (user != null)
                 {
-                    bool isValid = _login.VerifyHash(userWrap.UserHash, "SHA256",
+                    bool isValid = _login.VerifyHash(userWrap.Password, "SHA256",
                           user.UserHash, user.UserSalt);
                     if (isValid == true)
                     {

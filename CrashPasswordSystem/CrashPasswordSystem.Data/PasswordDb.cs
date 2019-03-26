@@ -879,12 +879,14 @@ namespace CrashPasswordSystem.Data
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "User email")]
+        [Required]
         public string UserEmail { get; set; } // UserEmail (length: 100)
 
         [Column(@"UserHash", Order = 6, TypeName = "nvarchar")]
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "User hash")]
+        [Required]
         public string UserHash { get; set; } // UserHash (length: 100)
 
         [Column(@"UserSalt", Order = 7, TypeName = "nvarchar")]

@@ -1,6 +1,7 @@
 ﻿using CrashPasswordSystem.Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,12 @@ namespace CrashPasswordSystem.UI.Wrapper
         }
 
         public int UserId => Model.UserId;
+        
+        public string Password
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
 
         public string UserFirstName
         {
@@ -62,8 +69,8 @@ namespace CrashPasswordSystem.UI.Wrapper
         {
             switch (propertyName)
             {
-                case nameof(UserEmail):
-                    if (string.Equals(UserEmail, "Robot", StringComparison.OrdinalIgnoreCase))
+                case nameof(Password):
+                    if(string.IsNullOrWhiteSpace(Password))
                     {
                         yield return "Robots are not valid friends";
                     }

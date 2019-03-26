@@ -27,9 +27,9 @@
             <Label Grid.Row="0" Grid.Column="0" Content="Username:" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20"></Label>
             <Label Grid.Row="1" Grid.Column="0" Content="Password:" Margin="10" HorizontalAlignment="Right" VerticalAlignment="Center"  FontSize="20"></Label>
 
-            <TextBox Validation.ErrorTemplate="{x:Null}" Name="Username" Grid.Row="0" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.UserEmail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True,NotifyOnValidationError=True}" FontSize="20" Width="200"></TextBox>
-            <TextBlock Grid.Row="2" FontWeight="Medium" Grid.Column="1" Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=Username}"/>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.UserHash, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.UserEmail, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
+
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding userWrap.Password, UpdateSourceTrigger=PropertyChanged}" FontSize="20" Width="200"></TextBox>
             
         </Grid>
         <Label Content="Incorrect Login Credentials" HorizontalContentAlignment="Center" Foreground="Red" Visibility="{Binding IsVisable}" Grid.Row="3"></Label>

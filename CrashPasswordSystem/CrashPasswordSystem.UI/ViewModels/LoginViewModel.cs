@@ -133,14 +133,9 @@ namespace CrashPasswordSystem.UI.ViewModels
                     {
                         IsVisable = "Visable";
                     }
-
                 }
-
-
-
             }
         }
         #endregion
-
     }
 }

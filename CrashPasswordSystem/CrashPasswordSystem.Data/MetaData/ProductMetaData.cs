@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CrashPasswordSystem.Data.MetaData
+namespace CrashPasswordSystem.Data
 {
     [MetadataType(typeof(UserMetaData))]
     public partial class User
@@ -14,7 +15,9 @@ namespace CrashPasswordSystem.Data.MetaData
     public class UserMetaData
     {
         [Required(ErrorMessage = "Password is a required.")]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", ErrorMessage = "Password must be a minimum of eight characters, have at least one uppercase letter, one lowercase letter, one number and one special character.")]
+        public string UserHash { get; set; }
+
+        [EmailAddress(ErrorMessage = "Not a valid email address.")]
         public string UserEmail { get; set; }
 
     }

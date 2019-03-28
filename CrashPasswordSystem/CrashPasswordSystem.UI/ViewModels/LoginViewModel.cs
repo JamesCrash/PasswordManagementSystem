@@ -87,23 +87,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             var error = userWrap.HasErrors;
             return !userWrap.HasErrors;
-
-          //if (string.IsNullOrEmpty(userWrap.UserEmail) || string.IsNullOrEmpty(userWrap.UserHash))
-          //  {
-          //      return false;
-          //  }
-          //  else
-          //  {
-          //      if (userWrap.UserEmail != "" && userWrap.UserHash != "")
-          //      {
-          //          return true;
-          //      }
-          //      else
-          //      {
-          //          return false;
-          //      }
-
-          //  }
         }
         #endregion
 

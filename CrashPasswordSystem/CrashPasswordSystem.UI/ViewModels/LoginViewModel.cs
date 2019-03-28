@@ -32,13 +32,13 @@ namespace CrashPasswordSystem.UI.ViewModels
         //    set => SetProperty(ref _Username, value);
         //}
 
-        private string _Password;
+        //private string _Password;
 
-        public string Password
-        {
-            get { return _Password; }
-            set { _Password = value; OnPropertyChanged(); }
-        }
+        //public string Password
+        //{
+        //    get { return _Password; }
+        //    set { _Password = value; OnPropertyChanged(); }
+        //}
 
         public ICommand LoginCommand { get; set; }
 

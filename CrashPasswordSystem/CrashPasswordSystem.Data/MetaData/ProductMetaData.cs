@@ -25,8 +25,8 @@ namespace CrashPasswordSystem.Data
 
     
         [Required(ErrorMessage = "Password is a required.")]
-        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
-            ErrorMessage = "Password must be a minimum of eight characters, have at least one uppercase letter, one lowercase letter, one number and one special character.")]
+        //[RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", 
+          //  ErrorMessage = "Password must be a minimum of eight characters, have at least one uppercase letter, one lowercase letter, one number and one special character.")]
         public string Password { get; set; }
 
     }

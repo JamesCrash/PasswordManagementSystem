@@ -23,7 +23,7 @@ namespace CrashPasswordSystem.UI
             var bootstrapper = new Bootstrapper();
             var container = bootstrapper.Bootstrap();
 
-            var mainWindow = container.Resolve<Login>();
+            var mainWindow = container.Resolve<Home>();
             mainWindow.Show();
         }
 

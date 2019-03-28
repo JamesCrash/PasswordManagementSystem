@@ -4,7 +4,6 @@ using CrashPasswordSystem.UI.Views;
 using CrashPasswordSystem.UI.Wrapper;
 using Prism.Commands;
 using System;
-using System.Linq;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
@@ -84,31 +83,30 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public async void ExecuteLogin()
         {
-            using (var dBContext = new ITDatabaseContext())
-            {
-                User user = await _UserDataService.GetUserByEmail(userWrap.UserEmail);
+            User user = await _UserDataService.GetUserByEmail(userWrap.UserEmail);
 
-                if (user != null)
+            if (user != null)
+            {
+                bool isValid = _login.VerifyHash(userWrap.Password, "SHA256",
+                      user.UserHash, user.UserSalt);
+                if (isValid == true)
                 {
-                    bool isValid = _login.VerifyHash(userWrap.Password, "SHA256",
-                          user.UserHash, user.UserSalt);
-                    if (isValid == true)
-                    {
-                        var home = new Home()
-                        {
-                            DataContext = new HomeViewModel()
-                        };
-                        home.Show();
-                        OnRequestClose(this, new EventArgs());
-                        IsVisable = "Hidden";
-                    }
-                    else
-                    {
-                        IsVisable = "Visable";
-                    }
+
+
+                    //var home = new Home(new HomeViewModel(   
+                    //));
+
+                    //home.Show();
+                    OnRequestClose(this, new EventArgs());
+                    IsVisable = "Hidden";
                 }
-                userWrap.Password = null;
+                else
+                {
+                    IsVisable = "Visable";
+                }
             }
+            userWrap.Password = null;
+
         }
         #endregion
     }

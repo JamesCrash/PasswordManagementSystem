@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using CrashPasswordSystem.UI.ViewModels;
 
 namespace CrashPasswordSystem.UI.Views
 {
@@ -19,9 +8,13 @@ namespace CrashPasswordSystem.UI.Views
     /// </summary>
     public partial class Home : Window
     {
-        public Home()
+        private HomeViewModel _viewModel;
+        public Home(HomeViewModel viewModel)
         {
             InitializeComponent();
+
+            _viewModel = viewModel;
+            DataContext = _viewModel;
         }
     }
 }

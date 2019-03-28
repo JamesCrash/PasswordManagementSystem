@@ -19,11 +19,19 @@ namespace CrashPasswordSystem.UI.Startup
 
             builder.RegisterType<Login>().AsSelf();
             builder.RegisterType<LoginViewModel>().AsSelf();
+
             builder.RegisterType<Home>().AsSelf();
+            builder.RegisterType<HomeViewModel>().AsSelf();
+
             builder.RegisterType<AddProduct>().AsSelf();
+
             builder.RegisterType<ProductDetails>().AsSelf();
 
             builder.RegisterType<UserDataService>().As<IUserDataService>();
+            builder.RegisterType<ProductDataService>().As<IProductDataService>();
+            builder.RegisterType<CompanyDataService>().As<ICompanyDataService>();
+            builder.RegisterType<CategoryDataService>().As<ICategoryDataService>();
+            builder.RegisterType<SupplierDataService>().As<ISupplierDataService>();
 
             return builder.Build();
 

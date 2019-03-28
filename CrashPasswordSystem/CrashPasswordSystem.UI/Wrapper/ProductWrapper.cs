@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CrashPasswordSystem.Data.MetaData
+namespace CrashPasswordSystem.UI.Wrapper
 {
-    class ProductMetaData
+    public class ProductWrapper
     {
     }
 }

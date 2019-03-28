@@ -1,15 +1,22 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
+        private IProductDataService _ProductDataService;
+        private ISupplierDataService _SupplierDataService;
+        private ICategoryDataService _CategoryDataService;
+        private ICompanyDataService _CompanyDataService;
+
         #region Props
         private ObservableCollection<Product> _products;
 
@@ -31,9 +38,27 @@ namespace CrashPasswordSystem.UI.ViewModels
         public ICommand OpenDetailsCommand { get; set; }
         public ICommand OpenAddProductCommand { get; set; }
 
-        public List<string> Companies { get; set; }
-        public List<string> Categories { get; set; }
-        public List<string> Suppliers { get; set; }
+        private List<string> _Companies;
+
+        public List<string> Companies
+        {
+            get { return _Companies; }
+            set { _Companies = value; OnPropertyChanged(); }
+        }
+        private List<string> _Categories;
+
+        public List<string> Categories
+        {
+            get { return _Categories; }
+            set { _Categories = value; OnPropertyChanged(); }
+        }
+        private List<string> _Suppliers;
+
+        public List<string> Suppliers
+        {
+            get { return _Suppliers; }
+            set { _Suppliers = value; OnPropertyChanged(); }
+        }
 
         private string _SelectedCompany;
 
@@ -56,7 +81,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string SelectedSupplier
         {
             get { return _SelectedSupplier; }
-            set { _SelectedSupplier = value; OnPropertyChanged(); if(!string.IsNullOrWhiteSpace(value))FilterData("SelectedSupplier", value); }
+            set { _SelectedSupplier = value; OnPropertyChanged(); if (!string.IsNullOrWhiteSpace(value)) FilterData("SelectedSupplier", value); }
         }
 
         private string _SearchBox;
@@ -64,9 +89,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string SearchBox
         {
             get { return _SearchBox; }
-            set { _SearchBox = value;
+            set
+            {
+                _SearchBox = value;
                 OnPropertyChanged();
-                if(value != null)
+                if (value != null)
                 {
                     FilterData("SearchBox", value);
                 }
@@ -74,11 +101,21 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
         #endregion
 
-        public HomeViewModel()
+        public HomeViewModel(IProductDataService productDataService
+            , ISupplierDataService supplierDataService
+            , ICategoryDataService categoryDataService
+        , ICompanyDataService companyDataService)
         {
+            _ProductDataService = productDataService;
+            _SupplierDataService = supplierDataService;
+            _CategoryDataService = categoryDataService;
+            _CompanyDataService = companyDataService;
+
+
             ClearFiltersCommand = new RelayCommand(ClearFilters);
             OpenDetailsCommand = new RelayCommand(OpenDetails);
             OpenAddProductCommand = new RelayCommand(OpenNewProduct);
+
             LoadFilters();
             LoadData();
         }
@@ -86,23 +123,20 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Data
         public async void LoadData()
         {
-            using (var dBContext = new ITDatabaseContext())
-            {
-                var p = dBContext.Products.ToList();
-                Products = new ObservableCollection<Product>(p);
-            }
+            await Task.Delay(5000);
+            var p = await _ProductDataService.GetAll();
+            Products = new ObservableCollection<Product>(p);
         }
         #endregion
 
         #region Load Filters Options
         public async void LoadFilters()
         {
-            using (var dBContext = new ITDatabaseContext())
-            {
-                Companies = dBContext.CrashCompanies.Select(s => s.CcName).ToList();
-                Categories = dBContext.ProductCategories.Select(s => s.PcName).ToList();
-                Suppliers = dBContext.Suppliers.Select(s => s.SupplierName).ToList();
-            }
+
+            Companies = await _CompanyDataService.GetAllDesctiption();
+            Categories = await _CategoryDataService.GetAllDesctiption();
+            Suppliers = await _SupplierDataService.GetAllDesctiption();
+
         }
         #endregion
 

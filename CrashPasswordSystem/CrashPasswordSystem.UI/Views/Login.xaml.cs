@@ -21,18 +21,21 @@ namespace CrashPasswordSystem.UI.Views
     public partial class Login : Window
     {
 
-        public Login()
+        private LoginViewModel _viewModel;
+
+        public Login(LoginViewModel viewModel)
         {
             InitializeComponent();
-
-            var vm = new LoginViewModel();
+            _viewModel = viewModel;
+            DataContext = _viewModel;
+            //var vm = new LoginViewModel();
             //Login login = new Login
             //{
             //    DataContext = vm
             //};
-            
-            vm.OnRequestClose += (s, e) => this.Close();
-            DataContext = vm;
+
+            _viewModel.OnRequestClose += (s, e) => this.Close();
+           // DataContext = vm;
             //login.ShowDialog();
 
 

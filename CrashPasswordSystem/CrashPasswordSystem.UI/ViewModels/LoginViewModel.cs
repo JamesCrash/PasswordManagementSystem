@@ -1,4 +1,5 @@
 ﻿using CrashPasswordSystem.Data;
+using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.Views;
 using CrashPasswordSystem.UI.Wrapper;
 using Prism.Commands;
@@ -10,8 +11,10 @@ namespace CrashPasswordSystem.UI.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+
+        private IUserDataService _UserDataService;
+
         #region Props
-        //ITDatabaseContext dBContext = new ITDatabaseContext();
         public event EventHandler OnRequestClose;
         private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
 
@@ -23,22 +26,6 @@ namespace CrashPasswordSystem.UI.ViewModels
             get { return _userWrap; }
             set { _userWrap = value; OnPropertyChanged(); }
         }
-
-        //private string _Username;
-
-        //public string Username
-        //{
-        //    get => _Username;
-        //    set => SetProperty(ref _Username, value);
-        //}
-
-        //private string _Password;
-
-        //public string Password
-        //{
-        //    get { return _Password; }
-        //    set { _Password = value; OnPropertyChanged(); }
-        //}
 
         public ICommand LoginCommand { get; set; }
 
@@ -60,8 +47,11 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #endregion
 
-        public LoginViewModel()
+        public LoginViewModel(IUserDataService userDataService)
         {
+
+            _UserDataService = userDataService;
+
             IsVisable = "Hidden";
 
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
@@ -96,7 +86,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             using (var dBContext = new ITDatabaseContext())
             {
-                User user = dBContext.Users.FirstOrDefault(s => s.UserEmail == userWrap.UserEmail);
+                User user = await _UserDataService.GetUserByEmail(userWrap.UserEmail);
 
                 if (user != null)
                 {

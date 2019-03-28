@@ -902,7 +902,7 @@ namespace CrashPasswordSystem.Data
         public string UserInitials { get; set; } // UserInitials (length: 10)
 
         [Column(@"UserEmail", Order = 5, TypeName = "nvarchar")]
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         [MaxLength(100)]
         [StringLength(100)]
         [Display(Name = "User email")]

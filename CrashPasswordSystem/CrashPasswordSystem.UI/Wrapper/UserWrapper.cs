@@ -15,12 +15,12 @@ namespace CrashPasswordSystem.UI.Wrapper
         }
 
         public int UserId => Model.UserId;
-        
-        //public string Password
-        //{
-        //    get => GetValue<string>();
-        //    set => SetValue(value);
-        //}
+
+        public string Password
+        {
+            get => GetValue<string>();
+            set => SetValue(value);
+        }
 
         public string UserFirstName
         {

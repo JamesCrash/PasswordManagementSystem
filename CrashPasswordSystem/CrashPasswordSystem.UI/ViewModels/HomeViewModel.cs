@@ -7,10 +7,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Prism.Events;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : ViewModelBase, IHomeViewModel
     {
         private IProductDataService _ProductDataService;
         private ISupplierDataService _SupplierDataService;
@@ -101,7 +102,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
         #endregion
 
-        public HomeViewModel(IProductDataService productDataService
+        public HomeViewModel(IEventAggregator iEventAggregator, IProductDataService productDataService
             , ISupplierDataService supplierDataService
             , ICategoryDataService categoryDataService
         , ICompanyDataService companyDataService)
@@ -123,7 +124,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Data
         public async void LoadData()
         {
-            await Task.Delay(5000);
             var p = await _ProductDataService.GetAll();
             Products = new ObservableCollection<Product>(p);
         }

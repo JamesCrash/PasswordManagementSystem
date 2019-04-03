@@ -1,20 +1,19 @@
-﻿using System.Windows;
-using CrashPasswordSystem.UI.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace CrashPasswordSystem.UI.Views
 {
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Home : Window
+    public partial class Home : UserControl
     {
-        private HomeViewModel _viewModel;
-        public Home(HomeViewModel viewModel)
+        //private HomeViewModel _viewModel;
+        public Home()
         {
             InitializeComponent();
 
-            _viewModel = viewModel;
-            DataContext = _viewModel;
+            //_viewModel = viewModel;
+            //DataContext = _viewModel;
         }
     }
 }

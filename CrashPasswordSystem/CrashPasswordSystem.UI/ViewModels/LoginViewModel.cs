@@ -1,17 +1,22 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.Data;
-using CrashPasswordSystem.UI.Views;
 using CrashPasswordSystem.UI.Wrapper;
 using Prism.Commands;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using CrashPasswordSystem.UI.Event;
+using Prism.Events;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class LoginViewModel : ViewModelBase
+
+    public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
 
         private IUserDataService _UserDataService;
+        private IEventAggregator _EventAggregator;
+
 
         #region Props
         public event EventHandler OnRequestClose;
@@ -46,17 +51,20 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #endregion
 
-        public LoginViewModel(IUserDataService userDataService)
+        public LoginViewModel(IEventAggregator iEventAggregator, IUserDataService userDataService)
         {
-
-            _UserDataService = userDataService;
-
-            IsVisable = "Hidden";
-
-            LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
-
             User = new User();
             userWrap = new UserWrapper(User);
+            LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
+            _UserDataService = userDataService;
+            _EventAggregator = iEventAggregator;
+
+        }
+
+        public async Task LoadAsync()
+        {
+            IsVisable = "Hidden";
+
             userWrap.UserEmail = "nial.mcshane@crashservices.com";
             userWrap.Password = "Password1";
 
@@ -72,7 +80,8 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         #region Can Execute
-        private bool CanExecuteLogin()
+
+            public bool CanExecuteLogin()
         {
             var error = userWrap.HasErrors;
             return !userWrap.HasErrors;
@@ -92,18 +101,20 @@ namespace CrashPasswordSystem.UI.ViewModels
                 if (isValid == true)
                 {
 
-
-                    //var home = new Home(new HomeViewModel(   
-                    //));
-
-                    //home.Show();
-                    OnRequestClose(this, new EventArgs());
                     IsVisable = "Hidden";
                 }
                 else
                 {
-                    IsVisable = "Visable";
+                    IsVisable = "Visible";
                 }
+
+                _EventAggregator
+                    .GetEvent<LoggedInEvent>()
+                    .Publish(new LoggedInEventArgs
+                    {
+                        Valid = isValid
+                    });
+
             }
             userWrap.Password = null;
 

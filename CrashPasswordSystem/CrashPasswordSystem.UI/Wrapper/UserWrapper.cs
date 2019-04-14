@@ -1,10 +1,5 @@
-﻿using CrashPasswordSystem.Data;
-using System;
+﻿using CrashPasswordSystem.Models;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrashPasswordSystem.UI.Wrapper
 {
@@ -14,12 +9,12 @@ namespace CrashPasswordSystem.UI.Wrapper
         {
         }
 
-        public int UserId => Model.UserId;
+        public int UserId => Model.UserID;
 
         public string Password
         {
-            get => GetValue<string>();
-            set => SetValue(value);
+            get; //=> GetValue<string>();
+            set; //=> SetValue(value);
         }
 
         public string UserFirstName

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Wrapper;
 
 namespace CrashPasswordSystem.UI.ViewModels

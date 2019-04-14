@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.BusinessLogic.Validation
 {
@@ -23,12 +24,12 @@ namespace CrashPasswordSystem.BusinessLogic.Validation
             var list = new List<string>();
 
             if (product == null) { list.Add("Product cannot be null"); }
-            if (product.ProductId == 0) { list.Add("Product ID cannot be null"); }
-            if (product.Pcid == 0) { list.Add("Category cannot be null"); }
-            if (product.Ccid == 0) { list.Add("Company cannot be null"); }
-            if (product.SupplierId == 0) { list.Add("Supplier cannot be null"); }
+            if (product.ProductID == 0) { list.Add("Product ID cannot be null"); }
+            if (product.PCID == 0) { list.Add("Category cannot be null"); }
+            if (product.CCID == 0) { list.Add("Company cannot be null"); }
+            if (product.SupplierID == 0) { list.Add("Supplier cannot be null"); }
             if (string.IsNullOrWhiteSpace(product.ProductDescription)) { list.Add("Description cannot be null"); }
-            if (string.IsNullOrWhiteSpace(product.ProductUrl)) { list.Add("URL cannot be null"); }
+            if (string.IsNullOrWhiteSpace(product.ProductURL)) { list.Add("URL cannot be null"); }
 
             return list;
 

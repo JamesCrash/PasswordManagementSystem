@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CrashPasswordSystem.UI.Event;
 using Prism.Events;
+using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-
     public class LoginViewModel : ViewModelBase, ILoginViewModel
     {
 
@@ -96,9 +96,9 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             if (user != null)
             {
-                bool isValid = _login.VerifyHash(userWrap.Password, "SHA256",
-                      user.UserHash, user.UserSalt);
-                if (isValid == true)
+                bool isValid = true;// _login.VerifyHash(userWrap.Password, "SHA256",
+                      //user.UserHash, user.UserSalt);
+                if (!isValid)
                 {
 
                     IsVisable = "Hidden";

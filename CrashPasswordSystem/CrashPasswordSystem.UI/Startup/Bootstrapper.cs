@@ -18,7 +18,7 @@ namespace CrashPasswordSystem.UI.Startup
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
             builder.RegisterType<DetailViewModelBase>().As<IDetailViewModel>();
-            builder.RegisterType<ITDatabaseContext>().AsSelf();
+            builder.RegisterType<DataContext>().AsSelf();
 
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<MainWindow>().AsSelf();

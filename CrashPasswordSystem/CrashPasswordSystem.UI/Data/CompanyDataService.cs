@@ -1,4 +1,5 @@
 ﻿using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,17 +10,18 @@ namespace CrashPasswordSystem.UI.Data
 {
     public class CompanyDataService : ICompanyDataService
     {
-        private readonly Func<ITDatabaseContext> _contextCreator;
+        private readonly Func<DataContext> _contextCreator;
 
-        public CompanyDataService(Func<ITDatabaseContext> contextCreator)
+        public CompanyDataService(Func<DataContext> contextCreator)
         {
             _contextCreator = contextCreator;
         }
+
         public async Task<CrashCompany> GetByIdAsync(int companyID)
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.CrashCompanies.AsNoTracking().SingleAsync(f => f.Ccid == companyID);
+                return await ctx.CrashCompanies.AsNoTracking().SingleAsync(f => f.CCID == companyID);
             }
         }
 
@@ -35,7 +37,7 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.CrashCompanies.Select(s => s.CcName).ToListAsync();
+                return await ctx.CrashCompanies.Select(s => s.CCName).ToListAsync();
             }
         }
     }

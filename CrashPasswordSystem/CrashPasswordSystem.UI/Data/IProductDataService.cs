@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CrashPasswordSystem.Data;
-
-
+using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.UI.Data
 {

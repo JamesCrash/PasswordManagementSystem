@@ -1,4 +1,5 @@
 ﻿using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,9 +12,9 @@ namespace CrashPasswordSystem.UI.Data
 {
     public class UserDataService : IUserDataService
     {
-        private Func<ITDatabaseContext> _contextCreator;
+        private Func<DataContext> _contextCreator;
 
-        public UserDataService(Func<ITDatabaseContext> contextCreator)
+        public UserDataService(Func<DataContext> contextCreator)
         {
             _contextCreator = contextCreator;
         }

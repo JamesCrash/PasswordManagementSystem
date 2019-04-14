@@ -5,14 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.UI.Data
 {
     public class SupplierDataService : ISupplierDataService
     {
-        private readonly Func<ITDatabaseContext> _contextCreator;
+        private readonly Func<DataContext> _contextCreator;
 
-        public SupplierDataService(Func<ITDatabaseContext> contextCreator)
+        public SupplierDataService(Func<DataContext> contextCreator)
         {
             _contextCreator = contextCreator;
         }
@@ -20,7 +21,7 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Suppliers.AsNoTracking().SingleAsync(f => f.SupplierId == supplierID);
+                return await ctx.Suppliers.AsNoTracking().SingleAsync(f => f.SupplierID == supplierID);
             }
         }
 

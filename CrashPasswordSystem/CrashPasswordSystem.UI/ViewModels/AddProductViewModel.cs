@@ -1,4 +1,5 @@
 ﻿using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Filters Options
         public async void LoadComboData()
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
                 Companies = dBContext.CrashCompanies.ToList();
                 Categories = dBContext.ProductCategories.ToList();
@@ -84,19 +85,19 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Add Button
         public async void QuitAdd(object parameter)
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
                 var p = new Product();
                 
                 p.ProductDescription = Product.ProductDescription;
-                p.ProductUrl = Product.ProductUrl;
+                p.ProductURL = Product.ProductURL;
                 p.ProductUsername = Product.ProductUsername;
                 p.ProductPassword = Product.ProductPassword;
                 p.ProductExpiry = Product.ProductExpiry;
-                p.Ccid = SelectedCompany.Ccid;
-                p.Pcid = SelectedCategory.Pcid;
-                p.SupplierId = SelectedSupplier.SupplierId;
-                p.StaffId = 1;
+                p.CCID = SelectedCompany.CCID;
+                p.PCID = SelectedCategory.PCID;
+                p.SupplierID = SelectedSupplier.SupplierID;
+                p.StaffID = 1;
 
                 dBContext.Products.Add(p);
                 dBContext.SaveChanges();

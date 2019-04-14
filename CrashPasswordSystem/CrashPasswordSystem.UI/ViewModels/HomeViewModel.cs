@@ -1,13 +1,13 @@
-﻿using CrashPasswordSystem.Data;
-using CrashPasswordSystem.UI.Command;
+﻿using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Events;
+using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Data;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
@@ -132,23 +132,22 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Filters Options
         public async void LoadFilters()
         {
-
             Companies = await _CompanyDataService.GetAllDesctiption();
             Categories = await _CategoryDataService.GetAllDesctiption();
             Suppliers = await _SupplierDataService.GetAllDesctiption();
-
         }
+
         #endregion
 
         #region Filter Data
         public async void FilterData(string filter, string value)
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
                 if (filter == "SelectedCompany")
                 {
-                    var id = dBContext.CrashCompanies.Where(c => c.CcName == value).Select(c => c.Ccid).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.Ccid == id).ToList();
+                    var id = dBContext.CrashCompanies.Where(c => c.CCName == value).Select(c => c.CCID).FirstOrDefault();
+                    var p = dBContext.Products.Where(s => s.CCID == id).ToList();
                     Products = new ObservableCollection<Product>(p);
                     SelectedSupplier = null;
                     SelectedCategory = null;
@@ -156,8 +155,8 @@ namespace CrashPasswordSystem.UI.ViewModels
                 }
                 else if (filter == "SelectedCategory")
                 {
-                    var id = dBContext.ProductCategories.Where(c => c.PcName == value).Select(c => c.Pcid).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.Pcid == id).ToList();
+                    var id = dBContext.ProductCategories.Where(c => c.PCName == value).Select(c => c.PCID).FirstOrDefault();
+                    var p = dBContext.Products.Where(s => s.PCID == id).ToList();
                     Products = new ObservableCollection<Product>(p);
                     SelectedCompany = null;
                     SelectedSupplier = null;
@@ -165,8 +164,8 @@ namespace CrashPasswordSystem.UI.ViewModels
                 }
                 else if (filter == "SelectedSupplier")
                 {
-                    var id = dBContext.Suppliers.Where(c => c.SupplierName == value).Select(c => c.SupplierId).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.SupplierId == id).ToList();
+                    var id = dBContext.Suppliers.Where(c => c.SupplierName == value).Select(c => c.SupplierID).FirstOrDefault();
+                    var p = dBContext.Products.Where(s => s.SupplierID == id).ToList();
                     Products = new ObservableCollection<Product>(p);
                     SelectedCompany = null;
                     SelectedCategory = null;
@@ -181,7 +180,6 @@ namespace CrashPasswordSystem.UI.ViewModels
                     SelectedSupplier = null;
                 }
             }
-
         }
         #endregion
 

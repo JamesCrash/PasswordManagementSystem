@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.BusinessLogic.Validation;
 using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
 using System;
 using System.Collections.Generic;
@@ -85,14 +86,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Filters Options
         public async void LoadComboData()
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
                 Companies = dBContext.CrashCompanies.ToList();
-                SelectedCompany = dBContext.CrashCompanies.Where(s => s.Ccid == Product.Ccid).FirstOrDefault();
+                SelectedCompany = dBContext.CrashCompanies.Where(s => s.CCID == Product.CCID).FirstOrDefault();
                 Categories = dBContext.ProductCategories.ToList();
-                SelectedCategory = dBContext.ProductCategories.Where(s => s.Pcid == Product.Pcid).FirstOrDefault();
+                SelectedCategory = dBContext.ProductCategories.Where(s => s.PCID == Product.PCID).FirstOrDefault();
                 Suppliers = dBContext.Suppliers.ToList();
-                SelectedSupplier = dBContext.Suppliers.Where(s => s.SupplierId == Product.SupplierId).FirstOrDefault();
+                SelectedSupplier = dBContext.Suppliers.Where(s => s.SupplierID == Product.SupplierID).FirstOrDefault();
             }
         }
         #endregion
@@ -107,7 +108,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Delete Button
         public async void QuitDelete(object parameter)
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
                 dBContext.Products.Attach(ProductOriginal);
                 dBContext.Products.Remove(ProductOriginal);
@@ -121,21 +122,21 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Save Button
         public async void QuitSave(object parameter)
         {
-            using (var dBContext = new ITDatabaseContext())
+            using (var dBContext = new DataContext())
             {
-                var p = dBContext.Products.Where(s => s.ProductId == Product.ProductId).SingleOrDefault();
+                var p = dBContext.Products.Where(s => s.ProductID == Product.ProductID).SingleOrDefault();
 
-                p.Pcid = Product.Pcid;
-                p.Ccid = Product.Ccid;
-                p.SupplierId = Product.SupplierId;
+                p.PCID = Product.PCID;
+                p.CCID = Product.CCID;
+                p.SupplierID = Product.SupplierID;
                 p.ProductDescription = Product.ProductDescription;
-                p.ProductUrl = Product.ProductUrl;
+                p.ProductURL = Product.ProductURL;
                 p.ProductUsername = Product.ProductUsername;
                 p.ProductPassword = Product.ProductPassword;
                 p.ProductExpiry = Product.ProductExpiry;
-                p.Ccid = SelectedCompany.Ccid;
-                p.Pcid = SelectedCategory.Pcid;
-                p.SupplierId = SelectedSupplier.SupplierId;
+                p.CCID = SelectedCompany.CCID;
+                p.PCID = SelectedCategory.PCID;
+                p.SupplierID = SelectedSupplier.SupplierID;
 
                 dBContext.SaveChanges();
                 OnRequestClose(this, new EventArgs());

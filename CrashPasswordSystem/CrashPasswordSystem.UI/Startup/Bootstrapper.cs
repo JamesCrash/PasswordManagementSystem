@@ -11,13 +11,12 @@ namespace CrashPasswordSystem.UI.Startup
 {
     public class Bootstrapper
     {
-
         public Autofac.IContainer Bootstrap()
         {
             var builder = new ContainerBuilder();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
-            builder.RegisterType<DetailViewModelBase>().As<IDetailViewModel>();
+            builder.RegisterType<DetailViewModelBase>().AsSelf();
             builder.RegisterType<DataContext>().AsSelf();
 
             builder.RegisterType<MainViewModel>().AsSelf();

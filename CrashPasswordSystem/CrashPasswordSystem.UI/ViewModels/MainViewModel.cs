@@ -8,13 +8,13 @@ namespace CrashPasswordSystem.UI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        public ObservableCollection<IDetailViewModel> DetailViewModels { get; }
+        public ObservableCollection<DetailViewModelBase> DetailViewModels { get; }
         private IMessageDialogService _messageDialogService;
-        private IIndex<string, IDetailViewModel> _detailViewModelCreator;
+        private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
 
-        private IDetailViewModel _selectedDetailViewModel;
+        private DetailViewModelBase _selectedDetailViewModel;
 
-        public IDetailViewModel SelectedDetailViewModel
+        public DetailViewModelBase SelectedDetailViewModel
         {
             get { return _selectedDetailViewModel; }
             set
@@ -33,9 +33,9 @@ namespace CrashPasswordSystem.UI.ViewModels
             set => base.SetValue(ref _homeViewModel, value);
         }
 
-        public MainViewModel(HomeViewModel homeViewModel, LoginViewModel loginViewModel, IEventAggregator eventAggregator, IIndex<string, IDetailViewModel> detailViewModelCreator)
+        public MainViewModel(HomeViewModel homeViewModel, LoginViewModel loginViewModel, IEventAggregator eventAggregator, IIndex<string, DetailViewModelBase> detailViewModelCreator)
         {
-            DetailViewModels = new ObservableCollection<IDetailViewModel>();
+            DetailViewModels = new ObservableCollection<DetailViewModelBase>();
             _detailViewModelCreator = detailViewModelCreator;
 
             LoginViewModel = loginViewModel;

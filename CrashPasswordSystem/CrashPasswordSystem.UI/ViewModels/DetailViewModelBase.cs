@@ -9,10 +9,9 @@ using Prism.Commands;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModel
+    public abstract class DetailViewModelBase : ViewModelBase
     {
         private bool _hasChanges;
-        protected readonly IEventAggregator EventAggregator;
         protected readonly IMessageDialogService MessageDialogService;
         private int _id;
         private string _title;

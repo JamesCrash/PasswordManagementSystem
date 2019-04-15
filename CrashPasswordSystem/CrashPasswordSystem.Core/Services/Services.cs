@@ -8,7 +8,7 @@ namespace CrashPasswordSystem.Services
         where T : class
     {
         Task<T> GetByIdAsync(int id);
-        Task<List<T>> GetAll();
+        Task<List<T>> GetAllAsync();
     }
 
     public interface IProductDataService : IDataService<Product> { }
@@ -26,5 +26,10 @@ namespace CrashPasswordSystem.Services
     public interface ISupplierDataService : IDataService<Supplier>
     {
         Task<List<string>> GetAllDesctiption();
+    }
+
+    public interface IUserDataService : IDataService<User>
+    {
+        Task<User> GetUserByEmail(string email);
     }
 }

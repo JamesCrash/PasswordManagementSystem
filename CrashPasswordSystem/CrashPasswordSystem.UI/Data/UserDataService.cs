@@ -1,11 +1,9 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CrashPasswordSystem.UI.Data
@@ -27,9 +25,17 @@ namespace CrashPasswordSystem.UI.Data
             }
         }
 
+        public async Task<User> GetByIdAsync(int id)
+        {
+            using (var ctx = _contextCreator())
+            {
+                return await ctx.Users
+                    .SingleAsync(f => f.UserID == id);
+            }
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
-
             using (var ctx = _contextCreator())
             {
                 return await ctx.Users

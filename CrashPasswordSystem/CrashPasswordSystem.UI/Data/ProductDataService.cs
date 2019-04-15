@@ -24,7 +24,7 @@ namespace CrashPasswordSystem.UI.Data
             }
         }
 
-        public async Task<List<Product>> GetAll()
+        public async Task<List<Product>> GetAllAsync()
         {
             using (var ctx = _contextCreator())
             {

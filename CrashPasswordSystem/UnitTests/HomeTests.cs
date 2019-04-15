@@ -61,7 +61,7 @@ namespace UnitTests
             var data = new [] { new Product { ProductDescription = "Test" } };
             var mock = new Mock<IProductDataService>(MockBehavior.Loose);
 
-            mock.Setup(b => b.GetAll())
+            mock.Setup(b => b.GetAllAsync())
                         .Returns(Task.FromResult(data.ToList()));
 
             return mock.Object;
@@ -72,7 +72,7 @@ namespace UnitTests
             var data = new[] { new Supplier { SupplierName = "Test" } };
 
             var mock = new Mock<ISupplierDataService>();
-            mock.Setup(b => b.GetAll())
+            mock.Setup(b => b.GetAllAsync())
                 .Returns(Task.FromResult(data.ToList()));
 
             mock.Setup(b => b.GetAllDesctiption())
@@ -86,7 +86,7 @@ namespace UnitTests
             var data = new[] { new ProductCategory{ PCName = "Test" } };
 
             var mock = new Mock<ICategoryDataService>();
-            mock.Setup(b => b.GetAll())
+            mock.Setup(b => b.GetAllAsync())
                 .Returns(Task.FromResult(data.ToList()));
 
             mock.Setup(b => b.GetAllDesctiption())
@@ -100,7 +100,7 @@ namespace UnitTests
             var data = new[] { new CrashCompany { CCName = "Test" } };
 
             var mock = new Mock<ICompanyDataService>();
-            mock.Setup(b => b.GetAll())
+            mock.Setup(b => b.GetAllAsync())
                 .Returns(Task.FromResult(data.ToList()));
 
             mock.Setup(b => b.GetAllDesctiption())

@@ -133,7 +133,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Data
         public async void LoadData()
         {
-            var p = await _ProductDataService.GetAll();
+            var p = await _ProductDataService.GetAllAsync();
             Products = new ObservableCollection<Product>(p);
         }
         #endregion

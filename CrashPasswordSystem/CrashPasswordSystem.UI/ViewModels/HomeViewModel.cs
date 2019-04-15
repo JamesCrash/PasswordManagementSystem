@@ -21,46 +21,44 @@ namespace CrashPasswordSystem.UI.ViewModels
         private ICompanyDataService _CompanyDataService;
 
         #region Props
-        private ObservableCollection<Product> _products;
 
+        private ObservableCollection<Product> _products;
         public ObservableCollection<Product> Products
         {
             get { return _products; }
-            set { _products = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _products, value);
         }
-        private Product _SelectedItem;
 
+        private Product _SelectedItem;
         public Product SelectedItem
         {
             get { return _SelectedItem; }
-            set { _SelectedItem = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _SelectedItem, value);
         }
-
 
         public ICommand ClearFiltersCommand { get; set; }
         public ICommand OpenDetailsCommand { get; set; }
         public ICommand OpenAddProductCommand { get; set; }
 
         private List<string> _Companies;
-
         public List<string> Companies
         {
             get { return _Companies; }
-            set { _Companies = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _Companies, value);
         }
-        private List<string> _Categories;
 
+        private List<string> _Categories;
         public List<string> Categories
         {
             get { return _Categories; }
-            set { _Categories = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _Categories, value);
         }
-        private List<string> _Suppliers;
 
+        private List<string> _Suppliers;
         public List<string> Suppliers
         {
             get { return _Suppliers; }
-            set { _Suppliers = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _Suppliers, value);
         }
 
         private string _SelectedCompany;
@@ -68,7 +66,13 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string SelectedCompany
         {
             get { return _SelectedCompany; }
-            set { _SelectedCompany = value; OnPropertyChanged(); if (!string.IsNullOrWhiteSpace(value)) FilterData("SelectedCompany", value); }
+            set
+            {
+                base.SetProperty(ref _SelectedCompany, value);
+
+                if (!string.IsNullOrWhiteSpace(value))
+                    FilterData("SelectedCompany", value);
+            }
         }
 
         private string _SelectedCategory;
@@ -76,7 +80,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string SelectedCategory
         {
             get { return _SelectedCategory; }
-            set { _SelectedCategory = value; OnPropertyChanged(); if (!string.IsNullOrWhiteSpace(value)) FilterData("SelectedCategory", value); }
+            set {
+                base.SetProperty(ref _SelectedCategory, value);
+
+                if (!string.IsNullOrWhiteSpace(value))
+                    FilterData("SelectedCategory", value); }
         }
 
         private string _SelectedSupplier;
@@ -84,18 +92,21 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string SelectedSupplier
         {
             get { return _SelectedSupplier; }
-            set { _SelectedSupplier = value; OnPropertyChanged(); if (!string.IsNullOrWhiteSpace(value)) FilterData("SelectedSupplier", value); }
+            set {
+                base.SetProperty(ref _SelectedSupplier, value);
+
+                if (!string.IsNullOrWhiteSpace(value))
+                    FilterData("SelectedSupplier", value); }
         }
 
         private string _SearchBox;
-
         public string SearchBox
         {
             get { return _SearchBox; }
             set
             {
-                _SearchBox = value;
-                OnPropertyChanged();
+                base.SetProperty(ref _SearchBox, value);
+
                 if (value != null)
                 {
                     FilterData("SearchBox", value);
@@ -107,20 +118,17 @@ namespace CrashPasswordSystem.UI.ViewModels
         public bool IsVisible
         {
             get => _isVisible;
-            set => SetValue(ref _isVisible, value);
+            set => SetProperty(ref _isVisible, value);
         }
 
         #endregion
 
-        public HomeViewModel(IEventAggregator iEventAggregator, IProductDataService productDataService
-            , ISupplierDataService supplierDataService
-            , ICategoryDataService categoryDataService
-        , ICompanyDataService companyDataService)
+        public HomeViewModel(IDependencyContainer container)
         {
-            _ProductDataService = productDataService;
-            _SupplierDataService = supplierDataService;
-            _CategoryDataService = categoryDataService;
-            _CompanyDataService = companyDataService;
+            _ProductDataService = container.Resolve<IProductDataService>();
+            _SupplierDataService = container.Resolve<ISupplierDataService>();
+            _CategoryDataService = container.Resolve<ICategoryDataService>();
+            _CompanyDataService = container.Resolve<ICompanyDataService>();
 
             ClearFiltersCommand = new RelayCommand(ClearFilters);
             OpenDetailsCommand = new RelayCommand(OpenDetails);

@@ -5,22 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : Prism.Mvvm.BindableBase, INotifyPropertyChanged
     {
         public IEventAggregator EventAggregator { get; protected set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected void SetValue<TValue>(ref TValue value, TValue newValue, [CallerMemberName]string propertyName = null)
-        {
-            value = newValue;
-            OnPropertyChanged(propertyName);
-        }
     }
     //public class ViewModelBase : BindableBase, INotifyDataErrorInfo
     //{

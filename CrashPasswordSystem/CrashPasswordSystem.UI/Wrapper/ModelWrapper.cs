@@ -17,7 +17,7 @@ namespace CrashPasswordSystem.UI.Wrapper
           [CallerMemberName]string propertyName = null)
         {
             typeof(T).GetProperty(propertyName).SetValue(Model, value);
-            OnPropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
             ValidatePropertyInternal(propertyName, value);
         }
 

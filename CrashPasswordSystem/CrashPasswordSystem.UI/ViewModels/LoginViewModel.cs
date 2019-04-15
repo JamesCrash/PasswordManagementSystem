@@ -22,7 +22,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         public bool IsVisible
         {
             get => _isVisible;
-            set => SetValue(ref _isVisible, value);
+            set => SetProperty(ref _isVisible, value);
         }
 
         public User User { get; set; }

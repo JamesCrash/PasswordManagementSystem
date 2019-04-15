@@ -1,8 +1,8 @@
-﻿using Autofac.Features.Indexed;
-using CrashPasswordSystem.UI.Event;
+﻿using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
@@ -10,18 +10,14 @@ namespace CrashPasswordSystem.UI.ViewModels
     {
         public ObservableCollection<DetailViewModelBase> DetailViewModels { get; }
         private IMessageDialogService _messageDialogService;
-        private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
+        //private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
 
         private DetailViewModelBase _selectedDetailViewModel;
 
         public DetailViewModelBase SelectedDetailViewModel
         {
-            get { return _selectedDetailViewModel; }
-            set
-            {
-                _selectedDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            get => _selectedDetailViewModel;
+            set => base.SetProperty(ref _selectedDetailViewModel, value);
         }
 
         public LoginViewModel LoginViewModel { get; }
@@ -30,17 +26,17 @@ namespace CrashPasswordSystem.UI.ViewModels
         public HomeViewModel HomeViewModel
         {
             get => _homeViewModel;
-            set => base.SetValue(ref _homeViewModel, value);
+            set => base.SetProperty(ref _homeViewModel, value);
         }
 
-        public MainViewModel(HomeViewModel homeViewModel, LoginViewModel loginViewModel, IEventAggregator eventAggregator, IIndex<string, DetailViewModelBase> detailViewModelCreator)
+        public MainViewModel(IDependencyContainer container)
         {
             DetailViewModels = new ObservableCollection<DetailViewModelBase>();
-            _detailViewModelCreator = detailViewModelCreator;
+            //_detailViewModelCreator = detailViewModelCreator;
 
-            LoginViewModel = loginViewModel;
-            EventAggregator = eventAggregator;
-            HomeViewModel = homeViewModel;
+            LoginViewModel = container.Resolve<LoginViewModel>();
+            EventAggregator = container.Resolve<IEventAggregator>();
+            HomeViewModel = container.Resolve<HomeViewModel>();
 
             EventAggregator
                 .GetEvent<LoggedInEvent>()

@@ -1,10 +1,15 @@
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
+using CrashPasswordSystem.UI;
+using CrashPasswordSystem.UI.Startup;
 using CrashPasswordSystem.UI.ViewModels;
 using Moq;
 using Prism.Events;
+using Prism.Mvvm;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity;
 using Xunit;
 
 namespace UnitTests
@@ -15,6 +20,7 @@ namespace UnitTests
         public IProductDataService ProductService { get; set; }
         public ISupplierDataService SupplierService { get; set; }
         public ICompanyDataService CompanyService { get; set; }
+        public IDependencyContainer Container { get; }
         public ICategoryDataService CategoryService { get; set; }
 
         public HomeTests()
@@ -26,12 +32,14 @@ namespace UnitTests
             SupplierService = SetupSuppliers();
             CategoryService = SetupCategories();
             CompanyService = SetupCompanies();
+
+            this.Container = new Mock<IDependencyContainer>().Object;
         }
 
         [Fact]
         public void Home_Load()
         {
-            var viewModel = new HomeViewModel(EventAggregator, ProductService, SupplierService, CategoryService, CompanyService);
+            var viewModel = new HomeViewModel(Container);
 
             Assert.NotNull(viewModel.Categories);
             Assert.True(viewModel.Categories.Any());
@@ -49,7 +57,7 @@ namespace UnitTests
         [Fact]
         public void Home_Filters()
         {
-            var viewModel = new HomeViewModel(EventAggregator, ProductService, SupplierService, CategoryService, CompanyService);
+            var viewModel = new HomeViewModel(Container);
 
             viewModel.FilterData("SelectedCompany", "test");
         }
@@ -107,6 +115,46 @@ namespace UnitTests
                             .Returns(Task.FromResult(data.Select(e => e.CCName).ToList()));
 
             return mock.Object;
+        }
+
+        public class TestBootstrapper : UnityContainer, IDependencyContainer
+        {
+            public TestBootstrapper()
+            {
+                var builder = new UnityContainer();
+
+                builder.RegisterInstance<IDependencyContainer>(this);
+                builder.RegisterSingleton<IEventAggregator, EventAggregator>();
+                builder.RegisterType<DetailViewModelBase>();
+                builder.RegisterType<DataContext>();
+
+                builder.RegisterType<MainViewModel>();
+                builder.RegisterType<MainWindow>();
+                
+                builder.RegisterType<LoginViewModel>();
+
+                builder.RegisterType<HomeViewModel>();
+
+                builder.RegisterType<ViewModelBase>();
+
+                //builder.RegisterType<IUserDataService, UserDataService>();
+                //builder.RegisterType<IProductDataService, ProductDataService>();
+                //builder.RegisterType<ICompanyDataService, CompanyDataService>();
+                //builder.RegisterType<ICategoryDataService, CategoryDataService>();
+                //builder.RegisterType<ISupplierDataService, SupplierDataService>();
+
+                //ViewModelLocationProvider.Register(typeof(MainWindow).ToString(), typeof(MainViewModel));
+
+                ViewModelLocationProvider.SetDefaultViewModelFactory((type) =>
+                {
+                    return builder.Resolve(type);
+                });
+            }
+
+            public T Resolve<T>()
+            {
+                return Resolve<T>();
+            }
         }
 
         #endregion

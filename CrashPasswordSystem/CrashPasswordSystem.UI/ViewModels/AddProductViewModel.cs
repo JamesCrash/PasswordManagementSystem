@@ -19,8 +19,8 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public Product Product
         {
-            get { return _Product; }
-            set { _Product = value; OnPropertyChanged(); }
+            get => _Product;
+            set => base.SetProperty(ref _Product, value);
         }
 
         public ICommand QuitCommand { get; set; }
@@ -35,15 +35,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         public CrashCompany SelectedCompany
         {
             get { return _SelectedCompany; }
-            set { _SelectedCompany = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _SelectedCompany, value);
         }
 
         private ProductCategory _SelectedCategory;
-
         public ProductCategory SelectedCategory
         {
             get { return _SelectedCategory; }
-            set { _SelectedCategory = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _SelectedCategory, value);
         }
 
         private Supplier _SelectedSupplier;
@@ -51,8 +50,9 @@ namespace CrashPasswordSystem.UI.ViewModels
         public Supplier SelectedSupplier
         {
             get { return _SelectedSupplier; }
-            set { _SelectedSupplier = value; OnPropertyChanged(); }
+            set => base.SetProperty(ref _SelectedSupplier, value);
         }
+
         #endregion
 
         public AddProductViewModel()

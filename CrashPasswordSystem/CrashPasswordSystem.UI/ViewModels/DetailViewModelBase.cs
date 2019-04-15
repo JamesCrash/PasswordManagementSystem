@@ -1,11 +1,6 @@
 ﻿using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Prism.Commands;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
@@ -21,12 +16,9 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             EventAggregator = eventAggregator;
             MessageDialogService = messageDialogService;
-            
         }
 
         public abstract Task LoadAsync(int id);
-
-
         public int Id
         {
             get { return _id; }
@@ -36,11 +28,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         public string Title
         {
             get { return _title; }
-            protected set
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
+            protected set => base.SetProperty(ref _title, value);
         }
 
         public bool HasChanges
@@ -50,9 +38,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             {
                 if (_hasChanges != value)
                 {
-                    _hasChanges = value;
-                    OnPropertyChanged();
-                    
+                    SetProperty(ref _hasChanges, value);
                 }
             }
         }
@@ -63,7 +49,6 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         protected abstract void OnSaveExecute();
 
-      
         protected async virtual void OnCloseDetailViewExecute()
         {
             if (HasChanges)

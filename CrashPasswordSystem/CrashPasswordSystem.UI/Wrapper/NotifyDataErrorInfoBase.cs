@@ -12,11 +12,11 @@ namespace CrashPasswordSystem.UI.Wrapper
         private Dictionary<string, List<string>> _errorsByPropertyName
          = new Dictionary<string, List<string>>();
 
-        public new bool HasErrors => _errorsByPropertyName.Any();
+        public bool HasErrors => _errorsByPropertyName.Any();
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-        public new IEnumerable GetErrors(string propertyName)
+        public IEnumerable GetErrors(string propertyName)
         {
             return _errorsByPropertyName.ContainsKey(propertyName)
               ? _errorsByPropertyName[propertyName]

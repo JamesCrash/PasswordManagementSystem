@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Services;
 
 namespace CrashPasswordSystem.UI.Data
 {

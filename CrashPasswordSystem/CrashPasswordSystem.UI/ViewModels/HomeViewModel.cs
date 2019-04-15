@@ -8,10 +8,12 @@ using System.Windows.Input;
 using Prism.Events;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Data;
+using System;
+using CrashPasswordSystem.Services;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class HomeViewModel : ViewModelBase, IHomeViewModel
+    public class HomeViewModel : ViewModelBase
     {
         private IProductDataService _ProductDataService;
         private ISupplierDataService _SupplierDataService;
@@ -100,6 +102,14 @@ namespace CrashPasswordSystem.UI.ViewModels
                 }
             }
         }
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetValue(ref _isVisible, value);
+        }
+
         #endregion
 
         public HomeViewModel(IEventAggregator iEventAggregator, IProductDataService productDataService
@@ -112,7 +122,6 @@ namespace CrashPasswordSystem.UI.ViewModels
             _CategoryDataService = categoryDataService;
             _CompanyDataService = companyDataService;
 
-
             ClearFiltersCommand = new RelayCommand(ClearFilters);
             OpenDetailsCommand = new RelayCommand(OpenDetails);
             OpenAddProductCommand = new RelayCommand(OpenNewProduct);
@@ -120,7 +129,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             LoadFilters();
             LoadData();
         }
-
+        
         #region Load Data
         public async void LoadData()
         {
@@ -140,7 +149,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Filter Data
-        public async void FilterData(string filter, string value)
+        public void FilterData(string filter, string value)
         {
             using (var dBContext = new DataContext())
             {

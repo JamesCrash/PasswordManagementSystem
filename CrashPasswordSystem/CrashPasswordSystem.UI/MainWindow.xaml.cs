@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.ViewModels;
 
 namespace CrashPasswordSystem.UI
@@ -9,13 +10,15 @@ namespace CrashPasswordSystem.UI
         public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
+
             _viewModel = viewModel;
             DataContext = _viewModel;
             Loaded += MainWindow_Loaded;
         }
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await _viewModel.LoadAsync();
+            _viewModel.Load();
         }
     }
 }

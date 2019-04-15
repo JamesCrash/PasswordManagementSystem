@@ -11,16 +11,21 @@ using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class LoginViewModel : ViewModelBase, ILoginViewModel
+    public class LoginViewModel : ViewModelBase
     {
-
         private IUserDataService _UserDataService;
-        private IEventAggregator _EventAggregator;
-
 
         #region Props
         public event EventHandler OnRequestClose;
         private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
+
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetValue(ref _isVisible, value);
+        }
 
         public User User { get; set; }
         private UserWrapper _userWrap;
@@ -34,7 +39,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         public ICommand LoginCommand { get; set; }
 
         private string _IsVisable;
-
         public string IsVisable
         {
             get { return _IsVisable; }
@@ -42,13 +46,12 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         private bool _IsValid;
-
         public bool IsValid
         {
             get { return _IsValid; }
             set { _IsValid = value; OnPropertyChanged(); }
         }
-
+        
         #endregion
 
         public LoginViewModel(IEventAggregator iEventAggregator, IUserDataService userDataService)
@@ -57,11 +60,12 @@ namespace CrashPasswordSystem.UI.ViewModels
             userWrap = new UserWrapper(User);
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
             _UserDataService = userDataService;
-            _EventAggregator = iEventAggregator;
+            EventAggregator = iEventAggregator;
 
+            IsVisible = true;
         }
 
-        public async Task LoadAsync()
+        public void Load()
         {
             IsVisable = "Hidden";
 
@@ -108,7 +112,7 @@ namespace CrashPasswordSystem.UI.ViewModels
                     IsVisable = "Visible";
                 }
 
-                _EventAggregator
+                EventAggregator
                     .GetEvent<LoggedInEvent>()
                     .Publish(new LoggedInEventArgs
                     {

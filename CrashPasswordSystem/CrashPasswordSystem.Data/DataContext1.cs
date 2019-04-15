@@ -1,9 +1,6 @@
 namespace CrashPasswordSystem.Data
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using CrashPasswordSystem.Models;
 
     public partial class DataContext : DbContext

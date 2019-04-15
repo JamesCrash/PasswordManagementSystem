@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

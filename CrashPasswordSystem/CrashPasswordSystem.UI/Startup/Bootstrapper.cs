@@ -5,6 +5,7 @@ using System.ComponentModel;
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.UI.ViewModels;
 using Prism.Events;
+using CrashPasswordSystem.Services;
 
 namespace CrashPasswordSystem.UI.Startup
 {
@@ -13,7 +14,6 @@ namespace CrashPasswordSystem.UI.Startup
 
         public Autofac.IContainer Bootstrap()
         {
-
             var builder = new ContainerBuilder();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
@@ -24,10 +24,10 @@ namespace CrashPasswordSystem.UI.Startup
             builder.RegisterType<MainWindow>().AsSelf();
 
             builder.RegisterType<Login>().AsSelf();
-            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.RegisterType<LoginViewModel>().AsSelf();
 
             builder.RegisterType<Home>().AsSelf();
-            builder.RegisterType<HomeViewModel>().As<IHomeViewModel>();
+            builder.RegisterType<HomeViewModel>().AsSelf();
 
             builder.RegisterType<AddProduct>().AsSelf();
 

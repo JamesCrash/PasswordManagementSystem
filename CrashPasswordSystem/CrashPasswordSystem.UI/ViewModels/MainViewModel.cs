@@ -2,17 +2,12 @@
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-
         public ObservableCollection<IDetailViewModel> DetailViewModels { get; }
         private IMessageDialogService _messageDialogService;
         private IIndex<string, IDetailViewModel> _detailViewModelCreator;
@@ -29,30 +24,38 @@ namespace CrashPasswordSystem.UI.ViewModels
             }
         }
 
-       
+        public LoginViewModel LoginViewModel { get; }
 
-        public ILoginViewModel LoginViewModel { get; }
-        public IHomeViewModel HomeViewModel { get; }
-
-        public MainViewModel(IHomeViewModel homeViewModel, ILoginViewModel loginViewModel, IEventAggregator iEventAggregator, IIndex<string, IDetailViewModel> detailViewModelCreator)
+        private HomeViewModel _homeViewModel;
+        public HomeViewModel HomeViewModel
         {
-
-            DetailViewModels = new ObservableCollection<IDetailViewModel>();
-            _detailViewModelCreator = detailViewModelCreator;
-            LoginViewModel = loginViewModel;
-
-
-            //CreateLogin(loginViewModel.GetType());
-            //iEventAggregator
-            //    .GetEvent<LoggedInEvent>()
-            //    .Subscribe(login);
+            get => _homeViewModel;
+            set => base.SetValue(ref _homeViewModel, value);
         }
 
-        public async Task LoadAsync()
+        public MainViewModel(HomeViewModel homeViewModel, LoginViewModel loginViewModel, IEventAggregator eventAggregator, IIndex<string, IDetailViewModel> detailViewModelCreator)
         {
+            DetailViewModels = new ObservableCollection<IDetailViewModel>();
+            _detailViewModelCreator = detailViewModelCreator;
 
-            await LoginViewModel.LoadAsync();
+            LoginViewModel = loginViewModel;
+            EventAggregator = eventAggregator;
+            HomeViewModel = homeViewModel;
 
+            EventAggregator
+                .GetEvent<LoggedInEvent>()
+                .Subscribe(Login);
+        }
+
+        private void Login(LoggedInEventArgs e)
+        {
+            HomeViewModel.IsVisible = true;
+            LoginViewModel.IsVisible = false;
+        }
+
+        public void Load()
+        {
+            LoginViewModel.Load();
         }
 
         //private async void OnOpenDetailView(OpenDetailViewEventArgs args)
@@ -82,7 +85,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         //    SelectedDetailViewModel = detailViewModel;
         //}
-        
+
         //private async void CreateHome(Type viewModelType)
         //{
         //    OnOpenDetailView(

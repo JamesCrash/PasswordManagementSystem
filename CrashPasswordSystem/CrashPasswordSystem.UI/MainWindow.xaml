@@ -8,15 +8,17 @@
         xmlns:viewModel="clr-namespace:CrashPasswordSystem.UI.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="800">
-    <!--<Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
+        <!--<DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
             <view:Login></view:Login>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:Home></view:Home>
-        </DataTemplate>
-    </Window.Resources>-->
-    <Grid>
+        </DataTemplate>-->
+    </Window.Resources>
+    <Grid DataContext="{Binding}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -61,7 +63,12 @@
         </TabControl>-->
 
 
-        <!--<view:Home Grid.Row="1"  DataContext="{Binding HomeViewModel}" Visibility="{Binding Home}"></view:Home>-->
-        <view:Login Grid.Row="1" DataContext="{Binding LoginViewModel}" ></view:Login>
+        <!-- -->
+        <view:Login Grid.Row="1" DataContext="{Binding LoginViewModel}" 
+                    Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
+        <view:Home Grid.Row="1"  DataContext="{Binding HomeViewModel, UpdateSourceTrigger=PropertyChanged}" 
+                   Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
     </Grid>
 </Window>

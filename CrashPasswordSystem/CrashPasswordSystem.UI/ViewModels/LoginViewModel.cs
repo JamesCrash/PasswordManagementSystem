@@ -17,12 +17,9 @@ namespace CrashPasswordSystem.UI.ViewModels
         public event EventHandler OnRequestClose;
         private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
 
-
-        private bool _isVisible;
-        public bool IsVisible
+        public override bool IsVisible
         {
-            get => _isVisible;
-            set => SetProperty(ref _isVisible, value);
+            get => User == null | !IsValid;
         }
 
         public User User { get; set; }
@@ -47,7 +44,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         public bool IsValid
         {
             get { return _IsValid; }
-            set { _IsValid = value; OnPropertyChanged(); }
+            set
+            {
+                base.SetProperty(ref _IsValid, value);
+                RaisePropertyChanged(nameof(IsVisible));
+            }
         }
         
         #endregion
@@ -59,8 +60,6 @@ namespace CrashPasswordSystem.UI.ViewModels
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
             _UserDataService = userDataService;
             EventAggregator = iEventAggregator;
-
-            IsVisible = true;
         }
 
         public void Load()
@@ -94,12 +93,12 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public async void ExecuteLogin()
         {
-            User user = await _UserDataService.GetUserByEmail(userWrap.UserEmail);
+            var user = await _UserDataService.GetUserByEmail(userWrap.UserEmail);
 
-            if (user != null)
+            if (User != null)
             {
-                bool isValid = _login.VerifyHash(userWrap.Password, "SHA256", user.UserHash, user.UserSalt);
-                if (!isValid)
+                IsValid = _login.VerifyHash(userWrap.Password, "SHA256", User.UserHash, User.UserSalt);
+                if (!IsValid)
                 {
 
                     IsVisable = "Hidden";
@@ -107,12 +106,13 @@ namespace CrashPasswordSystem.UI.ViewModels
                 else
                 {
                     IsVisable = "Visible";
+                    User = user;
 
                     EventAggregator
                         .GetEvent<LoggedInEvent>()
                         .Publish(new LoggedInEventArgs
                         {
-                            Valid = isValid
+                            Valid = IsValid
                         });
                 }
             }

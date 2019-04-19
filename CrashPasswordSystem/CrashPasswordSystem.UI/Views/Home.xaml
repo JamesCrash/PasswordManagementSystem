@@ -8,50 +8,14 @@
         Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Content="Products" FontSize="20" Background="Blue" Foreground="White" Grid.ColumnSpan="2"></Label>
-        <Grid Grid.Row="1" Grid.ColumnSpan="2" Background="LightGray">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-
-            <Label Content="Company" Grid.Column="0" Grid.Row="0"></Label>
-            <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Companies}" SelectedValue="{Binding SelectedCompany, UpdateSourceTrigger=PropertyChanged}">
-            </ComboBox>
-
-            <Label Content="Category" Grid.Column="1" Grid.Row="0" ></Label>
-            <ComboBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Categories}" SelectedValue="{Binding SelectedCategory, UpdateSourceTrigger=PropertyChanged}"> 
-            </ComboBox>
-
-            <Label Content="Supplier" Grid.Column="2" Grid.Row="0"></Label>
-            <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding Suppliers}" SelectedValue="{Binding SelectedSupplier, UpdateSourceTrigger=PropertyChanged}">
-            </ComboBox>
-            <Label Content="Search" Grid.Column="3" Grid.Row="0"></Label>
-            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding SearchBox, UpdateSourceTrigger=PropertyChanged}">
-                
-            </TextBox>
-            <Button Content="Clear Filter" Grid.Column="3" Grid.Row="3" Margin="0,0,0,2" Command="{Binding ClearFiltersCommand}"></Button>
-
-
-
-        </Grid>
-        <Grid Grid.Row="2" Grid.Column="0">
+        <Grid Grid.Row="0" Grid.Column="0">
             <DataGrid ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10" HorizontalAlignment="Center">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="ID" IsReadOnly="True" Visibility="Hidden" Binding="{Binding ProductID}"></DataGridTextColumn>-->
@@ -69,7 +33,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid Grid.Row="2" Grid.Column="1" Margin="10">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>

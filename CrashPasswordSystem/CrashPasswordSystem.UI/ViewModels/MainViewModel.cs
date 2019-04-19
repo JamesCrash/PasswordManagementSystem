@@ -14,6 +14,12 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         private DetailViewModelBase _selectedDetailViewModel;
 
+        public override bool IsVisible
+        {
+            get => LoginViewModel != null
+                    && LoginViewModel.User != null && LoginViewModel.IsValid;
+        }
+
         public DetailViewModelBase SelectedDetailViewModel
         {
             get => _selectedDetailViewModel;
@@ -45,8 +51,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         private void Login(LoggedInEventArgs e)
         {
-            HomeViewModel.IsVisible = true;
-            LoginViewModel.IsVisible = false;
+            RaisePropertyChanged(nameof(IsVisible));
         }
 
         public void Load()

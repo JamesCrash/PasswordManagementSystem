@@ -62,7 +62,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         private string _SelectedCompany;
-
         public string SelectedCompany
         {
             get { return _SelectedCompany; }
@@ -114,12 +113,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             }
         }
 
-        private bool _isVisible;
-        public bool IsVisible
-        {
-            get => _isVisible;
-            set => SetProperty(ref _isVisible, value);
-        }
+        public override bool IsVisible => true;
 
         #endregion
 

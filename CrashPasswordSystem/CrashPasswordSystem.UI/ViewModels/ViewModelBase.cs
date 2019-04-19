@@ -5,10 +5,13 @@ using System.Runtime.CompilerServices;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class ViewModelBase : Prism.Mvvm.BindableBase, INotifyPropertyChanged
+    public abstract class ViewModelBase : Prism.Mvvm.BindableBase, INotifyPropertyChanged
     {
         public IEventAggregator EventAggregator { get; protected set; }
+
+        public virtual bool IsVisible { get; }
     }
+
     //public class ViewModelBase : BindableBase, INotifyDataErrorInfo
     //{
 

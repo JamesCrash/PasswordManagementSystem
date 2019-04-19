@@ -23,11 +23,9 @@ namespace CrashPasswordSystem.UI
             new Bootstrapper(Container).RegisterTypes(containerRegistry);
         }
 
-        protected IModuleCatalog ConfigureModuleCatalog()
+        protected override void ConfigureModuleCatalog(IModuleCatalog catalog)
         {
-            ModuleCatalog catalog = new ModuleCatalog();
-
-            return catalog;
+            catalog.AddModule(typeof(Search.SearchProductsView));
         }
 
         protected override Window CreateShell()

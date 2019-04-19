@@ -98,8 +98,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             if (user != null)
             {
-                bool isValid = true;// _login.VerifyHash(userWrap.Password, "SHA256",
-                      //user.UserHash, user.UserSalt);
+                bool isValid = _login.VerifyHash(userWrap.Password, "SHA256", user.UserHash, user.UserSalt);
                 if (!isValid)
                 {
 
@@ -108,15 +107,14 @@ namespace CrashPasswordSystem.UI.ViewModels
                 else
                 {
                     IsVisable = "Visible";
+
+                    EventAggregator
+                        .GetEvent<LoggedInEvent>()
+                        .Publish(new LoggedInEventArgs
+                        {
+                            Valid = isValid
+                        });
                 }
-
-                EventAggregator
-                    .GetEvent<LoggedInEvent>()
-                    .Publish(new LoggedInEventArgs
-                    {
-                        Valid = isValid
-                    });
-
             }
             userWrap.Password = null;
 

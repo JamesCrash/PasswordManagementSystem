@@ -33,7 +33,24 @@ namespace UnitTests
             CategoryService = SetupCategories();
             CompanyService = SetupCompanies();
 
-            this.Container = new Mock<IDependencyContainer>().Object;
+            var containerMock = new Mock<IDependencyContainer>();
+
+            containerMock.Setup(b => b.Resolve<IEventAggregator>())
+                         .Returns(EventAggregator);
+
+            containerMock.Setup(b => b.Resolve<IProductDataService>())
+                         .Returns(ProductService);
+
+            containerMock.Setup(b => b.Resolve<ISupplierDataService>())
+                         .Returns(SupplierService);
+
+            containerMock.Setup(b => b.Resolve<ICategoryDataService>())
+                         .Returns(CategoryService);
+
+            containerMock.Setup(b => b.Resolve<ICompanyDataService>())
+                         .Returns(CompanyService);
+
+            this.Container = containerMock.Object;
         }
 
         [Fact]

@@ -1,66 +1,64 @@
-﻿using CrashPasswordSystem.UI.Data;
-using CrashPasswordSystem.UI.Views;
-using System.ComponentModel;
-using CrashPasswordSystem.Data;
-using CrashPasswordSystem.UI.ViewModels;
-using Prism.Events;
+﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Services;
+using CrashPasswordSystem.UI.Data;
+using CrashPasswordSystem.UI.ViewModels;
+using CrashPasswordSystem.UI.Views;
+using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
-using Unity;
 using System.Diagnostics;
 
 namespace CrashPasswordSystem.UI.Startup
 {
     public class Bootstrapper : IDependencyContainer
     {
-        public UnityContainer UnityContainer { get; set; }
+        public IContainerProvider Container { get; private set; }
 
-        public virtual UnityContainer Bootstrap()
+        public Bootstrapper(IContainerProvider container)
         {
-            var builder = new UnityContainer();
-
+            Container = container;
+        }
+        
+        public void RegisterTypes(IContainerRegistry builder)
+        {
             builder.RegisterInstance<IDependencyContainer>(this);
             builder.RegisterSingleton<IEventAggregator, EventAggregator>();
-            builder.RegisterType<DetailViewModelBase>();
-            builder.RegisterType<DataContext>();
+            builder.Register<DetailViewModelBase>();
+            builder.Register<DataContext>();
 
-            builder.RegisterType<MainViewModel>();
-            builder.RegisterType<MainWindow>();
+            builder.Register<MainViewModel>();
+            builder.Register<MainWindow>();
 
-            builder.RegisterType<Login>();
-            builder.RegisterType<LoginViewModel>();
+            builder.Register<Login>();
+            builder.Register<LoginViewModel>();
 
-            builder.RegisterType<Home>();
-            builder.RegisterType<HomeViewModel>();
+            builder.Register<Home>();
+            builder.Register<HomeViewModel>();
 
-            builder.RegisterType<AddProduct>();
+            builder.Register<AddProduct>();
 
-            builder.RegisterType<ProductDetails>();
+            builder.Register<ProductDetails>();
 
-            builder.RegisterType<ViewModelBase>();
+            builder.Register<ViewModelBase>();
 
-            builder.RegisterType<IUserDataService, UserDataService>();
-            builder.RegisterType<IProductDataService, ProductDataService>();
-            builder.RegisterType<ICompanyDataService, CompanyDataService>();
-            builder.RegisterType<ICategoryDataService, CategoryDataService>();
-            builder.RegisterType<ISupplierDataService, SupplierDataService>();
-
+            builder.Register<IUserDataService, UserDataService>();
+            builder.Register<IProductDataService, ProductDataService>();
+            builder.Register<ICompanyDataService, CompanyDataService>();
+            builder.Register<ICategoryDataService, CategoryDataService>();
+            builder.Register<ISupplierDataService, SupplierDataService>();
+            
             ViewModelLocationProvider.Register(typeof(MainWindow).ToString(), typeof(MainViewModel));
 
             ViewModelLocationProvider.SetDefaultViewModelFactory((type) =>
             {
-                return builder.Resolve(type);
+                return Container.Resolve(type);
             });
-
-            UnityContainer = builder;
-
-            return UnityContainer;
         }
 
         public T Resolve<T>()
         {
-            Debug.Assert(UnityContainer != null);
-            return UnityContainer.Resolve<T>();
+            Debug.Assert(Container != null);
+            return Container.Resolve<T>();
         }
     }
 }

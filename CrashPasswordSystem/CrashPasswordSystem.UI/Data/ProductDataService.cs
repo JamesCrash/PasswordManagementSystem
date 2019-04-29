@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace CrashPasswordSystem.UI.Data
 {
@@ -20,7 +20,7 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Products.AsNoTracking().SingleAsync(f => f.ProductID == productID);
+                return await ctx.Products.FirstOrDefaultAsync(f => f.ProductID == productID);
             }
         }
 

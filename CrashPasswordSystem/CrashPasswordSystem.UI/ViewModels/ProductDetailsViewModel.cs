@@ -11,11 +11,12 @@ namespace CrashPasswordSystem.UI.ViewModels
 {
     public class ProductDetailsViewModel : ViewModelBase
     {
+        private readonly Func<DataContext> _contextCreator;
+
         #region Props
         public event EventHandler OnRequestClose;
 
         private Product _Product;
-
         public Product Product
         {
             get { return _Product; }
@@ -69,8 +70,10 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #endregion
 
-        public ProductDetailsViewModel(Product product)
+        public ProductDetailsViewModel(Product product, IDependencyContainer container)
         {
+            _contextCreator = () => container.Resolve<DataContext>();
+
             Product = product;
             ProductOriginal = product;
             QuitCommand = new RelayCommand(Quit);
@@ -83,7 +86,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Load Filters Options
         public async void LoadComboData()
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 Companies = dBContext.CrashCompanies.ToList();
                 SelectedCompany = dBContext.CrashCompanies.Where(s => s.CCID == Product.CCID).FirstOrDefault();
@@ -105,7 +108,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Delete Button
         public async void QuitDelete(object parameter)
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 dBContext.Products.Attach(ProductOriginal);
                 dBContext.Products.Remove(ProductOriginal);
@@ -119,7 +122,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Save Button
         public async void QuitSave(object parameter)
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 var p = dBContext.Products.Where(s => s.ProductID == Product.ProductID).SingleOrDefault();
 

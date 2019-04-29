@@ -14,7 +14,7 @@ using Xunit;
 
 namespace UnitTests
 {
-    public class HomeTests
+    public class HomeTests : CrashPasswordUnitTest
     {
         public EventAggregator EventAggregator { get; set; }
         public IProductDataService ProductService { get; set; }
@@ -28,7 +28,6 @@ namespace UnitTests
             EventAggregator = new EventAggregator();
 
             ProductService = SetupProducts();
-
             SupplierService = SetupSuppliers();
             CategoryService = SetupCategories();
             CompanyService = SetupCompanies();
@@ -78,102 +77,5 @@ namespace UnitTests
 
             viewModel.FilterData("SelectedCompany", "test");
         }
-
-        #region Private Methods
-
-        private IProductDataService SetupProducts()
-        {
-            var data = new [] { new Product { ProductDescription = "Test" } };
-            var mock = new Mock<IProductDataService>(MockBehavior.Loose);
-
-            mock.Setup(b => b.GetAllAsync())
-                        .Returns(Task.FromResult(data.ToList()));
-
-            return mock.Object;
-        }
-
-        private ISupplierDataService SetupSuppliers()
-        {
-            var data = new[] { new Supplier { SupplierName = "Test" } };
-
-            var mock = new Mock<ISupplierDataService>();
-            mock.Setup(b => b.GetAllAsync())
-                .Returns(Task.FromResult(data.ToList()));
-
-            mock.Setup(b => b.GetAllDesctiption())
-                .Returns(Task.FromResult(data.Select(e => e.SupplierName).ToList()));
-
-            return mock.Object;
-        }
-
-        private ICategoryDataService SetupCategories()
-        {
-            var data = new[] { new ProductCategory{ PCName = "Test" } };
-
-            var mock = new Mock<ICategoryDataService>();
-            mock.Setup(b => b.GetAllAsync())
-                .Returns(Task.FromResult(data.ToList()));
-
-            mock.Setup(b => b.GetAllDesctiption())
-                .Returns(Task.FromResult(data.Select(e => e.PCName).ToList()));
-
-            return mock.Object;
-        }
-
-        private ICompanyDataService SetupCompanies()
-        {
-            var data = new[] { new CrashCompany { CCName = "Test" } };
-
-            var mock = new Mock<ICompanyDataService>();
-            mock.Setup(b => b.GetAllAsync())
-                .Returns(Task.FromResult(data.ToList()));
-
-            mock.Setup(b => b.GetAllDesctiption())
-                            .Returns(Task.FromResult(data.Select(e => e.CCName).ToList()));
-
-            return mock.Object;
-        }
-
-        public class TestBootstrapper : UnityContainer, IDependencyContainer
-        {
-            public TestBootstrapper()
-            {
-                var builder = new UnityContainer();
-
-                builder.RegisterInstance<IDependencyContainer>(this);
-                builder.RegisterSingleton<IEventAggregator, EventAggregator>();
-                builder.RegisterType<DetailViewModelBase>();
-                builder.RegisterType<DataContext>();
-
-                builder.RegisterType<MainViewModel>();
-                builder.RegisterType<MainWindow>();
-                
-                builder.RegisterType<LoginViewModel>();
-
-                builder.RegisterType<HomeViewModel>();
-
-                builder.RegisterType<ViewModelBase>();
-
-                //builder.RegisterType<IUserDataService, UserDataService>();
-                //builder.RegisterType<IProductDataService, ProductDataService>();
-                //builder.RegisterType<ICompanyDataService, CompanyDataService>();
-                //builder.RegisterType<ICategoryDataService, CategoryDataService>();
-                //builder.RegisterType<ISupplierDataService, SupplierDataService>();
-
-                //ViewModelLocationProvider.Register(typeof(MainWindow).ToString(), typeof(MainViewModel));
-
-                ViewModelLocationProvider.SetDefaultViewModelFactory((type) =>
-                {
-                    return builder.Resolve(type);
-                });
-            }
-
-            public T Resolve<T>()
-            {
-                return Resolve<T>();
-            }
-        }
-
-        #endregion
     }
 }

@@ -53,13 +53,13 @@ namespace CrashPasswordSystem.UI.ViewModels
         
         #endregion
 
-        public LoginViewModel(IEventAggregator iEventAggregator, IUserDataService userDataService)
+        public LoginViewModel(IDependencyContainer container)
         {
             User = new User();
             userWrap = new UserWrapper(User);
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
-            _UserDataService = userDataService;
-            EventAggregator = iEventAggregator;
+            _UserDataService = container.Resolve<IUserDataService>();
+            EventAggregator = container.Resolve<IEventAggregator>();
         }
 
         public void Load()

@@ -12,6 +12,17 @@ namespace CrashPasswordSystem.UI.ViewModels
 {
     public class AddProductViewModel : ViewModelBase
     {
+        private readonly Func<DataContext> _contextCreator;
+
+        public AddProductViewModel(IDependencyContainer container)
+        {
+            _contextCreator = () => container.Resolve<DataContext>();
+            Product = new Product();
+            LoadComboData();
+            QuitCommand = new RelayCommand(Quit);
+            QuitSaveCommand = new RelayCommand(QuitAdd);
+        }
+
         #region Props
         public event EventHandler OnRequestClose;
 
@@ -46,7 +57,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         private Supplier _SelectedSupplier;
-
         public Supplier SelectedSupplier
         {
             get { return _SelectedSupplier; }
@@ -55,18 +65,10 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #endregion
 
-        public AddProductViewModel()
-        {
-            Product = new Product();
-            LoadComboData();
-            QuitCommand = new RelayCommand(Quit);
-            QuitSaveCommand = new RelayCommand(QuitAdd);
-        }
-
         #region Load Filters Options
         public async void LoadComboData()
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 Companies = dBContext.CrashCompanies.ToList();
                 Categories = dBContext.ProductCategories.ToList();
@@ -85,7 +87,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Add Button
         public async void QuitAdd(object parameter)
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 var p = new Product();
                 

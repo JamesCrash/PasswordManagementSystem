@@ -15,6 +15,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 {
     public class HomeViewModel : ViewModelBase
     {
+        private readonly Func<DataContext> _contextCreator;
         private IProductDataService _ProductDataService;
         private ISupplierDataService _SupplierDataService;
         private ICategoryDataService _CategoryDataService;
@@ -115,10 +116,15 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public override bool IsVisible => true;
 
+        public IDependencyContainer DependencyContainer { get; private set; }
+
         #endregion
 
         public HomeViewModel(IDependencyContainer container)
         {
+            DependencyContainer = container;
+            _contextCreator = () => container.Resolve<DataContext>();
+
             _ProductDataService = container.Resolve<IProductDataService>();
             _SupplierDataService = container.Resolve<ISupplierDataService>();
             _CategoryDataService = container.Resolve<ICategoryDataService>();
@@ -153,7 +159,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Filter Data
         public void FilterData(string filter, string value)
         {
-            using (var dBContext = new DataContext())
+            using (var dBContext = _contextCreator())
             {
                 if (filter == "SelectedCompany")
                 {
@@ -208,7 +214,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Open Details
         public async void OpenDetails(object parameter)
         {
-            var vm = new ProductDetailsViewModel(SelectedItem);
+            var vm = new ProductDetailsViewModel(SelectedItem, DependencyContainer);
             var productDetails = new ProductDetails
             {
                 DataContext = vm
@@ -222,7 +228,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Open Add New product
         public async void OpenNewProduct(object parameter)
         {
-            var vm = new AddProductViewModel();
+            var vm = new AddProductViewModel(DependencyContainer);
             var addProduct = new AddProduct
             {
                 DataContext = vm

@@ -3,10 +3,13 @@ using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.ViewModels;
 using CrashPasswordSystem.UI.Views;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
+using System.Configuration;
 using System.Diagnostics;
+using Unity.Injection;
 
 namespace CrashPasswordSystem.UI.Startup
 {
@@ -24,7 +27,12 @@ namespace CrashPasswordSystem.UI.Startup
             builder.RegisterInstance<IDependencyContainer>(this);
             builder.RegisterSingleton<IEventAggregator, EventAggregator>();
             builder.Register<DetailViewModelBase>();
-            builder.Register<DataContext>();
+
+            var sqlServerOptions = new DbContextOptionsBuilder<DataContext>()
+                .UseSqlServer(ConfigurationManager.ConnectionStrings["CrashDbContext"].ConnectionString)
+                .Options;
+
+            builder.RegisterInstance(sqlServerOptions);
 
             builder.Register<MainViewModel>();
             builder.Register<MainWindow>();

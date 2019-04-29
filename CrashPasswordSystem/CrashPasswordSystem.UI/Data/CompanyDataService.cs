@@ -1,9 +1,9 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +22,7 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.CrashCompanies.AsNoTracking().SingleAsync(f => f.CCID == companyID);
+                return await ctx.CrashCompanies.FirstOrDefaultAsync(f => f.CCID == companyID);
             }
         }
 

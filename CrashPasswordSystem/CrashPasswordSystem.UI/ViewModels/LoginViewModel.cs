@@ -31,13 +31,18 @@ namespace CrashPasswordSystem.UI.ViewModels
             set { _userWrap = value; OnPropertyChanged(); }
         }
 
+        public ICommand LogoutCommand { get; set; }
+
         public ICommand LoginCommand { get; set; }
 
         private string _IsVisable;
         public string IsVisable
         {
             get { return _IsVisable; }
-            set { _IsVisable = value; OnPropertyChanged(); }
+            set
+            {
+                base.SetProperty(ref _IsVisable, value);
+            }
         }
 
         private bool _IsValid;
@@ -58,6 +63,8 @@ namespace CrashPasswordSystem.UI.ViewModels
             User = new User();
             userWrap = new UserWrapper(User);
             LoginCommand = new DelegateCommand(ExecuteLogin, CanExecuteLogin);
+            LogoutCommand = new DelegateCommand(ExecuteLogout);
+
             _UserDataService = container.Resolve<IUserDataService>();
             EventAggregator = container.Resolve<IEventAggregator>();
         }
@@ -100,7 +107,6 @@ namespace CrashPasswordSystem.UI.ViewModels
                 IsValid = _login.VerifyHash(userWrap.Password, "SHA256", User.UserHash, User.UserSalt);
                 if (!IsValid)
                 {
-
                     IsVisable = "Hidden";
                 }
                 else
@@ -109,14 +115,30 @@ namespace CrashPasswordSystem.UI.ViewModels
                     User = user;
 
                     EventAggregator
-                        .GetEvent<LoggedInEvent>()
-                        .Publish(new LoggedInEventArgs
+                        .GetEvent<LoginEvent>()
+                        .Publish(new UserLoginOutEvent
                         {
                             Valid = IsValid
                         });
                 }
             }
             userWrap.Password = null;
+        }
+
+        private void ExecuteLogout()
+        {
+            IsVisable = "Hidden";
+            IsValid = false;
+            userWrap.Password = null;
+
+            User = new User();
+
+            EventAggregator
+                .GetEvent<LoginEvent>()
+                .Publish(new UserLoginOutEvent
+                {
+                    Valid = false
+                });
 
         }
         #endregion

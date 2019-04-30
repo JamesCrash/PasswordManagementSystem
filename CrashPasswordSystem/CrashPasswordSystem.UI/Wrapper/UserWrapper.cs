@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.Models;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace CrashPasswordSystem.UI.Wrapper
 {
@@ -11,10 +12,15 @@ namespace CrashPasswordSystem.UI.Wrapper
 
         public int UserId => Model.UserID;
 
+        private string _password;
         public string Password
         {
-            get; //=> GetValue<string>();
-            set; //=> SetValue(value);
+            get => _password;
+            set
+            {
+                _password = value;
+                RaisePropertyChanged();
+            }
         }
 
         public string UserFirstName

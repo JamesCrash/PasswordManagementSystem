@@ -1,12 +1,10 @@
-﻿using System;
-using System.Windows;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace CrashPasswordSystem.UI.Search
 {
-    [Module(ModuleName="TopMiddleRegion", OnDemand = true)]
+    [Module(ModuleName = "SearchProducts", OnDemand = true)]
     public partial class SearchProductsView : IModule
     {
         public SearchProductsView()
@@ -18,7 +16,7 @@ namespace CrashPasswordSystem.UI.Search
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
-            regionManager.AddToRegion("TopMiddleRegion", this);
+            regionManager.AddToRegion(Startup.Regions.SearchRegion, this);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

@@ -1,15 +1,9 @@
-using CrashPasswordSystem.Data;
-using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI;
-using CrashPasswordSystem.UI.Startup;
 using CrashPasswordSystem.UI.ViewModels;
 using Moq;
 using Prism.Events;
-using Prism.Mvvm;
 using System.Linq;
-using System.Threading.Tasks;
-using Unity;
 using Xunit;
 
 namespace UnitTests

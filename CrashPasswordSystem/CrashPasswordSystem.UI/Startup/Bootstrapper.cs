@@ -6,13 +6,19 @@ using CrashPasswordSystem.UI.Views;
 using Microsoft.EntityFrameworkCore;
 using Prism.Events;
 using Prism.Ioc;
+using Prism.Modularity;
 using Prism.Mvvm;
 using System.Configuration;
 using System.Diagnostics;
-using Unity.Injection;
 
 namespace CrashPasswordSystem.UI.Startup
 {
+    public static class Regions
+    {
+        public const string SearchRegion = "TopMiddleRegion";
+        public const string ApplicationBar = "ApplicationBarRegion";
+    }
+
     public class Bootstrapper : IDependencyContainer
     {
         public IContainerProvider Container { get; private set; }
@@ -61,6 +67,12 @@ namespace CrashPasswordSystem.UI.Startup
             {
                 return Container.Resolve(type);
             });
+        }
+
+        public void ConfigureModuleCatalog(IModuleCatalog catalog)
+        {
+            catalog.AddModule(typeof(Search.SearchProductsView));
+            catalog.AddModule(typeof(ApplicationBar));
         }
 
         public T Resolve<T>()

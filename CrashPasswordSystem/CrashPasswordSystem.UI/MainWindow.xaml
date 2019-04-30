@@ -24,21 +24,12 @@
     <Grid>
         <Grid Visibility="{Binding Path=IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Menu Grid.Row="0">
-                <MenuItem Header="Crash">
-                    <MenuItem Header="Login">
-
-                    </MenuItem>
-                    <MenuItem Header="Exit">
-
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
-
+            
             <!--<TabControl Grid.Row="1"
                         ItemsSource="{Binding DetailViewModels}"
                         SelectedItem="{Binding SelectedDetailViewModel,Mode=TwoWay}">
@@ -66,13 +57,12 @@
                     </DataTemplate>
                 </TabControl.ItemTemplate>
             </TabControl>-->
+            <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.ApplicationBar}" />
+            <Label Grid.Row="1" Content="Products" FontSize="20" Background="Blue" Foreground="White" Grid.ColumnSpan="2" />
 
-            <Label Grid.Row="0" Content="Products" FontSize="20" Background="Blue" Foreground="White" Grid.ColumnSpan="2"></Label>
+            <ContentControl Grid.Row="2" prism:RegionManager.RegionName="TopMiddleRegion" />
 
-            <ContentControl Grid.Row="1" prism:RegionManager.RegionName="TopMiddleRegion" />
-
-            <view:Home Grid.Row="2"  DataContext="{Binding HomeViewModel, UpdateSourceTrigger=PropertyChanged}" />
-
+            <view:Home Grid.Row="3"  DataContext="{Binding HomeViewModel, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
         <view:Login DataContext="{Binding LoginViewModel}" 

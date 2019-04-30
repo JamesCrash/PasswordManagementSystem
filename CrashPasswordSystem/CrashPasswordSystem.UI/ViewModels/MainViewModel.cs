@@ -1,6 +1,7 @@
 ﻿using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
+using System;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 
@@ -45,11 +46,15 @@ namespace CrashPasswordSystem.UI.ViewModels
             HomeViewModel = container.Resolve<HomeViewModel>();
 
             EventAggregator
-                .GetEvent<LoggedInEvent>()
-                .Subscribe(Login);
+                .GetEvent<LoginEvent>()
+                .Subscribe(LogInOut);
+
+            EventAggregator
+                .GetEvent<LogOutEvent>()
+                .Subscribe(LogInOut);
         }
 
-        private void Login(LoggedInEventArgs e)
+        private void LogInOut(UserLoginOutEvent e)
         {
             RaisePropertyChanged(nameof(IsVisible));
         }
@@ -104,7 +109,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         //        });
         //}
 
-        public async void login(LoggedInEventArgs args)
+        public async void login(UserLoginOutEvent args)
         {
             if (args.Valid)
             {

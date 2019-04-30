@@ -7,11 +7,16 @@ using Prism.Events;
 
 namespace CrashPasswordSystem.UI.Event
 {
-    public class LoggedInEvent : PubSubEvent<LoggedInEventArgs>
+    public class LoginEvent : PubSubEvent<UserLoginOutEvent>
     {
     }
 
-    public class LoggedInEventArgs
+    public class LogOutEvent : PubSubEvent<UserLoginOutEvent>
+    {
+
+    }
+
+    public class UserLoginOutEvent
     {
         public bool Valid { get; set; }  
     }

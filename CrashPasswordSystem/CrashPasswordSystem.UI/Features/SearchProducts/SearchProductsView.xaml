@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrashPasswordSystem.UI.Views"
              mc:Ignorable="d"
-             xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True"
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding HomeViewModel}">
     <Grid Background="LightGray">

@@ -10,6 +10,8 @@ namespace CrashPasswordSystem.UI
 {
     public partial class App : PrismApplication
     {
+        public Bootstrapper Bootstrapper { get; private set; }
+
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show("Unexpected error occured. Please inform the admin."
@@ -20,12 +22,14 @@ namespace CrashPasswordSystem.UI
         
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            new Bootstrapper(Container).RegisterTypes(containerRegistry);
+            Bootstrapper = new Bootstrapper(Container);
+            
+            Bootstrapper.RegisterTypes(containerRegistry);
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog catalog)
         {
-            catalog.AddModule(typeof(Search.SearchProductsView));
+            Bootstrapper.ConfigureModuleCatalog(catalog);
         }
 
         protected override Window CreateShell()

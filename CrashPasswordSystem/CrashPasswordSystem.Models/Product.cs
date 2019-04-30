@@ -22,9 +22,9 @@ namespace CrashPasswordSystem.Models
         public DateTime ProductDateAdded { get; set; }
         public DateTime? ProductExpiry { get; set; }
 
-        public virtual CrashCompany CrashCompany { get; set; }
+        public virtual CrashCompany Cc { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
-        public virtual User User { get; set; }
+        public virtual User Staff { get; set; }
         public virtual Supplier Supplier { get; set; }
         public virtual ICollection<UpdateHistory> UpdateHistories { get; set; }
     }

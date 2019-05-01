@@ -14,7 +14,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         private IUserDataService _UserDataService;
 
         #region Props
-        public event EventHandler OnRequestClose;
         private readonly BusinessLogic.Validation.Login _login = new BusinessLogic.Validation.Login();
 
         public override bool IsVisible

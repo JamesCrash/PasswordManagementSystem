@@ -10,6 +10,7 @@ using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Data;
 using System;
 using CrashPasswordSystem.Services;
+using CrashPasswordSystem.UI.Event;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
@@ -46,6 +47,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             get { return _Companies; }
             set => base.SetProperty(ref _Companies, value);
+        }
+
+        public void NotifySave(Product instance)
+        {
+            if (!Products.Contains(instance) && !Products.Any(p => p.ProductID == instance.ProductID))
+            {
+                Products.Add(instance);
+            }
         }
 
         private List<string> _Categories;
@@ -123,6 +132,8 @@ namespace CrashPasswordSystem.UI.ViewModels
         public HomeViewModel(IDependencyContainer container)
         {
             DependencyContainer = container;
+
+            EventAggregator = container.Resolve<IEventAggregator>();
             _contextCreator = () => container.Resolve<DataContext>();
 
             _ProductDataService = container.Resolve<IProductDataService>();
@@ -135,11 +146,16 @@ namespace CrashPasswordSystem.UI.ViewModels
             OpenAddProductCommand = new RelayCommand(OpenNewProduct);
 
             LoadFilters();
-            LoadData();
+            LoadDataAsync();
         }
-        
+
+        private void OnEdit()
+        {
+            OpenNewProduct(null);
+        }
+
         #region Load Data
-        public async void LoadData()
+        public async void LoadDataAsync()
         {
             var p = await _ProductDataService.GetAllAsync();
             Products = new ObservableCollection<Product>(p);
@@ -207,7 +223,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             SelectedCategory = null;
             SelectedSupplier = null;
             SearchBox = null;
-            LoadData();
+            LoadDataAsync();
         }
         #endregion
 
@@ -221,22 +237,25 @@ namespace CrashPasswordSystem.UI.ViewModels
             };
             vm.OnRequestClose += (s, e) => productDetails.Close();
             productDetails.ShowDialog();
-            LoadData();
+            LoadDataAsync();
         }
         #endregion
 
         #region Open Add New product
-        public async void OpenNewProduct(object parameter)
-        {
-            var vm = new AddProductViewModel(DependencyContainer);
-            var addProduct = new AddProduct
-            {
-                DataContext = vm
-            };
-            vm.OnRequestClose += (s, e) => addProduct.Close();
-            addProduct.ShowDialog();
-            LoadData();
 
+        private AddProductViewModel _productEdit;
+
+        public AddProductViewModel ProductEdit
+        {
+            get => _productEdit;
+            set => base.SetProperty(ref _productEdit, value);
+        }
+
+        public void OpenNewProduct(object parameter)
+        {
+            ProductEdit = DependencyContainer.Resolve<AddProductViewModel>();
+
+            EventAggregator.GetEvent<EditEvent>().Publish(parameter);
         }
         #endregion
     }

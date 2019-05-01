@@ -24,11 +24,16 @@
     <Grid>
         <Grid Visibility="{Binding Path=IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" MaxHeight="25"/>
+                <RowDefinition Height="Auto" MaxHeight="40"/>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" MaxWidth="400" />
+            </Grid.ColumnDefinitions>
             
             <!--<TabControl Grid.Row="1"
                         ItemsSource="{Binding DetailViewModels}"
@@ -57,12 +62,15 @@
                     </DataTemplate>
                 </TabControl.ItemTemplate>
             </TabControl>-->
-            <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.ApplicationBar}" />
+            <ContentControl Grid.Row="0" Grid.ColumnSpan="2" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.ApplicationBar}" />
             <Label Grid.Row="1" Content="Products" FontSize="20" Background="Blue" Foreground="White" Grid.ColumnSpan="2" />
 
             <ContentControl Grid.Row="2" prism:RegionManager.RegionName="TopMiddleRegion" />
 
             <view:Home Grid.Row="3"  DataContext="{Binding HomeViewModel, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ContentControl Grid.Row="2" Grid.Column="1" Grid.RowSpan="2"
+                            prism:RegionManager.RegionName="{x:Static local:Startup.Regions.AsideSection}" />
         </Grid>
 
         <view:Login DataContext="{Binding LoginViewModel}" 

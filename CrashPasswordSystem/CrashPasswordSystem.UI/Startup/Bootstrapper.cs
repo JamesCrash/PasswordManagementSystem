@@ -17,6 +17,7 @@ namespace CrashPasswordSystem.UI.Startup
     {
         public const string SearchRegion = "TopMiddleRegion";
         public const string ApplicationBar = "ApplicationBarRegion";
+        public const string AsideSection = "AsideSection";
     }
 
     public class Bootstrapper : IDependencyContainer
@@ -49,7 +50,7 @@ namespace CrashPasswordSystem.UI.Startup
             builder.Register<Home>();
             builder.Register<HomeViewModel>();
 
-            builder.Register<AddProduct>();
+            builder.Register<AddProductViewModel>();
 
             builder.Register<ProductDetails>();
 
@@ -73,6 +74,7 @@ namespace CrashPasswordSystem.UI.Startup
         {
             catalog.AddModule(typeof(Search.SearchProductsView));
             catalog.AddModule(typeof(ApplicationBar));
+            catalog.AddModule(typeof(AddProduct));
         }
 
         public T Resolve<T>()

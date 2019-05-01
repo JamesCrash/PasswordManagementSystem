@@ -1,11 +1,11 @@
 ﻿using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Event;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
@@ -14,17 +14,22 @@ namespace CrashPasswordSystem.UI.ViewModels
     {
         private readonly Func<DataContext> _contextCreator;
 
+        public IDependencyContainer Container { get; set; }
+
         public AddProductViewModel(IDependencyContainer container)
         {
             _contextCreator = () => container.Resolve<DataContext>();
+
+            Container = container;
             Product = new Product();
             LoadComboData();
             QuitCommand = new RelayCommand(Quit);
             QuitSaveCommand = new RelayCommand(QuitAdd);
+
+            EventAggregator = container.Resolve<IEventAggregator>();
         }
 
         #region Props
-        public event EventHandler OnRequestClose;
 
         private Product _Product;
 
@@ -78,15 +83,36 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Quit Button
-        public async void Quit(object parameter)
+
+        public void Quit(object parameter)
         {
-            OnRequestClose(this, new EventArgs());
+            EventAggregator.GetEvent<CloseEvent>().Publish(this);
         }
         #endregion
 
         #region Quit and Add Button
         public async void QuitAdd(object parameter)
         {
+            if (SelectedCompany == null)
+            {
+                return;
+            }
+            if (SelectedCategory == null)
+            {
+                return;
+            }
+            if (SelectedSupplier == null)
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(Product.ProductDescription))
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(Product.ProductURL))
+            {
+                return;
+            }
             using (var dBContext = _contextCreator())
             {
                 var p = new Product();
@@ -100,12 +126,17 @@ namespace CrashPasswordSystem.UI.ViewModels
                 p.PCID = SelectedCategory.PCID;
                 p.SupplierID = SelectedSupplier.SupplierID;
                 p.StaffID = 1;
+                p.ProductDateAdded = DateTime.Now;
 
                 dBContext.Products.Add(p);
-                dBContext.SaveChanges();
-
-                OnRequestClose(this, new EventArgs());
+                await dBContext.SaveChangesAsync();
             }
+
+            EventAggregator.GetEvent<CloseEvent>().Publish(this);
+        }
+
+        internal void Show()
+        {
         }
         #endregion
     }

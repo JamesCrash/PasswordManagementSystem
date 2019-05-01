@@ -108,13 +108,5 @@ namespace CrashPasswordSystem.UI.ViewModels
         //            ViewModelName = viewModelType.Name
         //        });
         //}
-
-        public async void login(UserLoginOutEvent args)
-        {
-            if (args.Valid)
-            {
-
-            }
-        }
     }
 }

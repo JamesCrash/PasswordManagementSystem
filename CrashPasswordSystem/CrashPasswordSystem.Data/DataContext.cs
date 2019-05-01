@@ -74,7 +74,7 @@ namespace CrashPasswordSystem.Data
 
                 entity.Property(e => e.SupplierID);
 
-                entity.HasOne(d => d.CrashCompany)
+                entity.HasOne(d => d.Company)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CCID)
                     .OnDelete(DeleteBehavior.Cascade);
@@ -84,7 +84,7 @@ namespace CrashPasswordSystem.Data
                     .HasForeignKey(d => d.PCID)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Staff)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.StaffID)
                     .OnDelete(DeleteBehavior.Cascade);

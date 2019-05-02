@@ -1,9 +1,8 @@
-﻿using CrashPasswordSystem.UI.Event;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
-using System;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {

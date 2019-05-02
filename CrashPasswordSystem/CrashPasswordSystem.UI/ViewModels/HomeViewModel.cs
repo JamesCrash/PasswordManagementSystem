@@ -1,16 +1,16 @@
-﻿using CrashPasswordSystem.UI.Command;
-using CrashPasswordSystem.UI.Data;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Services;
+using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views;
+using Prism.Events;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Prism.Events;
-using CrashPasswordSystem.Models;
-using CrashPasswordSystem.Data;
-using System;
-using CrashPasswordSystem.Services;
-using CrashPasswordSystem.UI.Event;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {

@@ -1,4 +1,4 @@
-﻿using CrashPasswordSystem.UI.ViewModels;
+﻿using CrashPasswordSystem.Core;
 
 namespace CrashPasswordSystem.UI.Search.SearchProducts
 {

@@ -1,4 +1,5 @@
-﻿using CrashPasswordSystem.Data;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.ViewModels;

@@ -1,7 +1,9 @@
-﻿using CrashPasswordSystem.Data;
+﻿using CrashPasswordSystem.BusinessLogic.Validation;
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Event;
+using CrashPasswordSystem.UI.Wrapper;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class AddProductViewModel : ViewModelBase
+    public class AddProductViewModel : NotifyDataErrorInfoBase
     {
         private readonly Func<DataContext> _contextCreator;
 
@@ -27,6 +29,13 @@ namespace CrashPasswordSystem.UI.ViewModels
             QuitSaveCommand = new RelayCommand(QuitAdd);
 
             EventAggregator = container.Resolve<IEventAggregator>();
+        }
+
+        public bool Validate()
+        {
+            SetErrors(ProductDetailsValidation.Validate(Product));
+            if (Errors.Count != 0) return false;
+            else return true;
         }
 
         #region Props
@@ -93,26 +102,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Add Button
         public async void QuitAdd(object parameter)
         {
-            if (SelectedCompany == null)
+            if (!Validate())
             {
                 return;
             }
-            if (SelectedCategory == null)
-            {
-                return;
-            }
-            if (SelectedSupplier == null)
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(Product.ProductDescription))
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(Product.ProductURL))
-            {
-                return;
-            }
+
             using (var dBContext = _contextCreator())
             {
                 var p = new Product();
@@ -133,10 +127,6 @@ namespace CrashPasswordSystem.UI.ViewModels
             }
 
             EventAggregator.GetEvent<CloseEvent>().Publish(this);
-        }
-
-        internal void Show()
-        {
         }
         #endregion
     }

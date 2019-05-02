@@ -1,4 +1,5 @@
-﻿using CrashPasswordSystem.UI.Views.Services;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.UI.Views.Services;
 using Prism.Events;
 using System.Threading.Tasks;
 

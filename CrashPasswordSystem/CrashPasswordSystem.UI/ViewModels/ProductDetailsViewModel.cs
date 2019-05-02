@@ -2,6 +2,7 @@
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Wrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public class ProductDetailsViewModel : ViewModelBase
+    public class ProductDetailsViewModel : NotifyDataErrorInfoBase
     {
         private readonly Func<DataContext> _contextCreator;
 
@@ -59,13 +60,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             get { return _SelectedSupplier; }
             set => base.SetProperty(ref _SelectedSupplier, value);
-        }
-
-        private List<string> _Errors;
-        public List<string> Errors
-        {
-            get { return _Errors; }
-            set => base.SetProperty(ref _Errors, value);
         }
 
         #endregion
@@ -147,10 +141,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Validation
         public bool Validate(object parameter)
         {
-            Errors = ProductDetailsValidation.CheckNulls(Product);
+            SetErrors(ProductDetailsValidation.Validate(Product));
             if (Errors.Count != 0 ) return false;
             else return true;
         }
+
         #endregion
     }
 }

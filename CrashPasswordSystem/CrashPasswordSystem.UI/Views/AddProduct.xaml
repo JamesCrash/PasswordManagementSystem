@@ -3,21 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CrashPasswordSystem.UI.Views"
         xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
-        mc:Ignorable="d" Height="450" Width="800" Background="White" Margin="0,25,0,0"
+        mc:Ignorable="d" Width="800" Background="White"
         DataContext="{Binding ProductEdit, UpdateSourceTrigger=PropertyChanged}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Content="Add a product" FontSize="20" Background="Blue" Foreground="White"></Label>
+        <Label Content="Add a product" FontSize="20" Background="Blue" Foreground="White" />
+
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -27,56 +28,57 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            
+
             <Button Grid.Column="0" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Add and Quit" Background="Green" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitSaveCommand}"></Button>
             <Button Grid.Column="1" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Quit" Background="Blue" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitCommand}"></Button>
-           
         </Grid>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <Grid Grid.Row="2" Grid.Column="0" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="2" Grid.Column="0" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
 
-            <StackPanel Grid.Column="0">
+                    <Grid Margin="5">
+                        <Label Content="Description: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="URL: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Username: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Password: "></Label>
+                        <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
 
-                <Grid Margin="5">
-                    <Label Content="Description: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="URL: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Username: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Password: "></Label>
-                    <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Expires: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
 
-                <Grid Margin="5">
-                    <Label Content="Expires: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-           
-                <Grid Margin="5">
-                    <Label Content="Category: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PcName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Company: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CcName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Supplier: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}"></ComboBox>
-                </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Category: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedItem="{Binding Product.ProductCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Company: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedItem="{Binding Product.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Supplier: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedItem="{Binding Product.Supplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                    </Grid>
 
-            </StackPanel>
-        </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        <core:ValidationControl Grid.Row="2" VerticalAlignment="Bottom" />
     </Grid>
 </core:UIModule>

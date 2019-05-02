@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CrashPasswordSystem.Core;
+using System.Collections.ObjectModel;
 
 namespace CrashPasswordSystem.UI.Wrapper
 {
@@ -16,6 +18,17 @@ namespace CrashPasswordSystem.UI.Wrapper
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
+        private ObservableCollection<string> _errors;
+        public ObservableCollection<string> Errors
+        {
+            get => _errors;
+        }
+
+        public NotifyDataErrorInfoBase()
+        {
+            _errors = new ObservableCollection<string>();
+        }
+
         public IEnumerable GetErrors(string propertyName)
         {
             return _errorsByPropertyName.ContainsKey(propertyName)
@@ -23,10 +36,23 @@ namespace CrashPasswordSystem.UI.Wrapper
               : null;
         }
 
-        protected virtual void OnErrorsChanged(string propertyName)
+        public void SetErrors(Dictionary<string, List<string>> value)
         {
+            _errorsByPropertyName = value;
+
+            OnErrorsChanged();
+        }
+
+        protected virtual void OnErrorsChanged(string propertyName = null)
+        {
+            _errors.Clear();
+
+            _errorsByPropertyName.Values.SelectMany(list => list)
+                                 .ToList()
+                                 .ForEach(item => _errors.Add(item));
+
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            base.OnPropertyChanged(nameof(HasErrors));
+            RaisePropertyChanged(nameof(HasErrors));
         }
 
         protected void AddError(string propertyName, string error)

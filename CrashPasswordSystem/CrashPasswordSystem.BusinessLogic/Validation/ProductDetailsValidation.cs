@@ -19,20 +19,32 @@ namespace CrashPasswordSystem.BusinessLogic.Validation
         #endregion
 
         #region Check Product Nulls
-        public static List<string> CheckNulls(Product product)
+        public static Dictionary<string, List<string>> Validate(Product product)
         {
-            var list = new List<string>();
+            var list = new Dictionary<string, List<string>>();
 
-            if (product == null) { list.Add("Product cannot be null"); }
-            if (product.ProductID == 0) { list.Add("Product ID cannot be null"); }
-            if (product.PCID == 0) { list.Add("Category cannot be null"); }
-            if (product.CCID == 0) { list.Add("Company cannot be null"); }
-            if (product.SupplierID == 0) { list.Add("Supplier cannot be null"); }
-            if (string.IsNullOrWhiteSpace(product.ProductDescription)) { list.Add("Description cannot be null"); }
-            if (string.IsNullOrWhiteSpace(product.ProductURL)) { list.Add("URL cannot be null"); }
+            if (product == null)
+                list.Add(nameof(Product), new List<string> { "Product cannot be null" });
+
+            if (product.ProductID == 0)
+                list.Add(nameof(product.ProductID), new List<string> { "Product ID cannot be null" });
+
+            if (product.ProductCategory == null)
+                list.Add(nameof(product.ProductCategory), new List<string> { "Category cannot be null" });
+
+            if (product.Company == null)
+                list.Add(nameof(product.Company), new List<string> { "Company cannot be null" });
+
+            if (product.Supplier == null)
+                list.Add(nameof(product.Supplier), new List<string> { "Supplier cannot be null" });
+
+            if (string.IsNullOrWhiteSpace(product.ProductDescription))
+                list.Add(nameof(product.ProductDescription), new List<string> { "Description cannot be null" });
+
+            if (string.IsNullOrWhiteSpace(product.ProductURL))
+                list.Add(nameof(product.ProductURL), new List<string> { "URL cannot be null" });
 
             return list;
-
         }
 
         

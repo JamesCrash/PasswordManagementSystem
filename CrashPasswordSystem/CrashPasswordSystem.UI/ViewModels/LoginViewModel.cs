@@ -1,10 +1,10 @@
-﻿using CrashPasswordSystem.Models;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Wrapper;
 using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels

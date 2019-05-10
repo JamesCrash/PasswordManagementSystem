@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
-using CrashPasswordSystem.Core;
+﻿using CrashPasswordSystem.Core;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.ViewModels;
@@ -8,18 +6,21 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using System;
+using System.Linq;
 
 namespace CrashPasswordSystem.UI.Views
 {
     [Module(ModuleName = "AddProduct", OnDemand = true)]
     public partial class AddProduct : UIModule
     {
+        public override string TargetRegion => Startup.Regions.AsideSection;
+
         public AddProduct()
         {
             InitializeComponent();
         }
 
-        public IContainerProvider Container { get; private set; }
         public IRegionManager RegionManager { get; private set; }
         public IEventAggregator EventAggregator { get; private set; }
 
@@ -27,7 +28,6 @@ namespace CrashPasswordSystem.UI.Views
         {
             base.OnInitialized(containerProvider);
 
-            Container = containerProvider;
             RegionManager = containerProvider.Resolve<IRegionManager>();
 
             EventAggregator = containerProvider.Resolve<IEventAggregator>();
@@ -40,6 +40,17 @@ namespace CrashPasswordSystem.UI.Views
 
             EventAggregator.GetEvent<SaveEvent<Product>>()
                            .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
+
+            EventAggregator.GetEvent<CloseEvent>()
+                           .Subscribe(OnClose, keepSubscriberReferenceAlive: true);
+        }
+
+        private void OnClose(object instance)
+        {
+            if (instance == DataContext && this.IsActiveOnTargetRegion(RegionManager, TargetRegion))
+            {
+                this.RemoveFromRegion(TargetRegion, RegionManager);
+            }
         }
 
         private void OnSave(Product instance)
@@ -47,18 +58,20 @@ namespace CrashPasswordSystem.UI.Views
             Container.Resolve<HomeViewModel>().NotifySave(instance);
         }
 
-        private void OnClose(object obj)
-        {
-            if (obj == DataContext)
-            {
-                RegionManager.Regions[Startup.Regions.AsideSection].Remove(this);
-            }
-        }
-
         private void OnEdit(object instance)
         {
+            if (instance == null || !(instance is Type) || ((Type)instance) != typeof(Product))
+            {
+                return;
+            }
+
             DataContext = Container.Resolve<AddProductViewModel>();
-            RegionManager.AddToRegion(Startup.Regions.AsideSection, this);
+
+            if (this.IsActiveOnTargetRegion(RegionManager, TargetRegion))
+            {
+                this.RemoveFromRegion(TargetRegion, RegionManager);
+            }
+            RegionManager.AddToRegion(TargetRegion, this);
         }
     }
 }

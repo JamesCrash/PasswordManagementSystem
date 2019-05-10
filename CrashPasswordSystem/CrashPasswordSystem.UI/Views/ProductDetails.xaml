@@ -1,11 +1,11 @@
-﻿<Window x:Class="CrashPasswordSystem.UI.Views.ProductDetails"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CrashPasswordSystem.UI.Views"
-        mc:Ignorable="d"
-        Title="ProductDetails" Height="550" Width="800">
+﻿<core:UIModule 
+    x:Class="CrashPasswordSystem.UI.Views.ProductDetails"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
+    mc:Ignorable="d" Width="800" Background="White">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,15 +15,15 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Content="Product Details" FontSize="20" Background="Blue" Foreground="White"></Label>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
@@ -34,70 +34,69 @@
             <Button Grid.Column="2" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Delete and Quit" Background="Red" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitDeleteCommand}"></Button>
         </Grid>
 
-        <Grid Grid.Row="2" Grid.Column="0" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0">
-                <Grid Margin="5">
-                    <Label Content="Product ID: "></Label>
-                    <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductId, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Description: "></Label>
-                    <StackPanel>
-                        <TextBox Validation.ErrorTemplate="{x:Null}" Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"></TextBox>
-                        <TextBlock  FontWeight="Medium" Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=ProductDescription}"/>
-                    </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <Grid Margin="5">
+                        <Label Content="Product ID: "></Label>
+                        <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductID, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Description: "></Label>
+                        <StackPanel>
+                            <TextBox Validation.ErrorTemplate="{x:Null}" Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"></TextBox>
+                            <TextBlock  FontWeight="Medium" Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=ProductDescription}"/>
+                        </StackPanel>
 
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="URL: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUrl, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Username: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Password: "></Label>
-                    <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Date Added: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductDateAdded, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Expires: "></Label>
-                    <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-            </StackPanel>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="URL: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Username: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Password: "></Label>
+                        <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Date Added: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductDateAdded, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Expires: "></Label>
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
 
-            <StackPanel Grid.Column="1">
-                <Grid Margin="5">
-                    <Label Content="Added By: "></Label>
-                    <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.StaffId, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Category: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PcName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Company: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CcName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
-                </Grid>
-                <Grid Margin="5">
-                    <Label Content="Supplier: "></Label>
-                    <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}"></ComboBox>
-                </Grid>
-
-            </StackPanel>
-        </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Added By: "></Label>
+                        <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.StaffID, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Category: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Company: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Label Content="Supplier: "></Label>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}"></ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
         <Grid Grid.Row="3">
             <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}">
             </ListView>
         </Grid>
     </Grid>
-</Window>
+</core:UIModule>

@@ -5,6 +5,8 @@ using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views;
+using CrashPasswordSystem.UI.Wrapper;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -39,7 +41,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         public ICommand ClearFiltersCommand { get; set; }
-        public ICommand OpenDetailsCommand { get; set; }
+        public DelegateCommand<object> OpenDetailsCommand { get; set; }
         public ICommand OpenAddProductCommand { get; set; }
 
         private List<string> _Companies;
@@ -49,12 +51,11 @@ namespace CrashPasswordSystem.UI.ViewModels
             set => base.SetProperty(ref _Companies, value);
         }
 
-        public void NotifySave(Product instance)
+        private NotifyDataErrorInfoBase _selectedDetailViewModel;
+        public NotifyDataErrorInfoBase SelectedDetail
         {
-            if (!Products.Contains(instance) && !Products.Any(p => p.ProductID == instance.ProductID))
-            {
-                Products.Add(instance);
-            }
+            get => _selectedDetailViewModel;
+            set => base.SetProperty(ref _selectedDetailViewModel, value);
         }
 
         private List<string> _Categories;
@@ -142,37 +143,43 @@ namespace CrashPasswordSystem.UI.ViewModels
             _CompanyDataService = container.Resolve<ICompanyDataService>();
 
             ClearFiltersCommand = new RelayCommand(ClearFilters);
-            OpenDetailsCommand = new RelayCommand(OpenDetails);
+            OpenDetailsCommand = new DelegateCommand<object>(OpenDetails);
             OpenAddProductCommand = new RelayCommand(OpenNewProduct);
 
             LoadFilters();
             LoadDataAsync();
         }
 
+        #region Methods
+
         private void OnEdit()
         {
             OpenNewProduct(null);
         }
 
-        #region Load Data
+        public void NotifySave(Product instance)
+        {
+            if (!Products.Contains(instance) && !Products.Any(p => p.ProductID == instance.ProductID))
+            {
+                Products.Add(instance);
+            }
+        }
+
         public async void LoadDataAsync()
         {
             var p = await _ProductDataService.GetAllAsync();
             Products = new ObservableCollection<Product>(p);
         }
+
         #endregion
 
-        #region Load Filters Options
+        #region Filter Data
         public async void LoadFilters()
         {
             Companies = await _CompanyDataService.GetAllDesctiption();
             Categories = await _CategoryDataService.GetAllDesctiption();
             Suppliers = await _SupplierDataService.GetAllDesctiption();
         }
-
-        #endregion
-
-        #region Filter Data
         public void FilterData(string filter, string value)
         {
             using (var dBContext = _contextCreator())
@@ -228,34 +235,26 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Open Details
-        public async void OpenDetails(object parameter)
+        public void OpenDetails(object parameter)
         {
-            var vm = new ProductDetailsViewModel(SelectedItem, DependencyContainer);
-            var productDetails = new ProductDetails
+            var product = parameter as Product;
+            if (product == null)
             {
-                DataContext = vm
-            };
-            vm.OnRequestClose += (s, e) => productDetails.Close();
-            productDetails.ShowDialog();
-            LoadDataAsync();
+                return;
+            }
+            SelectedDetail = DependencyContainer.Resolve<ProductDetailsViewModel>();
+
+            EventAggregator.GetEvent<EditEvent>().Publish(parameter);
         }
         #endregion
 
         #region Open Add New product
 
-        private AddProductViewModel _productEdit;
-
-        public AddProductViewModel ProductEdit
-        {
-            get => _productEdit;
-            set => base.SetProperty(ref _productEdit, value);
-        }
-
         public void OpenNewProduct(object parameter)
         {
-            ProductEdit = DependencyContainer.Resolve<AddProductViewModel>();
+            SelectedDetail = DependencyContainer.Resolve<AddProductViewModel>();
 
-            EventAggregator.GetEvent<EditEvent>().Publish(parameter);
+            EventAggregator.GetEvent<EditEvent>().Publish(typeof(Product));
         }
         #endregion
     }

@@ -1,10 +1,6 @@
 ﻿using Prism.Ioc;
 using Prism.Modularity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,6 +8,9 @@ namespace CrashPasswordSystem.Core
 {
     public class UIModule : UserControl, IModule
     {
+        public virtual string TargetRegion { get; } = string.Empty;
+        public IContainerProvider Container { get; private set; }
+
         public UIModule()
         {
             base.Loaded += OnLoaded;
@@ -23,6 +22,7 @@ namespace CrashPasswordSystem.Core
 
         public virtual void OnInitialized(IContainerProvider containerProvider)
         {
+            Container = containerProvider;
         }
 
         public virtual void RegisterTypes(IContainerRegistry containerRegistry)

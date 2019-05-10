@@ -33,6 +33,10 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public bool Validate()
         {
+            if (Product == null)
+            {
+                return false;
+            }
             SetErrors(ProductDetailsValidation.Validate(Product));
             if (Errors.Count != 0) return false;
             else return true;

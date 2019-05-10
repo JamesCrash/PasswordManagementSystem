@@ -1,11 +1,11 @@
-﻿using CrashPasswordSystem.Core;
-using CrashPasswordSystem.UI.Views.Services;
+﻿using CrashPasswordSystem.UI.Views.Services;
+using CrashPasswordSystem.UI.Wrapper;
 using Prism.Events;
 using System.Threading.Tasks;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
-    public abstract class DetailViewModelBase : ViewModelBase
+    public abstract class DetailViewModelBase : NotifyDataErrorInfoBase
     {
         private bool _hasChanges;
         protected readonly IMessageDialogService MessageDialogService;

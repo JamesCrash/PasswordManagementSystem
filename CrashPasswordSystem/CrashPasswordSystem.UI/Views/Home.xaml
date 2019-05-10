@@ -24,8 +24,11 @@
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Background="Green" Foreground="White" Margin="2" Command="{Binding Path=DataContext.OpenDetailsCommand, RelativeSource={RelativeSource FindAncestor,
-                                                AncestorType={x:Type DataGrid}}}">Details</Button>
+                                <Button Background="Green" Foreground="White" Margin="2" 
+                                        Command="{Binding Path=DataContext.OpenDetailsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding}"
+                                        Content="Details"
+                                        />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

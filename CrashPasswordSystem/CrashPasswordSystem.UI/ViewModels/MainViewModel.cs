@@ -12,18 +12,10 @@ namespace CrashPasswordSystem.UI.ViewModels
         private IMessageDialogService _messageDialogService;
         //private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
 
-        private DetailViewModelBase _selectedDetailViewModel;
-
         public override bool IsVisible
         {
             get => LoginViewModel != null
                     && LoginViewModel.User != null && LoginViewModel.IsValid;
-        }
-
-        public DetailViewModelBase SelectedDetailViewModel
-        {
-            get => _selectedDetailViewModel;
-            set => base.SetProperty(ref _selectedDetailViewModel, value);
         }
 
         public LoginViewModel LoginViewModel { get; }

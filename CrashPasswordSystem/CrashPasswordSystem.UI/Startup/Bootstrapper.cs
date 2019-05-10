@@ -76,6 +76,7 @@ namespace CrashPasswordSystem.UI.Startup
             catalog.AddModule(typeof(Search.SearchProductsView));
             catalog.AddModule(typeof(ApplicationBar));
             catalog.AddModule(typeof(AddProduct));
+            catalog.AddModule(typeof(ProductDetails));
         }
 
         public T Resolve<T>()

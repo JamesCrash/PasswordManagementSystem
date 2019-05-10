@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
         mc:Ignorable="d" Width="800" Background="White"
-        DataContext="{Binding ProductEdit, UpdateSourceTrigger=PropertyChanged}">
+        DataContext="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

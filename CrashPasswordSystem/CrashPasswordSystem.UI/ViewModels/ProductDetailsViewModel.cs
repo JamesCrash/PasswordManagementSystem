@@ -2,10 +2,13 @@
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
+using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Wrapper;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
@@ -15,13 +18,12 @@ namespace CrashPasswordSystem.UI.ViewModels
         private readonly Func<DataContext> _contextCreator;
 
         #region Props
-        public event EventHandler OnRequestClose;
 
-        private Product _Product;
+        private Product _product;
         public Product Product
         {
-            get { return _Product; }
-            set { _Product = value; }
+            get { return _product; }
+            set { SetProperty(ref _product, value); }
         }
 
         private Product _ProductOriginal;
@@ -44,7 +46,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         public CrashCompany SelectedCompany
         {
             get { return _SelectedCompany; }
-            set { _SelectedCompany = value; OnPropertyChanged(); }
+            set { base.SetProperty(ref _SelectedCompany, value); }
         }
 
         private ProductCategory _SelectedCategory;
@@ -64,21 +66,32 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #endregion
 
-        public ProductDetailsViewModel(Product product, IDependencyContainer container)
+        public ProductDetailsViewModel(IDependencyContainer container)
         {
             _contextCreator = () => container.Resolve<DataContext>();
 
-            Product = product;
-            ProductOriginal = product;
-            QuitCommand = new RelayCommand(Quit);
+            QuitCommand = new RelayCommand(param => OnRequestClose());
             QuitDeleteCommand = new RelayCommand(QuitDelete);
             QuitSaveCommand = new RelayCommand(QuitSave, Validate);
 
-            LoadComboData();
+            EventAggregator = container.Resolve<IEventAggregator>();
         }
 
         #region Load Filters Options
-        public async void LoadComboData()
+
+        protected override bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            var result = base.SetProperty(ref storage, value, propertyName);
+
+            if (result && propertyName == nameof(Product))
+            {
+                LoadComboData();
+            }
+
+            return result;
+        }
+
+        public void LoadComboData()
         {
             using (var dBContext = _contextCreator())
             {
@@ -93,9 +106,12 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Quit Button
-        public async void Quit(object parameter)
+        
+        private void OnRequestClose()
         {
-            OnRequestClose(this, new EventArgs());
+            EventAggregator
+                .GetEvent<CloseEvent>()
+                .Publish(this);
         }
         #endregion
 
@@ -107,7 +123,7 @@ namespace CrashPasswordSystem.UI.ViewModels
                 dBContext.Products.Attach(ProductOriginal);
                 dBContext.Products.Remove(ProductOriginal);
                 dBContext.SaveChanges();
-                OnRequestClose(this, new EventArgs());
+                OnRequestClose();
             }
 
         }
@@ -133,7 +149,7 @@ namespace CrashPasswordSystem.UI.ViewModels
                 p.SupplierID = SelectedSupplier.SupplierID;
 
                 dBContext.SaveChanges();
-                OnRequestClose(this, new EventArgs());
+                OnRequestClose();
             }
         }
         #endregion

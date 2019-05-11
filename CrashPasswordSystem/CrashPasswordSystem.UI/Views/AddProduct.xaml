@@ -1,12 +1,14 @@
-﻿<core:UIModule x:Class="CrashPasswordSystem.UI.Views.AddProduct"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
-        mc:Ignorable="d" Width="800" Background="White"
-        DataContext="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}">
-    <Grid>
+﻿<core:UIModule 
+    x:Class="CrashPasswordSystem.UI.Views.AddProduct"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    mc:Ignorable="d" Background="White" MinWidth="400"
+    DataContext="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}">
+    <Grid Margin="10,0,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -17,7 +19,12 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Content="Add a product" FontSize="20" Background="Blue" Foreground="White" />
+        <Grid Background="Blue">
+            <Label Content="Add a product" FontSize="20" Foreground="White" />
+            <fa:ImageAwesome x:Name="CloseImage" Icon="WindowClose"
+                             Height="25" HorizontalAlignment="Right"
+                             Foreground="White" Margin="2,2,5,2"/>
+        </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
             <Grid.ColumnDefinitions>
@@ -34,12 +41,7 @@
         </Grid>
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <Grid Grid.Row="2" Grid.Column="0" Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0">
+                <StackPanel>
 
                     <Grid Margin="5">
                         <Label Content="Description: "></Label>

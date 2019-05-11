@@ -2,6 +2,7 @@
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.ViewModels;
+using FontAwesome.WPF;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -19,6 +20,8 @@ namespace CrashPasswordSystem.UI.Views
         public AddProduct()
         {
             InitializeComponent();
+            CloseImage.MouseDown += (s, e) => 
+                (DataContext as AddProductViewModel)?.QuitCommand?.Execute(new object());
         }
 
         public IRegionManager RegionManager { get; private set; }

@@ -153,6 +153,11 @@ namespace CrashPasswordSystem.UI.ViewModels
                            .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
         }
 
+        private bool Exists(Product instance)
+        {
+            return Products.Contains(instance) && Products.Any(p => p.ProductID == instance.ProductID);
+        }
+
         #region Methods
 
         private void OnEdit()
@@ -162,7 +167,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public void NotifySave(Product instance)
         {
-            if (!Products.Contains(instance) && !Products.Any(p => p.ProductID == instance.ProductID))
+            if (!Exists(instance))
             {
                 Products.Add(instance);
             }
@@ -176,8 +181,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         private void OnSave(Product instance)
         {
-            if (!Products.Contains(instance)
-                && !Products.Any(model => model.ProductID == instance.ProductID))
+            if (!Exists(instance))
             {
                 Products.Add(instance);
             }

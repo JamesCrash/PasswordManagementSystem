@@ -9,6 +9,8 @@ namespace CrashPasswordSystem.UI.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public ObservableCollection<DetailViewModelBase> DetailViewModels { get; }
+        public IAuthenticationService AuthenticationService { get; set; }
+
         private IMessageDialogService _messageDialogService;
         //private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
 
@@ -35,18 +37,20 @@ namespace CrashPasswordSystem.UI.ViewModels
             LoginViewModel = container.Resolve<LoginViewModel>();
             EventAggregator = container.Resolve<IEventAggregator>();
             HomeViewModel = container.Resolve<HomeViewModel>();
+            AuthenticationService = container.Resolve<IAuthenticationService>();
 
             EventAggregator
                 .GetEvent<LoginEvent>()
                 .Subscribe(LogInOut);
 
             EventAggregator
-                .GetEvent<LogOutEvent>()
+                .GetEvent<LogoutEvent>()
                 .Subscribe(LogInOut);
         }
 
-        private void LogInOut(UserLoginOutEvent e)
+        private void LogInOut(AuthEventArgs e)
         {
+            AuthenticationService.User = e.User;
             RaisePropertyChanged(nameof(IsVisible));
         }
 

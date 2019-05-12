@@ -62,7 +62,8 @@ namespace CrashPasswordSystem.UI.Startup
             builder.Register<ICompanyDataService, CompanyDataService>();
             builder.Register<ICategoryDataService, CategoryDataService>();
             builder.Register<ISupplierDataService, SupplierDataService>();
-            
+            builder.RegisterSingleton<IAuthenticationService, AuthenticationService>();
+
             ViewModelLocationProvider.Register(typeof(MainWindow).ToString(), typeof(MainViewModel));
 
             ViewModelLocationProvider.SetDefaultViewModelFactory((type) =>

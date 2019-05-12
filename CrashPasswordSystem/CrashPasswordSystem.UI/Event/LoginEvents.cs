@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CrashPasswordSystem.Models;
 using Prism.Events;
 
 namespace CrashPasswordSystem.UI.Event
 {
-    public class LoginEvent : PubSubEvent<UserLoginOutEvent>
+    public class LoginEvent : PubSubEvent<AuthEventArgs>
     {
     }
 
-    public class LogOutEvent : PubSubEvent<UserLoginOutEvent>
+    public class LogoutEvent : PubSubEvent<AuthEventArgs>
     {
 
     }
 
-    public class UserLoginOutEvent
+    public class AuthEventArgs
     {
+        public User User { get; set; }
         public bool Valid { get; set; }  
     }
 }

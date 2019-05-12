@@ -115,8 +115,9 @@ namespace CrashPasswordSystem.UI.ViewModels
 
                     EventAggregator
                         .GetEvent<LoginEvent>()
-                        .Publish(new UserLoginOutEvent
+                        .Publish(new AuthEventArgs
                         {
+                            User = user,
                             Valid = IsValid
                         });
                 }
@@ -134,8 +135,9 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             EventAggregator
                 .GetEvent<LoginEvent>()
-                .Publish(new UserLoginOutEvent
+                .Publish(new AuthEventArgs
                 {
+                    User = User,
                     Valid = false
                 });
 

@@ -12,6 +12,7 @@ namespace CrashPasswordSystem.UI.Event
     public class SaveEvent : PubSubEvent<object>
     {
     }
+
     public class SaveEvent<T> : PubSubEvent<T>
         where T : class
     {

@@ -1,4 +1,5 @@
 ﻿using CrashPasswordSystem.BusinessLogic.Validation;
+using CrashPasswordSystem.Core;
 using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Command;
@@ -15,8 +16,6 @@ namespace CrashPasswordSystem.UI.ViewModels
     public class AddProductViewModel : NotifyDataErrorInfoBase
     {
         private readonly Func<DataContext> _contextCreator;
-
-        public IDependencyContainer Container { get; set; }
 
         public AddProductViewModel(IDependencyContainer container)
         {
@@ -47,7 +46,10 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         #region Props
-        public User CurrentUser { get; set; }
+
+        public IDependencyContainer Container { get; set; }
+
+        public User CurrentUser { get => Container.Resolve<IAuthenticationService>()?.User; } 
 
         private Product _Product;
 
@@ -113,6 +115,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             Product.ProductCategory = SelectedCategory;
             Product.Supplier = SelectedSupplier;
             Product.Company = SelectedCompany;
+            Product.Staff = CurrentUser;
 
             if (!Validate())
             {

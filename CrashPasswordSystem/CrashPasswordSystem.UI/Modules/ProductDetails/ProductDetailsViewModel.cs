@@ -112,6 +112,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             {
                 dBContext.Products.Attach(ProductOriginal);
                 dBContext.Products.Remove(ProductOriginal);
+
                 await dBContext.SaveChangesAsync();
 
                 OnRequestClose();
@@ -150,9 +151,6 @@ namespace CrashPasswordSystem.UI.ViewModels
                 await dBContext.SaveChangesAsync();
 
                 TransferValues(Product, ProductOriginal);
-
-                EventAggregator.GetEvent<SaveEvent<Product>>()
-                               .Publish(ProductOriginal);
 
                 OnRequestClose();
             }

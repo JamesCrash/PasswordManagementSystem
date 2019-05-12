@@ -50,25 +50,25 @@
                         <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Username: "></Label>
+                        <Label Content="Username:"></Label>
                         <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Password: "></Label>
+                        <Label Content="Password:"></Label>
                         <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
 
                     <Grid Margin="5">
-                        <Label Content="Expires: "></Label>
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Label Content="Expires:"></Label>
+                        <DatePicker  Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid Margin="5">
-                        <Label Content="Category: "></Label>
+                        <Label Content="Category:" />
                         <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedItem="{Binding SelectedCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Company: "></Label>
+                        <Label Content="Company:" />
                         <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedItem="{Binding SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">

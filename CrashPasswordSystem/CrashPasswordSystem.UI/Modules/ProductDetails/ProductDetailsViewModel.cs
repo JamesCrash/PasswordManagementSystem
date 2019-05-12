@@ -134,19 +134,21 @@ namespace CrashPasswordSystem.UI.ViewModels
             }
             using (var dBContext = _contextCreator())
             {
-                var p = dBContext.Products.Where(s => s.ProductID == Product.ProductID).SingleOrDefault();
+                var model = dBContext.Products
+                                 .Where(s => s.ProductID == Product.ProductID)
+                                 .FirstOrDefault();
 
-                p.PCID = Product.PCID;
-                p.CCID = Product.CCID;
-                p.SupplierID = Product.SupplierID;
-                p.ProductDescription = Product.ProductDescription;
-                p.ProductURL = Product.ProductURL;
-                p.ProductUsername = Product.ProductUsername;
-                p.ProductPassword = Product.ProductPassword;
-                p.ProductExpiry = Product.ProductExpiry;
-                p.CCID = SelectedCompany.CCID;
-                p.PCID = SelectedCategory.PCID;
-                p.SupplierID = SelectedSupplier.SupplierID;
+                model.PCID = Product.PCID;
+                model.CCID = Product.CCID;
+                model.SupplierID = Product.SupplierID;
+                model.ProductDescription = Product.ProductDescription;
+                model.ProductURL = Product.ProductURL;
+                model.ProductUsername = Product.ProductUsername;
+                model.ProductPassword = Product.ProductPassword;
+                model.ProductExpiry = Product.ProductExpiry;
+                model.CCID = SelectedCompany.CCID;
+                model.PCID = SelectedCategory.PCID;
+                model.SupplierID = SelectedSupplier.SupplierID;
 
                 await dBContext.SaveChangesAsync();
 
@@ -191,8 +193,11 @@ namespace CrashPasswordSystem.UI.ViewModels
             toModel.ProductUsername = fromModel.ProductUsername;
             toModel.ProductPassword = fromModel.ProductPassword;
             toModel.ProductExpiry = fromModel.ProductExpiry;
-            toModel.StaffID = fromModel.StaffID;
             toModel.PCID = fromModel.PCID;
+            toModel.ProductCategory = fromModel.ProductCategory;
+            toModel.Staff = fromModel.Staff;
+            toModel.StaffID = fromModel.StaffID;
+            toModel.ProductDateAdded = fromModel.ProductDateAdded;
         }
 
         private void OnRequestClose()

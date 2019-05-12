@@ -28,7 +28,9 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Products.ToListAsync();
+                return await ctx.Products
+                                .Include(b => b.Staff)
+                                .ToListAsync();
             }
         }
     }

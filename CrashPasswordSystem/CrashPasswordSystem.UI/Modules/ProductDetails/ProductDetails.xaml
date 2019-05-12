@@ -62,12 +62,12 @@
                     </Grid>
                     <Grid Margin="5">
                         <Label Content="Expires:" />
-                        <DatePicker  Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
+                        <DatePicker Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid Margin="5">
                         <Label Content="Added By:" />
-                        <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.StaffID, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBox Width="200" IsEnabled="False" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.Staff.UserEmail, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
                         <Label Content="Category:" />

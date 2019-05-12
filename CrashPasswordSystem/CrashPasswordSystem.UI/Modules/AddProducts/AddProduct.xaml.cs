@@ -2,13 +2,11 @@
 using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.ViewModels;
-using FontAwesome.WPF;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 using System;
-using System.Linq;
 
 namespace CrashPasswordSystem.UI.Views
 {
@@ -42,9 +40,6 @@ namespace CrashPasswordSystem.UI.Views
             EventAggregator.GetEvent<CloseEvent>()
                            .Subscribe(OnClose, keepSubscriberReferenceAlive: true);
 
-            EventAggregator.GetEvent<SaveEvent<Product>>()
-                           .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
-
             EventAggregator.GetEvent<CloseEvent>()
                            .Subscribe(OnClose, keepSubscriberReferenceAlive: true);
         }
@@ -55,11 +50,6 @@ namespace CrashPasswordSystem.UI.Views
             {
                 this.RemoveFromRegion(TargetRegion, RegionManager);
             }
-        }
-
-        private void OnSave(Product instance)
-        {
-            Container.Resolve<HomeViewModel>().NotifySave(instance);
         }
 
         private void OnEdit(object instance)

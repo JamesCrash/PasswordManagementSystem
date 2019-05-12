@@ -4,9 +4,7 @@ using CrashPasswordSystem.UI.ViewModels;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Regions;
-using System;
-using System.ComponentModel;
-using System.Windows;
+
 namespace CrashPasswordSystem.UI.Views
 {
     partial class ProductDetails
@@ -58,7 +56,7 @@ namespace CrashPasswordSystem.UI.Views
 
             var context = Container.Resolve<ProductDetailsViewModel>();
 
-            context.Product = product;
+            context.ProductOriginal = product;
             DataContext = context;
 
             if (this.IsActiveOnTargetRegion(RegionManager, TargetRegion))

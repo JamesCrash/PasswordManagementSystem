@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
@@ -148,6 +149,9 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             LoadFilters();
             LoadDataAsync();
+
+            EventAggregator.GetEvent<SaveEvent<Product>>()
+                           .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
         }
 
         #region Methods
@@ -169,6 +173,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             var p = await _ProductDataService.GetAllAsync();
             Products = new ObservableCollection<Product>(p);
+        }
+
+        private void OnSave(Product instance)
+        {
+            CollectionViewSource.GetDefaultView(Products)?.Refresh();
         }
 
         #endregion

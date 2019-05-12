@@ -19,18 +19,13 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         #region Props
 
-        private Product _product;
-        public Product Product
-        {
-            get { return _product; }
-            set { SetProperty(ref _product, value); }
-        }
+        public Product Product { get; private set; }
 
         private Product _ProductOriginal;
         public Product ProductOriginal
         {
             get { return _ProductOriginal; }
-            set { _ProductOriginal = value; }
+            set { SetProperty(ref _ProductOriginal, value); }
         }
 
         public ICommand QuitCommand { get; set; }
@@ -72,9 +67,11 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             QuitCommand = new RelayCommand(param => OnRequestClose());
             QuitDeleteCommand = new RelayCommand(QuitDelete);
-            QuitSaveCommand = new RelayCommand(QuitSave, Validate);
+            QuitSaveCommand = new RelayCommand(QuitSave);
 
             EventAggregator = container.Resolve<IEventAggregator>();
+
+            Product = new Product();
         }
 
         #region Load Filters Options
@@ -83,35 +80,28 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             var result = base.SetProperty(ref storage, value, propertyName);
 
-            if (result && propertyName == nameof(Product))
+            if (result && propertyName == nameof(ProductOriginal))
             {
                 LoadComboData();
+
+                TransferValues(ProductOriginal, Product);
             }
 
             return result;
         }
+
 
         public void LoadComboData()
         {
             using (var dBContext = _contextCreator())
             {
                 Companies = dBContext.CrashCompanies.ToList();
-                SelectedCompany = dBContext.CrashCompanies.Where(s => s.CCID == Product.CCID).FirstOrDefault();
+                SelectedCompany = dBContext.CrashCompanies.Where(s => s.CCID == ProductOriginal.CCID).FirstOrDefault();
                 Categories = dBContext.ProductCategories.ToList();
-                SelectedCategory = dBContext.ProductCategories.Where(s => s.PCID == Product.PCID).FirstOrDefault();
+                SelectedCategory = dBContext.ProductCategories.Where(s => s.PCID == ProductOriginal.PCID).FirstOrDefault();
                 Suppliers = dBContext.Suppliers.ToList();
-                SelectedSupplier = dBContext.Suppliers.Where(s => s.SupplierID == Product.SupplierID).FirstOrDefault();
+                SelectedSupplier = dBContext.Suppliers.Where(s => s.SupplierID == ProductOriginal.SupplierID).FirstOrDefault();
             }
-        }
-        #endregion
-
-        #region Quit Button
-        
-        private void OnRequestClose()
-        {
-            EventAggregator
-                .GetEvent<CloseEvent>()
-                .Publish(this);
         }
         #endregion
 
@@ -122,7 +112,8 @@ namespace CrashPasswordSystem.UI.ViewModels
             {
                 dBContext.Products.Attach(ProductOriginal);
                 dBContext.Products.Remove(ProductOriginal);
-                dBContext.SaveChanges();
+                await dBContext.SaveChangesAsync();
+
                 OnRequestClose();
             }
 
@@ -132,6 +123,14 @@ namespace CrashPasswordSystem.UI.ViewModels
         #region Quit and Save Button
         public async void QuitSave(object parameter)
         {
+            Product.ProductCategory = SelectedCategory;
+            Product.Supplier = SelectedSupplier;
+            Product.Company = SelectedCompany;
+
+            if (!Validate())
+            {
+                return;
+            }
             using (var dBContext = _contextCreator())
             {
                 var p = dBContext.Products.Where(s => s.ProductID == Product.ProductID).SingleOrDefault();
@@ -148,18 +147,57 @@ namespace CrashPasswordSystem.UI.ViewModels
                 p.PCID = SelectedCategory.PCID;
                 p.SupplierID = SelectedSupplier.SupplierID;
 
-                dBContext.SaveChanges();
+                await dBContext.SaveChangesAsync();
+
+                TransferValues(Product, ProductOriginal);
+
+                EventAggregator.GetEvent<SaveEvent<Product>>()
+                               .Publish(ProductOriginal);
+
                 OnRequestClose();
             }
         }
+
+        public bool Validate()
+        {
+            if (Product == null)
+            {
+                return false;
+            }
+            SetErrors(ProductDetailsValidation.Validate(Product));
+            if (Errors.Count != 0) return false;
+            else return true;
+        }
         #endregion
 
-        #region Validation
+        #region Methods
+
         public bool Validate(object parameter)
         {
             SetErrors(ProductDetailsValidation.Validate(Product));
             if (Errors.Count != 0 ) return false;
             else return true;
+        }
+
+        private static void TransferValues(Product fromModel, Product toModel)
+        {
+            toModel.ProductID = fromModel.ProductID;
+            toModel.CCID = fromModel.CCID;
+            toModel.SupplierID = fromModel.SupplierID;
+            toModel.ProductDescription = fromModel.ProductDescription;
+            toModel.ProductURL = fromModel.ProductURL;
+            toModel.ProductUsername = fromModel.ProductUsername;
+            toModel.ProductPassword = fromModel.ProductPassword;
+            toModel.ProductExpiry = fromModel.ProductExpiry;
+            toModel.StaffID = fromModel.StaffID;
+            toModel.PCID = fromModel.PCID;
+        }
+
+        private void OnRequestClose()
+        {
+            EventAggregator
+                .GetEvent<CloseEvent>()
+                .Publish(this);
         }
 
         #endregion

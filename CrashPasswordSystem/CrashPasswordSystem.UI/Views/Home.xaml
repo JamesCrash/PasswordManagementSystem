@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" 
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        Height="450" MinWidth="800">
+        MinHeight="450" MinWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -19,19 +19,19 @@
             <DataGrid ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
-                      Margin="10,10,10,80">
+                      Margin="10,10,0,80">
                 <DataGrid.Columns>
                     <!--<DataGridTextColumn Header="ID" IsReadOnly="True" Visibility="Hidden" Binding="{Binding ProductID}"></DataGridTextColumn>-->
-                    <DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding ProductDescription}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="URL" IsReadOnly="True" Binding="{Binding ProductUrl}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding ProductDescription}" Width="*" />
+                    <DataGridTextColumn Header="URL" IsReadOnly="True" Binding="{Binding ProductURL}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Username" IsReadOnly="True" Binding="{Binding ProductUsername}"></DataGridTextColumn>
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="50">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Background="Green" Foreground="White" Margin="2" 
                                         Command="{Binding Path=DataContext.OpenDetailsCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}"
                                         CommandParameter="{Binding}"
-                                        Content="Details"
+                                        Content="Edit"
                                         />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -43,14 +43,15 @@
                 <Button Content="Companies" Width="100" Margin="5"></Button>
                 <Button Content="Categories" Width="100" Margin="5"></Button>
             </StackPanel>-->
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button Background="Green" Foreground="White" Width="100" Margin="10,10,20,15" 
-                    Command="{Binding OpenAddProductCommand}">
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                        Margin="0">
+                <Button Background="Green" Foreground="White" Padding="15" Margin="0,5,10,5"
+                        Command="{Binding OpenAddProductCommand}">
                     <Button.Content>
                         <StackPanel Orientation="Vertical">
                             <fa:ImageAwesome x:Name="CloseImage" Icon="PlusCircle"
                                             Height="25" HorizontalAlignment="Center"
-                                            Foreground="White" Margin="2,5,5,10"
+                                            Foreground="White"
                                             />
                             <TextBlock Text="Add new product" />
                         </StackPanel>

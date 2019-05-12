@@ -6,6 +6,10 @@
     DispatcherUnhandledException="Application_DispatcherUnhandledException">
     <prism:PrismApplication.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/SharedResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
             <Style x:Key="GlyphText">

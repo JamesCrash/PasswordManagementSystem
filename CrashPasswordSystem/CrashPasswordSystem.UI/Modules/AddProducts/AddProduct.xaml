@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
-    mc:Ignorable="d" Background="White" MinWidth="400"
+    mc:Ignorable="d" Background="Transparent" MinWidth="400"
     DataContext="{Binding SelectedDetail, UpdateSourceTrigger=PropertyChanged}">
     <Grid Margin="10,0,0,10">
         <Grid.RowDefinitions>
@@ -19,11 +19,9 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid Background="Blue">
+        <Grid Background="DarkBlue">
             <Label Content="Add a product" FontSize="20" Foreground="White" />
-            <fa:ImageAwesome x:Name="CloseImage" Icon="WindowClose"
-                             Height="25" HorizontalAlignment="Right"
-                             Foreground="White" Margin="2,2,5,2"/>
+            <fa:ImageAwesome x:Name="CloseImage" Style="{StaticResource CloseButtonStyle}" />
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">

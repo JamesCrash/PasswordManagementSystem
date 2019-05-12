@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
-    mc:Ignorable="d" Width="800" Background="White">
-    <Grid>
+    xmlns:fa="http://schemas.fontawesome.io/icons/"
+    mc:Ignorable="d" MinWidth="400" Background="Transparent">
+    <Grid Margin="10,0,0,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="100"></RowDefinition>
@@ -17,9 +18,11 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Content="Product Details" FontSize="20" Background="Blue" Foreground="White"></Label>
-
-        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
+        <Grid Background="DarkBlue">
+            <Label Content="Product Details" FontSize="20" Foreground="White"></Label>
+            <fa:ImageAwesome x:Name="CloseImage" Style="{StaticResource CloseButtonStyle}" />
+    </Grid>
+    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -36,11 +39,6 @@
 
         <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
                 <StackPanel Grid.Column="0">
                     <Grid Margin="5">
                         <Label Content="Product ID: "></Label>

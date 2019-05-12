@@ -20,6 +20,7 @@ namespace CrashPasswordSystem.UI.Views
         public AddProduct()
         {
             InitializeComponent();
+
             CloseImage.MouseDown += (s, e) => 
                 (DataContext as AddProductViewModel)?.QuitCommand?.Execute(new object());
         }

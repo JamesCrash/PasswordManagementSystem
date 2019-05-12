@@ -14,6 +14,9 @@ namespace CrashPasswordSystem.UI.Views
         public ProductDetails()
         {
             InitializeComponent();
+
+            CloseImage.MouseDown += (s, e) =>
+                (DataContext as ProductDetailsViewModel)?.QuitCommand?.Execute(new object());
         }
 
         public IRegionManager RegionManager { get; private set; }

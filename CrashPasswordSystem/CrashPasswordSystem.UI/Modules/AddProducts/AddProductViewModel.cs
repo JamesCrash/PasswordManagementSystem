@@ -26,7 +26,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             Product = new Product();
             LoadComboData();
             QuitCommand = new RelayCommand(Quit);
-            QuitSaveCommand = new RelayCommand(QuitAdd);
+            QuitSaveCommand = new RelayCommand(QuitSave);
 
             EventAggregator = container.Resolve<IEventAggregator>();
         }
@@ -37,12 +37,17 @@ namespace CrashPasswordSystem.UI.ViewModels
             {
                 return false;
             }
+            if (CurrentUser == null)
+            {
+                return false;
+            }
             SetErrors(ProductDetailsValidation.Validate(Product));
             if (Errors.Count != 0) return false;
             else return true;
         }
 
         #region Props
+        public User CurrentUser { get; set; }
 
         private Product _Product;
 
@@ -84,7 +89,7 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Load Filters Options
-        public async void LoadComboData()
+        public void LoadComboData()
         {
             using (var dBContext = _contextCreator())
             {
@@ -96,7 +101,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Quit Button
-
         public void Quit(object parameter)
         {
             EventAggregator.GetEvent<CloseEvent>().Publish(this);
@@ -104,8 +108,12 @@ namespace CrashPasswordSystem.UI.ViewModels
         #endregion
 
         #region Quit and Add Button
-        public async void QuitAdd(object parameter)
+        public async void QuitSave(object parameter)
         {
+            Product.ProductCategory = SelectedCategory;
+            Product.Supplier = SelectedSupplier;
+            Product.Company = SelectedCompany;
+
             if (!Validate())
             {
                 return;
@@ -113,25 +121,39 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             using (var dBContext = _contextCreator())
             {
-                var p = new Product();
+                var model = new Product();
                 
-                p.ProductDescription = Product.ProductDescription;
-                p.ProductURL = Product.ProductURL;
-                p.ProductUsername = Product.ProductUsername;
-                p.ProductPassword = Product.ProductPassword;
-                p.ProductExpiry = Product.ProductExpiry;
-                p.CCID = SelectedCompany.CCID;
-                p.PCID = SelectedCategory.PCID;
-                p.SupplierID = SelectedSupplier.SupplierID;
-                p.StaffID = 1;
-                p.ProductDateAdded = DateTime.Now;
+                model.ProductDescription = Product.ProductDescription;
+                model.ProductURL = Product.ProductURL;
+                model.ProductUsername = Product.ProductUsername;
+                model.ProductPassword = Product.ProductPassword;
+                model.ProductExpiry = Product.ProductExpiry;
+                model.CCID = SelectedCompany.CCID;
+                model.PCID = SelectedCategory.PCID;
+                model.SupplierID = SelectedSupplier.SupplierID;
+                model.ProductDateAdded = DateTime.Now;
+                model.StaffID = CurrentUser.UserID;
 
-                dBContext.Products.Add(p);
+                dBContext.Products.Add(model);
+
                 await dBContext.SaveChangesAsync();
+
+                Product = model;
             }
 
-            EventAggregator.GetEvent<CloseEvent>().Publish(this);
+            EventAggregator.GetEvent<SaveEvent<Product>>()
+                               .Publish(Product);
+
+            OnRequestClose();
         }
+
+        private void OnRequestClose()
+        {
+            EventAggregator
+                .GetEvent<CloseEvent>()
+                .Publish(this);
+        }
+
         #endregion
     }
 }

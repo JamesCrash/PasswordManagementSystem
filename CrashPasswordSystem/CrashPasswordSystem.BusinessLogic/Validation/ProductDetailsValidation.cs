@@ -26,9 +26,6 @@ namespace CrashPasswordSystem.BusinessLogic.Validation
             if (product == null)
                 list.Add(nameof(Product), new List<string> { "Product cannot be null" });
 
-            if (product.ProductID == 0)
-                list.Add(nameof(product.ProductID), new List<string> { "Product ID cannot be null" });
-
             if (product.ProductCategory == null)
                 list.Add(nameof(product.ProductCategory), new List<string> { "Category cannot be null" });
 

@@ -65,15 +65,15 @@
 
                     <Grid Margin="5">
                         <Label Content="Category: "></Label>
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedItem="{Binding Product.ProductCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedItem="{Binding SelectedCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
                         <Label Content="Company: "></Label>
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedItem="{Binding Product.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedItem="{Binding SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
                         <Label Content="Supplier: "></Label>
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedItem="{Binding Product.Supplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedItem="{Binding SelectedSupplier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </StackPanel>

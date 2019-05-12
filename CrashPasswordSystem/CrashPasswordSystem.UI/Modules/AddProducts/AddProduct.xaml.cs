@@ -13,14 +13,14 @@ namespace CrashPasswordSystem.UI.Views
     [Module(ModuleName = "AddProduct", OnDemand = true)]
     public partial class AddProduct : UIModule
     {
+        public AddProductViewModel Context => DataContext as AddProductViewModel;
         public override string TargetRegion => Startup.Regions.AsideSection;
 
         public AddProduct()
         {
             InitializeComponent();
 
-            CloseImage.MouseDown += (s, e) => 
-                (DataContext as AddProductViewModel)?.QuitCommand?.Execute(new object());
+            CloseImage.MouseDown += (s, e) => Context?.QuitCommand?.Execute(new object());
         }
 
         public IRegionManager RegionManager { get; private set; }

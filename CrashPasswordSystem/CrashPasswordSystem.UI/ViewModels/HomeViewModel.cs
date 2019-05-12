@@ -4,7 +4,6 @@ using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI.Command;
 using CrashPasswordSystem.UI.Event;
-using CrashPasswordSystem.UI.Views;
 using CrashPasswordSystem.UI.Wrapper;
 using Prism.Commands;
 using Prism.Events;
@@ -171,12 +170,17 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public async void LoadDataAsync()
         {
-            var p = await _ProductDataService.GetAllAsync();
-            Products = new ObservableCollection<Product>(p);
+            var data = await _ProductDataService.GetAllAsync();
+            Products = new ObservableCollection<Product>(data);
         }
 
         private void OnSave(Product instance)
         {
+            if (!Products.Contains(instance)
+                && !Products.Any(model => model.ProductID == instance.ProductID))
+            {
+                Products.Add(instance);
+            }
             CollectionViewSource.GetDefaultView(Products)?.Refresh();
         }
 
@@ -239,6 +243,7 @@ namespace CrashPasswordSystem.UI.ViewModels
             SelectedCategory = null;
             SelectedSupplier = null;
             SearchBox = null;
+
             LoadDataAsync();
         }
         #endregion

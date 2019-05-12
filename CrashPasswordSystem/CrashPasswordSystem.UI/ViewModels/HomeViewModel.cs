@@ -151,6 +151,19 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             EventAggregator.GetEvent<SaveEvent<Product>>()
                            .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
+
+            EventAggregator.GetEvent<DeleteEvent<Product>>()
+                           .Subscribe(OnDelete, keepSubscriberReferenceAlive: true);
+        }
+
+        private void OnDelete(Product instance)
+        {
+            if (!Exists(instance))
+            {
+                return;
+            }
+            Products.Remove(instance);
+            CollectionViewSource.GetDefaultView(Products)?.Refresh();
         }
 
         private bool Exists(Product instance)
@@ -159,11 +172,6 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         #region Methods
-
-        private void OnEdit()
-        {
-            OpenNewProduct(null);
-        }
 
         public void NotifySave(Product instance)
         {

@@ -152,6 +152,9 @@ namespace CrashPasswordSystem.UI.ViewModels
 
                 TransferValues(Product, ProductOriginal);
 
+                EventAggregator.GetEvent<SaveEvent<Product>>()
+                                   .Publish(ProductOriginal);
+
                 OnRequestClose();
             }
         }
@@ -179,6 +182,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         private static void TransferValues(Product fromModel, Product toModel)
         {
+            toModel.ProductDescription = fromModel.ProductDescription;
             toModel.ProductID = fromModel.ProductID;
             toModel.CCID = fromModel.CCID;
             toModel.SupplierID = fromModel.SupplierID;

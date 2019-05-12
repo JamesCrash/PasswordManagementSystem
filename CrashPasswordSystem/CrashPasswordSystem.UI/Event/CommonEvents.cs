@@ -17,4 +17,9 @@ namespace CrashPasswordSystem.UI.Event
         where T : class
     {
     }
+
+    public class DeleteEvent<T> : PubSubEvent<T>
+        where T : class
+    {
+    }
 }

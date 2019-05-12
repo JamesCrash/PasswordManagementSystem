@@ -40,26 +40,25 @@
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <Grid Grid.Row="2" Grid.Column="0" Margin="10">
                 <StackPanel>
-
                     <Grid Margin="5">
-                        <Label Content="Description: "></Label>
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Label Content="Description:" />
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
                         <Label Content="URL: "></Label>
                         <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Username:"></Label>
+                        <Label Content="Username:" />
                         <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Password:"></Label>
+                        <Label Content="Password:" />
                         <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
 
                     <Grid Margin="5">
-                        <Label Content="Expires:"></Label>
+                        <Label Content="Expires:" />
                         <DatePicker  Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 

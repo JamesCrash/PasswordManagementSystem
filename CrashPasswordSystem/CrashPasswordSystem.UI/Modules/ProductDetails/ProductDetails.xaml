@@ -41,52 +41,44 @@
             <Grid>
                 <StackPanel Grid.Column="0">
                     <Grid Margin="5">
-                        <Label Content="Product ID: "></Label>
-                        <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductID, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Label Content="Description:" />
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Description: "></Label>
-                        <StackPanel>
-                            <TextBox Validation.ErrorTemplate="{x:Null}" Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnDataErrors=True}"></TextBox>
-                            <TextBlock  FontWeight="Medium" Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=ProductDescription}"/>
-                        </StackPanel>
-
+                        <Label Content="URL:" />
+                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="URL: "></Label>
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Label Content="Username:" />
+                        <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Username: "></Label>
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Password: "></Label>
+                        <Label Content="Password:" />
                         <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Date Added: "></Label>
+                        <Label Content="Date Added:" />
                         <TextBox  Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductDateAdded, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Expires: "></Label>
+                        <Label Content="Expires:" />
                         <DatePicker  Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid Margin="5">
-                        <Label Content="Added By: "></Label>
+                        <Label Content="Added By:" />
                         <TextBox Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.StaffID, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Category: "></Label>
+                        <Label Content="Category:" />
                         <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Company: "></Label>
+                        <Label Content="Company:" />
                         <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
                     </Grid>
                     <Grid Margin="5">
-                        <Label Content="Supplier: "></Label>
+                        <Label Content="Supplier:" />
                         <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}"></ComboBox>
                     </Grid>
                 </StackPanel>

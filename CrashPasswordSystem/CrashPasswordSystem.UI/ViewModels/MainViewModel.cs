@@ -1,8 +1,10 @@
 ﻿using CrashPasswordSystem.Core;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.Views.Services;
+using Prism.Commands;
 using Prism.Events;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
@@ -13,6 +15,8 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         private IMessageDialogService _messageDialogService;
         //private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
+
+        public ICommand ExitCommand { get; set; }
 
         public override bool IsVisible
         {
@@ -46,6 +50,8 @@ namespace CrashPasswordSystem.UI.ViewModels
             EventAggregator
                 .GetEvent<LogoutEvent>()
                 .Subscribe(LogInOut);
+
+            ExitCommand = new DelegateCommand(() => App.Current?.Shutdown());
         }
 
         private void LogInOut(AuthEventArgs e)

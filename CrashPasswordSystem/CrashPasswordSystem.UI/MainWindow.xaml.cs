@@ -1,6 +1,5 @@
-﻿using System.Windows;
-using CrashPasswordSystem.UI.Event;
-using CrashPasswordSystem.UI.ViewModels;
+﻿using CrashPasswordSystem.UI.ViewModels;
+using System.Windows;
 
 namespace CrashPasswordSystem.UI
 {

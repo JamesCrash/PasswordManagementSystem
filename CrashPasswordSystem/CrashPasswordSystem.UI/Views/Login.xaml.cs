@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using CrashPasswordSystem.UI.ViewModels;
+using System.Windows.Controls;
 
 namespace CrashPasswordSystem.UI.Views
 {
@@ -7,28 +8,15 @@ namespace CrashPasswordSystem.UI.Views
     /// </summary>
     public partial class Login : UserControl
     {
+        LoginViewModel Context => ((LoginViewModel)DataContext);
         public Login()
         {
             InitializeComponent();
 
-
-            //_viewModel = viewModel;
-            //DataContext = _viewModel;
-
-            //var vm = new LoginViewModel();
-            //Login login = new Login
-            //{
-            //    DataContext = vm
-            //};
-
-            //_viewModel.OnRequestClose += (s, e) => this.Close();
-           // DataContext = vm;
-            //login.ShowDialog();
-
-
-
+            Loaded += (s, e) => {
+                PasswordBox.Password = Context?.userWrap.Password;
+                PasswordBox.PasswordChanged += (p, a) => Context.userWrap.Password = PasswordBox.Password;
+            };
         }
-
-
     }
 }

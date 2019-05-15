@@ -72,9 +72,11 @@ namespace CrashPasswordSystem.UI.ViewModels
         {
             IsVisable = "Hidden";
 
+#if DEBUG
             userWrap.UserEmail = "nial.mcshane@crashservices.com";
             userWrap.Password = "Password1";
 
+#endif
             userWrap.PropertyChanged += (s, e) =>
             {
                 userWrap.GetErrors(e.PropertyName);

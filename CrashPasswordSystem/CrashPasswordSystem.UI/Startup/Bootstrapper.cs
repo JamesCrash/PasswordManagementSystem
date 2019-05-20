@@ -16,7 +16,7 @@ namespace CrashPasswordSystem.UI.Startup
 {
     public static class Regions
     {
-        public const string TopMiddleRegion = "TopMiddleRegion";
+        public const string MainContentSection = "MainContentSection";
         public const string ApplicationBar = "ApplicationBarRegion";
         public const string AsideSection = "AsideSection";
     }

@@ -16,7 +16,7 @@ namespace CrashPasswordSystem.UI.Search
         {
             var regionManager = containerProvider.Resolve<IRegionManager>();
 
-            regionManager.AddToRegion(Startup.Regions.TopMiddleRegion, this);
+            regionManager.AddToRegion(Startup.Regions.MainContentSection, this);
         }
     }
 }

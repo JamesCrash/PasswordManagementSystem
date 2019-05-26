@@ -135,10 +135,13 @@ namespace UnitTests
 
             dataContext.SaveChanges();
 
-            viewModel.FilterData("SearchBox", "product 1");
+            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_PRODUCT_NAME, "product 1");
             Assert.Equal(2, viewModel.Products.Count);
 
-            viewModel.FilterData("SelectedCompany", company2.CCName);
+            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_COMPANY, company2.CCName);
+            Assert.Equal(2, viewModel.Products.Count);
+
+            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_SUPPLIER, company2.CCName);
             Assert.Equal(2, viewModel.Products.Count);
         }
     }

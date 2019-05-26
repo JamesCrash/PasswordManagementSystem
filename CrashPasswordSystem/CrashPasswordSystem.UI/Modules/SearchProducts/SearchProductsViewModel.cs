@@ -25,6 +25,11 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
         private ICategoryDataService _CategoryDataService;
         private ICompanyDataService _CompanyDataService;
 
+        public const string FILTER_BY_PRODUCT_NAME = "SearchBox";
+        public const string FILTER_BY_COMPANY = "SelectedCompany";
+        public const string FILTER_BY_SUPPLIER = "SelectedSupplier";
+        public const string FILTER_BY_CATEGORY = "SelectedCategory";
+
         #region Props
 
         private ObservableCollection<Product> _products;
@@ -132,7 +137,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
         public override bool IsVisible => true;
 
         public IDependencyContainer DependencyContainer { get; private set; }
-
+      
         #endregion
 
         public SearchProductsViewModel(IDependencyContainer container)
@@ -210,11 +215,12 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             Categories = await _CategoryDataService.GetAllDesctiption();
             Suppliers = await _SupplierDataService.GetAllDesctiption();
         }
+
         public void FilterData(string filter, string value)
         {
             using (var dBContext = _contextCreator())
             {
-                if (filter == "SelectedCompany")
+                if (filter == FILTER_BY_SUPPLIER)
                 {
                     var id = dBContext.CrashCompanies.Where(c => c.CCName == value).Select(c => c.CCID).FirstOrDefault();
                     var p = dBContext.Products.Where(s => s.CCID == id).ToList();
@@ -223,7 +229,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                     SelectedCategory = null;
                     SearchBox = null;
                 }
-                else if (filter == "SelectedCategory")
+                else if (filter == FILTER_BY_CATEGORY)
                 {
                     var id = dBContext.ProductCategories.Where(c => c.PCName == value).Select(c => c.PCID).FirstOrDefault();
                     var p = dBContext.Products.Where(s => s.PCID == id).ToList();
@@ -232,7 +238,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                     SelectedSupplier = null;
                     SearchBox = null;
                 }
-                else if (filter == "SelectedSupplier")
+                else if (filter == FILTER_BY_SUPPLIER)
                 {
                     var id = dBContext.Suppliers.Where(c => c.SupplierName == value).Select(c => c.SupplierID).FirstOrDefault();
                     var p = dBContext.Products.Where(s => s.SupplierID == id).ToList();
@@ -241,7 +247,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                     SelectedCategory = null;
                     SearchBox = null;
                 }
-                else if (filter == "SearchBox")
+                else if (filter == FILTER_BY_PRODUCT_NAME)
                 {
                     var p = dBContext.Products.Where(s => s.ProductDescription.Contains(value)).ToList();
                     Products = new ObservableCollection<Product>(p);

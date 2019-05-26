@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.Core;
 using CrashPasswordSystem.UI.Event;
+using CrashPasswordSystem.UI.Search.SearchProducts;
 using CrashPasswordSystem.UI.Views.Services;
 using Prism.Commands;
 using Prism.Events;
@@ -26,8 +27,8 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         public LoginViewModel LoginViewModel { get; }
 
-        private HomeViewModel _homeViewModel;
-        public HomeViewModel HomeViewModel
+        private ViewModelBase _homeViewModel;
+        public ViewModelBase HomeViewModel
         {
             get => _homeViewModel;
             set => base.SetProperty(ref _homeViewModel, value);
@@ -40,7 +41,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
             LoginViewModel = container.Resolve<LoginViewModel>();
             EventAggregator = container.Resolve<IEventAggregator>();
-            HomeViewModel = container.Resolve<HomeViewModel>();
+            HomeViewModel = container.Resolve<SearchProductsViewModel>();
             AuthenticationService = container.Resolve<IAuthenticationService>();
 
             EventAggregator

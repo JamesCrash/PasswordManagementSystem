@@ -1,6 +1,8 @@
-﻿using CrashPasswordSystem.Data;
+﻿using CrashPasswordSystem.Core;
+using CrashPasswordSystem.Data;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI;
+using CrashPasswordSystem.UI.Search.SearchProducts;
 using CrashPasswordSystem.UI.ViewModels;
 using Moq;
 using Prism.Events;
@@ -46,10 +48,7 @@ namespace UnitTests
             containerMock.Setup(b => b.Resolve<ICompanyDataService>())
                          .Returns(CompanyService);
 
-            var dataContext = ConfigureDbContext();
-            
-            containerMock.Setup(b => b.Resolve<DataContext>())
-                         .Returns(dataContext);
+            var dataContext = ConfigureDbContext(containerMock);
 
             UserService = SetupUsers(containerMock.Object, dataContext);
 
@@ -59,15 +58,17 @@ namespace UnitTests
             containerMock.Setup(b => b.Resolve<IEventAggregator>())
                          .Returns(EventAggregator);
 
+            containerMock.Setup(b => b.Resolve<SearchProductsViewModel>())
+                         .Returns(new SearchProductsViewModel(Container));
 
-            containerMock.Setup(b => b.Resolve<HomeViewModel>())
-                         .Returns(new HomeViewModel(Container));
-
-            containerMock.Setup(b => b.Resolve<HomeViewModel>())
-                         .Returns(new HomeViewModel(Container));
+            containerMock.Setup(b => b.Resolve<SearchProductsViewModel>())
+                         .Returns(new SearchProductsViewModel(Container));
 
             containerMock.Setup(b => b.Resolve<LoginViewModel>())
-                                     .Returns(new LoginViewModel(Container));
+                                      .Returns(new LoginViewModel(Container));
+
+            containerMock.Setup(b => b.Resolve<IAuthenticationService>())
+                                       .Returns(new AuthenticationService());
         }
 
         [Fact]

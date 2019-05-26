@@ -87,13 +87,18 @@ namespace UnitTests
             return new UserDataService(container);
         }
 
-        protected DataContext ConfigureDbContext()
+        protected DataContext ConfigureDbContext(Mock<IDependencyContainer> containerMock)
         {
             var options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(databaseName: "TestingDb")
                 .Options;
 
-            return new DataContext(options);
+            var dataContext = new DataContext(options);
+
+            containerMock.Setup(b => b.Resolve<DataContext>())
+                         .Returns(dataContext);
+
+            return dataContext;
         }
 
         #endregion

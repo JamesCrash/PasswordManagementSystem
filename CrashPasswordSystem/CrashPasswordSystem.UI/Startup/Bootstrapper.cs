@@ -48,10 +48,7 @@ namespace CrashPasswordSystem.UI.Startup
             builder.Register<Login>();
             builder.Register<LoginViewModel>();
 
-            builder.Register<HomeViewModel>();
-
             builder.Register<AddProductViewModel>();
-
             builder.Register<ProductDetails>();
 
             builder.Register<ViewModelBase>();

@@ -1,6 +1,8 @@
+using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Services;
 using CrashPasswordSystem.UI;
-using CrashPasswordSystem.UI.ViewModels;
+using CrashPasswordSystem.UI.Search.SearchProducts;
 using Moq;
 using Prism.Events;
 using System.Linq;
@@ -43,13 +45,15 @@ namespace UnitTests
             containerMock.Setup(b => b.Resolve<ICompanyDataService>())
                          .Returns(CompanyService);
 
+            ConfigureDbContext(containerMock);
+
             this.Container = containerMock.Object;
         }
 
         [Fact]
         public void Home_Load()
         {
-            var viewModel = new HomeViewModel(Container);
+            var viewModel = new SearchProductsViewModel(Container);
 
             Assert.NotNull(viewModel.Categories);
             Assert.True(viewModel.Categories.Any());
@@ -65,11 +69,77 @@ namespace UnitTests
         }
 
         [Fact]
-        public void Home_Filters()
+        public void Search_Products_DescriptionFilter()
         {
-            var viewModel = new HomeViewModel(Container);
+            var viewModel = new SearchProductsViewModel(Container);
 
-            viewModel.FilterData("SelectedCompany", "test");
+            var dataContext = Container.Resolve<DataContext>();
+
+            dataContext.Products.Add(new Product() { ProductDescription = "abc" });
+            dataContext.Products.Add(new Product() { ProductDescription = "abc" });
+            dataContext.Products.Add(new Product() { ProductDescription = "test" });
+
+            dataContext.SaveChanges();
+
+            viewModel.FilterData("SearchBox", "test");
+
+            Assert.Single(viewModel.Products);
+        }
+
+
+        [Fact]
+        public void Prdoucts_Filter_Companies()
+        {
+            var viewModel = new SearchProductsViewModel(Container);
+
+            var dataContext = Container.Resolve<DataContext>();
+            var company1 = new CrashCompany() { CCName = "test company" };
+            var company2 = new CrashCompany() { CCName = "test company2" };
+
+            dataContext.Products.Add(new Product() { ProductDescription = "abc", Company = company2 });
+            dataContext.Products.Add(new Product() { ProductDescription = "def", Company = company2 });
+            dataContext.Products.Add(new Product() { ProductDescription = "product 1", Company = company1 });
+
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "ghi" });
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "jkl" });
+            dataContext.CrashCompanies.Add(company1);
+
+            dataContext.SaveChanges();
+
+            viewModel.FilterData("SearchBox", "product 1");
+            viewModel.FilterData("SelectedCompany", company1.CCName);
+
+            Assert.Single(viewModel.Products);
+        }
+
+        [Fact]
+        public void Products_Filter_Company_AndSuppliers()
+        {
+            var viewModel = new SearchProductsViewModel(Container);
+
+            var dataContext = Container.Resolve<DataContext>();
+            var company1 = new CrashCompany() { CCName = "test company" };
+            var company2 = new CrashCompany() { CCName = "test company2" };
+
+            dataContext.Products.Add(new Product() { ProductDescription = "abc", Company = company2 });
+            dataContext.Products.Add(new Product() { ProductDescription = "def", Company = company2 });
+            dataContext.Products.Add(new Product() { ProductDescription = "product 1", Company = company1 });
+
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "ghi" });
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "jkl" });
+            dataContext.CrashCompanies.Add(company1);
+
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "ghi" });
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "jkl" });
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "supplier1" });
+
+            dataContext.SaveChanges();
+
+            viewModel.FilterData("SearchBox", "product 1");
+            Assert.Equal(2, viewModel.Products.Count);
+
+            viewModel.FilterData("SelectedCompany", company2.CCName);
+            Assert.Equal(2, viewModel.Products.Count);
         }
     }
 }

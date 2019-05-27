@@ -6,87 +6,118 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:core="clr-namespace:CrashPasswordSystem.Core;assembly=CrashPasswordSystem.Core"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
-    mc:Ignorable="d" MinWidth="400" Background="Transparent">
-    <Grid Margin="10,0,0,10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="100"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-        </Grid.RowDefinitions>
+    mc:Ignorable="d" MinWidth="400" Background="Transparent"
+    Margin="10,0,0,0">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Grid Background="DarkBlue">
-            <Label Content="Product Details" FontSize="20" Foreground="White"></Label>
-            <fa:ImageAwesome x:Name="CloseImage" Style="{StaticResource CloseButtonStyle}" />
-    </Grid>
-    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
 
-            <Button Grid.Column="0" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Save and Quit" Background="Green" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitSaveCommand}"></Button>
-            <Button Grid.Column="1" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Quit" Background="Blue" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitCommand}"></Button>
-            <Button Grid.Column="2" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Delete and Quit" Background="Red" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitDeleteCommand}"></Button>
-        </Grid>
+        <Border BorderThickness="1" BorderBrush="Black">
+            <Grid Margin="0,0,0,10" MinWidth="350">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Background="DarkBlue">
+                    <Label Content="Product Details" FontSize="20" Foreground="White"></Label>
+                    <fa:ImageAwesome x:Name="CloseImage" Style="{StaticResource CloseButtonStyle}" />
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <StackPanel Grid.Column="0">
-                    <Grid Margin="5">
-                        <Label Content="Description:" />
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="URL:" />
-                        <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Username:" />
-                        <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Password:" />
-                        <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Date Added:" />
-                        <TextBox  Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductDateAdded, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Expires:" />
-                        <DatePicker Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
+                    <Button Grid.Column="0" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Save and Quit" Background="Green" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitSaveCommand}"></Button>
+                    <Button Grid.Column="1" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Quit" Background="Blue" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitCommand}"></Button>
+                    <Button Grid.Column="2" Grid.Row="1" Margin="5" Padding="10" VerticalAlignment="Center" Content="Delete and Quit" Background="Red" Foreground="White" FontWeight="Bold" BorderThickness="0" Command="{Binding QuitDeleteCommand}"></Button>
+                </Grid>
 
-                    <Grid Margin="5">
-                        <Label Content="Added By:" />
-                        <TextBox Width="200" IsEnabled="False" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.Staff.UserEmail, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <StackPanel Grid.Column="0">
+                            <Grid Margin="5">
+                                <Label Content="Description:" />
+                                <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductDescription, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="URL:" />
+                                <TextBox  Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductURL, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Username:" />
+                                <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductUsername, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Password:" />
+                                <TextBox Width="200" HorizontalAlignment="Right" Text="{Binding Product.ProductPassword, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Date Added:" />
+                                <TextBox  Width="200" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.ProductDateAdded, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Expires:" />
+                                <DatePicker Width="200" HorizontalAlignment="Right" SelectedDate="{Binding Product.ProductExpiry, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+
+                            <Grid Margin="5">
+                                <Label Content="Added By:" />
+                                <TextBox Width="200" IsEnabled="False" HorizontalAlignment="Right" IsReadOnly="True" Text="{Binding Product.Staff.UserEmail, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Category:" />
+                                <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Company:" />
+                                <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
+                            </Grid>
+                            <Grid Margin="5">
+                                <Label Content="Supplier:" />
+                                <StackPanel Orientation="Horizontal"
+                                        Width="200" HorizontalAlignment="Right">
+                                    <ComboBox Width="170" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}" />
+                                    <Button Width="30" HorizontalAlignment="Right"
+                                        Command="{Binding BrowseCommand}"
+                                        CommandParameter="{Binding SelectedSupplier}">
+                                        <Button.Content>
+                                            &gt;
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Category:" />
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Categories}" DisplayMemberPath="PCName" SelectedValue="{Binding SelectedCategory}"></ComboBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Company:" />
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Companies}" DisplayMemberPath="CCName" SelectedValue="{Binding SelectedCompany}"></ComboBox>
-                    </Grid>
-                    <Grid Margin="5">
-                        <Label Content="Supplier:" />
-                        <ComboBox Width="200" HorizontalAlignment="Right" ItemsSource="{Binding Suppliers}" DisplayMemberPath="SupplierName" SelectedValue="{Binding SelectedSupplier}"></ComboBox>
-                    </Grid>
-                </StackPanel>
+                </ScrollViewer>
+                <Grid Grid.Row="3">
+                    <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}">
+                    </ListView>
+                </Grid>
             </Grid>
-        </ScrollViewer>
-        <Grid Grid.Row="3">
-            <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}">
-            </ListView>
+        </Border>
+
+        <Grid Grid.Column="1" Width="300" Background="LightGray"
+              Visibility="{Binding IsBrowsing, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+            <Grid Background="DarkBlue" 
+                  VerticalAlignment="Top">
+                <Label Content="Supplier Details" FontSize="20" Foreground="White"></Label>
+                <fa:ImageAwesome x:Name="CloseBrowseImage" Style="{StaticResource CloseButtonStyle}" />
+            </Grid>
+
         </Grid>
     </Grid>
 </core:UIModule>

@@ -30,7 +30,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" MaxWidth="400" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             
             <!--<TabControl Grid.Row="1"

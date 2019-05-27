@@ -22,4 +22,8 @@ namespace CrashPasswordSystem.UI.Event
         where T : class
     {
     }
+
+    public class BrowseEvent : PubSubEvent<object>
+    {
+    }
 }

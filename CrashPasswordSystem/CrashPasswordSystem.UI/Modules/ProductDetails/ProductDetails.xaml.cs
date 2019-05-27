@@ -1,4 +1,5 @@
-﻿using CrashPasswordSystem.Models;
+﻿using System;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.UI.Event;
 using CrashPasswordSystem.UI.ViewModels;
 using Prism.Events;
@@ -15,6 +16,10 @@ namespace CrashPasswordSystem.UI.Views
 
             CloseImage.MouseDown += (s, e) =>
                 (DataContext as ProductDetailsViewModel)?.QuitCommand?.Execute(new object());
+
+            CloseBrowseImage.MouseDown += (s, e) =>
+                (DataContext as ProductDetailsViewModel)?.CloseBrowseCommand?.Execute(new object());
+
         }
 
         public IRegionManager RegionManager { get; private set; }
@@ -35,6 +40,9 @@ namespace CrashPasswordSystem.UI.Views
 
             EventAggregator.GetEvent<CloseEvent>()
                            .Subscribe(OnClose, keepSubscriberReferenceAlive: true);
+
+            EventAggregator.GetEvent<BrowseEvent>()
+                           .Subscribe(OnBrowse, keepSubscriberReferenceAlive: true);
         }
 
         private void OnClose(object instance)
@@ -64,6 +72,10 @@ namespace CrashPasswordSystem.UI.Views
                 this.RemoveFromRegion(TargetRegion, RegionManager);
             }
             RegionManager.AddToRegion(TargetRegion, this);
+        }
+
+        private void OnBrowse(object obj)
+        {
         }
     }
 }

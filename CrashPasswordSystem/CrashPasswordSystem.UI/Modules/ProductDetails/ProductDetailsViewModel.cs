@@ -32,6 +32,9 @@ namespace CrashPasswordSystem.UI.ViewModels
         public ICommand QuitDeleteCommand { get; set; }
         public ICommand QuitSaveCommand { get; set; }
 
+        public ICommand BrowseCommand { get; set; }
+        public ICommand CloseBrowseCommand { get; set; }
+
         public List<CrashCompany> Companies { get; set; }
         public List<ProductCategory> Categories { get; set; }
         public List<Supplier> Suppliers { get; set; }
@@ -59,6 +62,13 @@ namespace CrashPasswordSystem.UI.ViewModels
             set => base.SetProperty(ref _SelectedSupplier, value);
         }
 
+        private bool _IsBrowsing;
+        public bool IsBrowsing
+        {
+            get { return _IsBrowsing; }
+            set { base.SetProperty(ref _IsBrowsing, value); }
+        }
+
         #endregion
 
         public ProductDetailsViewModel(IDependencyContainer container)
@@ -68,7 +78,8 @@ namespace CrashPasswordSystem.UI.ViewModels
             QuitCommand = new RelayCommand(param => OnRequestClose());
             QuitDeleteCommand = new RelayCommand(QuitDelete);
             QuitSaveCommand = new RelayCommand(QuitSave);
-
+            BrowseCommand = new RelayCommand(OnBrowse);
+            CloseBrowseCommand = new RelayCommand(OnCloseBrowse);
             EventAggregator = container.Resolve<IEventAggregator>();
 
             Product = new Product();
@@ -205,6 +216,24 @@ namespace CrashPasswordSystem.UI.ViewModels
             EventAggregator
                 .GetEvent<CloseEvent>()
                 .Publish(this);
+        }
+
+        private void OnBrowse(object obj)
+        {
+            if (obj == null)
+            {
+                return;
+            }
+            IsBrowsing = true;
+            EventAggregator.GetEvent<BrowseEvent>()
+                           .Publish(obj);
+        }
+
+        private void OnCloseBrowse(object obj)
+        {
+            IsBrowsing = false;
+            EventAggregator.GetEvent<CloseEvent>()
+                           .Publish(obj);
         }
 
         #endregion

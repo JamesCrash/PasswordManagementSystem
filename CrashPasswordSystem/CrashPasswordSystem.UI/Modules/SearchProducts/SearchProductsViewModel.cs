@@ -158,6 +158,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
             LoadFilters();
             LoadDataAsync();
+
+            SetupPagination(3);
         }
 
         private void OnDelete(Product instance)
@@ -167,7 +169,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                 return;
             }
             Items.Remove(instance);
-            CollectionViewSource.GetDefaultView(Items)?.Refresh();
+            RefreshView();
         }
 
         private bool Exists(Product instance)
@@ -189,6 +191,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
         {
             var data = await _ProductDataService.GetAllAsync();
             Items.AddRange(data);
+
+            RefreshView();
         }
 
         private void OnSave(Product instance)
@@ -258,6 +262,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
             Items.Clear();
             Items.AddRange(query.ToArray());
+
+            RefreshView();
         }
 
         #endregion

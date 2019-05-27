@@ -19,6 +19,7 @@ namespace CrashPasswordSystem.UI.Startup
         public const string MainContentSection = "MainContentSection";
         public const string ApplicationBar = "ApplicationBarRegion";
         public const string AsideSection = "AsideSection";
+        public const string LoginSection = "LoginSection";
     }
 
     public class Bootstrapper : IDependencyContainer
@@ -74,6 +75,7 @@ namespace CrashPasswordSystem.UI.Startup
             catalog.AddModule(typeof(ApplicationBar));
             catalog.AddModule(typeof(AddProduct));
             catalog.AddModule(typeof(ProductDetails));
+            catalog.AddModule(typeof(Login));
         }
 
         public T Resolve<T>()

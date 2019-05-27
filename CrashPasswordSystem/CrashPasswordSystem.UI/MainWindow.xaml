@@ -69,8 +69,9 @@
             <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.MainContentSection}" />
         </Grid>
 
-        <views:Login DataContext="{Binding LoginViewModel}" 
-                    Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+        <ContentControl prism:RegionManager.RegionName="{x:Static local:Startup.Regions.LoginSection}"
+                        DataContext="{Binding LoginViewModel}" 
+                        Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
                     />
     </Grid>
 </Window>

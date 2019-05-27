@@ -19,11 +19,12 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 {
     public class SearchProductsViewModel : ViewModelBase
     {
-        private readonly Func<DataContext> _contextCreator;
         private IProductDataService _ProductDataService;
         private ISupplierDataService _SupplierDataService;
         private ICategoryDataService _CategoryDataService;
         private ICompanyDataService _CompanyDataService;
+        private DataContext _DataContext;
+        private List<string> _globalFilter;
 
         public const string FILTER_BY_PRODUCT_NAME = "SearchBox";
         public const string FILTER_BY_COMPANY = "SelectedCompany";
@@ -87,7 +88,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                 base.SetProperty(ref _SelectedCompany, value);
 
                 if (!string.IsNullOrWhiteSpace(value))
-                    FilterData("SelectedCompany", value);
+                    FilterData(FILTER_BY_COMPANY);
             }
         }
 
@@ -101,7 +102,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                 base.SetProperty(ref _SelectedCategory, value);
 
                 if (!string.IsNullOrWhiteSpace(value))
-                    FilterData("SelectedCategory", value);
+                    FilterData(FILTER_BY_CATEGORY);
             }
         }
 
@@ -115,7 +116,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                 base.SetProperty(ref _SelectedSupplier, value);
 
                 if (!string.IsNullOrWhiteSpace(value))
-                    FilterData("SelectedSupplier", value);
+                    FilterData(FILTER_BY_SUPPLIER);
             }
         }
 
@@ -129,7 +130,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
                 if (value != null)
                 {
-                    FilterData("SearchBox", value);
+                    FilterData(FILTER_BY_PRODUCT_NAME);
                 }
             }
         }
@@ -145,12 +146,12 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             DependencyContainer = container;
 
             EventAggregator = container.Resolve<IEventAggregator>();
-            _contextCreator = () => container.Resolve<DataContext>();
 
             _ProductDataService = container.Resolve<IProductDataService>();
             _SupplierDataService = container.Resolve<ISupplierDataService>();
             _CategoryDataService = container.Resolve<ICategoryDataService>();
             _CompanyDataService = container.Resolve<ICompanyDataService>();
+            _DataContext = container.Resolve<DataContext>();
 
             ClearFiltersCommand = new RelayCommand(ClearFilters);
             OpenDetailsCommand = new DelegateCommand<object>(OpenDetails);
@@ -164,6 +165,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
             EventAggregator.GetEvent<DeleteEvent<Product>>()
                            .Subscribe(OnDelete, keepSubscriberReferenceAlive: true);
+
+            Products = new ObservableCollection<Product>();
         }
 
         private void OnDelete(Product instance)
@@ -214,49 +217,60 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             Companies = await _CompanyDataService.GetAllDesctiption();
             Categories = await _CategoryDataService.GetAllDesctiption();
             Suppliers = await _SupplierDataService.GetAllDesctiption();
+
+            _globalFilter = new List<string>();
         }
 
-        public void FilterData(string filter, string value)
+        protected void FilterData(string filter)
         {
-            using (var dBContext = _contextCreator())
+            IQueryable<Product> query = _DataContext.Products.AsQueryable();
+
+            if (!_globalFilter.Contains(filter))
             {
-                if (filter == FILTER_BY_SUPPLIER)
-                {
-                    var id = dBContext.CrashCompanies.Where(c => c.CCName == value).Select(c => c.CCID).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.CCID == id).ToList();
-                    Products = new ObservableCollection<Product>(p);
-                    SelectedSupplier = null;
-                    SelectedCategory = null;
-                    SearchBox = null;
-                }
-                else if (filter == FILTER_BY_CATEGORY)
-                {
-                    var id = dBContext.ProductCategories.Where(c => c.PCName == value).Select(c => c.PCID).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.PCID == id).ToList();
-                    Products = new ObservableCollection<Product>(p);
-                    SelectedCompany = null;
-                    SelectedSupplier = null;
-                    SearchBox = null;
-                }
-                else if (filter == FILTER_BY_SUPPLIER)
-                {
-                    var id = dBContext.Suppliers.Where(c => c.SupplierName == value).Select(c => c.SupplierID).FirstOrDefault();
-                    var p = dBContext.Products.Where(s => s.SupplierID == id).ToList();
-                    Products = new ObservableCollection<Product>(p);
-                    SelectedCompany = null;
-                    SelectedCategory = null;
-                    SearchBox = null;
-                }
-                else if (filter == FILTER_BY_PRODUCT_NAME)
-                {
-                    var p = dBContext.Products.Where(s => s.ProductDescription.Contains(value)).ToList();
-                    Products = new ObservableCollection<Product>(p);
-                    SelectedCompany = null;
-                    SelectedCategory = null;
-                    SelectedSupplier = null;
-                }
+                _globalFilter.Add(filter);
             }
+            if (string.IsNullOrEmpty(SearchBox))
+            {
+                _globalFilter.Remove(FILTER_BY_PRODUCT_NAME);
+            }
+
+            if (_globalFilter.Contains(FILTER_BY_COMPANY))
+            {
+                var id = _DataContext.CrashCompanies.Where(company => (company.CCName ?? string.Empty).Equals(SelectedCompany ?? string.Empty, StringComparison.OrdinalIgnoreCase))
+                                                    .Select(company => company.CCID).FirstOrDefault();
+
+                query = query.AsQueryable()
+                             .Where(s => s.CCID == id).AsQueryable();
+            }
+            if (_globalFilter.Contains(FILTER_BY_CATEGORY))
+            {
+                var id = _DataContext.ProductCategories.FirstOrDefault(category => (category.PCName ?? string.Empty).Equals(SelectedCategory ?? string.Empty, StringComparison.OrdinalIgnoreCase))?
+                                                       .PCID;
+
+                query = query.AsQueryable()
+                             .Where(product => product.PCID == id)
+                             .AsQueryable();
+            }
+            if (_globalFilter.Contains(FILTER_BY_SUPPLIER))
+            {
+                var id = _DataContext.Suppliers.FirstOrDefault(supplier => supplier.SupplierName == SelectedSupplier)?
+                                               .SupplierID;
+
+                query = query.AsQueryable()
+                             .Where(item => item.SupplierID == id)
+                             .AsQueryable();
+            }
+            if (_globalFilter.Contains(FILTER_BY_PRODUCT_NAME))
+            {
+                query = query.AsQueryable()
+                             .Where(s => s.ProductDescription.ToLowerInvariant().Contains(SearchBox.ToLowerInvariant()))
+                             .AsQueryable();
+            }
+
+            Products.Clear();
+            Products.AddRange(query.ToArray());
         }
+
         #endregion
 
         #region Clear Filters
@@ -266,6 +280,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             SelectedCategory = null;
             SelectedSupplier = null;
             SearchBox = null;
+
+            _globalFilter.Clear();
 
             LoadDataAsync();
         }

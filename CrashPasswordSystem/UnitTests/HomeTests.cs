@@ -16,7 +16,6 @@ namespace UnitTests
         public IProductDataService ProductService { get; set; }
         public ISupplierDataService SupplierService { get; set; }
         public ICompanyDataService CompanyService { get; set; }
-        public IDependencyContainer Container { get; }
         public ICategoryDataService CategoryService { get; set; }
 
         public HomeTests()
@@ -28,32 +27,32 @@ namespace UnitTests
             CategoryService = SetupCategories();
             CompanyService = SetupCompanies();
 
-            var containerMock = new Mock<IDependencyContainer>();
+            var mock = new Mock<IDependencyContainer>();
 
-            containerMock.Setup(b => b.Resolve<IEventAggregator>())
-                         .Returns(EventAggregator);
+            mock.Setup(b => b.Resolve<IEventAggregator>())
+                          .Returns(EventAggregator);
 
-            containerMock.Setup(b => b.Resolve<IProductDataService>())
-                         .Returns(ProductService);
+            mock.Setup(b => b.Resolve<IProductDataService>())
+                          .Returns(ProductService);
 
-            containerMock.Setup(b => b.Resolve<ISupplierDataService>())
-                         .Returns(SupplierService);
+            mock.Setup(b => b.Resolve<ISupplierDataService>())
+                          .Returns(SupplierService);
 
-            containerMock.Setup(b => b.Resolve<ICategoryDataService>())
-                         .Returns(CategoryService);
+            mock.Setup(b => b.Resolve<ICategoryDataService>())
+                          .Returns(CategoryService);
 
-            containerMock.Setup(b => b.Resolve<ICompanyDataService>())
-                         .Returns(CompanyService);
+            mock.Setup(b => b.Resolve<ICompanyDataService>())
+                          .Returns(CompanyService);
 
-            ConfigureDbContext(containerMock);
+            ConfigureDbContext(mock);
 
-            this.Container = containerMock.Object;
+            this.DependencyContainer = mock.Object;
         }
 
         [Fact]
         public void Home_Load()
         {
-            var viewModel = new SearchProductsViewModel(Container);
+            var viewModel = new SearchProductsViewModel(DependencyContainer);
 
             Assert.NotNull(viewModel.Categories);
             Assert.True(viewModel.Categories.Any());
@@ -71,9 +70,9 @@ namespace UnitTests
         [Fact]
         public void Search_Products_DescriptionFilter()
         {
-            var viewModel = new SearchProductsViewModel(Container);
+            var viewModel = new SearchProductsViewModel(DependencyContainer);
 
-            var dataContext = Container.Resolve<DataContext>();
+            var dataContext = DependencyContainer.Resolve<DataContext>();
 
             dataContext.Products.Add(new Product() { ProductDescription = "abc" });
             dataContext.Products.Add(new Product() { ProductDescription = "abc" });
@@ -81,18 +80,17 @@ namespace UnitTests
 
             dataContext.SaveChanges();
 
-            viewModel.FilterData("SearchBox", "test");
+            viewModel.SearchBox = "test";
 
             Assert.Single(viewModel.Products);
         }
 
-
         [Fact]
-        public void Prdoucts_Filter_Companies()
+        public void Products_Filter_Companies()
         {
-            var viewModel = new SearchProductsViewModel(Container);
+            var viewModel = new SearchProductsViewModel(DependencyContainer);
 
-            var dataContext = Container.Resolve<DataContext>();
+            var dataContext = DependencyContainer.Resolve<DataContext>();
             var company1 = new CrashCompany() { CCName = "test company" };
             var company2 = new CrashCompany() { CCName = "test company2" };
 
@@ -106,43 +104,60 @@ namespace UnitTests
 
             dataContext.SaveChanges();
 
-            viewModel.FilterData("SearchBox", "product 1");
-            viewModel.FilterData("SelectedCompany", company1.CCName);
-
+            viewModel.SearchBox = "product 1";
             Assert.Single(viewModel.Products);
+
+            viewModel.SelectedCompany = company1.CCName;
+            Assert.Single(viewModel.Products);
+
+            var expected = viewModel.Products.First();
+
+            Assert.NotNull(expected.Company);
+            Assert.NotNull(expected.Company.Products);
+            Assert.Equal(1, expected.Company.Products.Count);
         }
 
         [Fact]
         public void Products_Filter_Company_AndSuppliers()
         {
-            var viewModel = new SearchProductsViewModel(Container);
+            var viewModel = new SearchProductsViewModel(DependencyContainer);
 
-            var dataContext = Container.Resolve<DataContext>();
+            var dataContext = DependencyContainer.Resolve<DataContext>();
+
+            var supplier1 = new Supplier { SupplierName = "supplier1" };
+            var supplier2 = new Supplier { SupplierName = "ghi" };
+
+            dataContext.Suppliers.Add(supplier2);
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "jkl" });
+            dataContext.Suppliers.Add(supplier1);
+
             var company1 = new CrashCompany() { CCName = "test company" };
             var company2 = new CrashCompany() { CCName = "test company2" };
-
-            dataContext.Products.Add(new Product() { ProductDescription = "abc", Company = company2 });
-            dataContext.Products.Add(new Product() { ProductDescription = "def", Company = company2 });
-            dataContext.Products.Add(new Product() { ProductDescription = "product 1", Company = company1 });
-
             dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "ghi" });
             dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "jkl" });
             dataContext.CrashCompanies.Add(company1);
 
-            dataContext.Suppliers.Add(new Supplier { SupplierName = "ghi" });
-            dataContext.Suppliers.Add(new Supplier { SupplierName = "jkl" });
-            dataContext.Suppliers.Add(new Supplier { SupplierName = "supplier1" });
+            dataContext.Products.Add(new Product() { ProductDescription = "product-2", Company = company2, Supplier = supplier1 });
+            dataContext.Products.Add(new Product() { ProductDescription = "product-1", Company = company2, Supplier = supplier2 });
+            dataContext.Products.Add(new Product() { ProductDescription = "def-ghijk", Company = company1, Supplier = supplier1 });
 
             dataContext.SaveChanges();
 
-            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_PRODUCT_NAME, "product 1");
+            viewModel.SearchBox = "product-";
             Assert.Equal(2, viewModel.Products.Count);
 
-            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_COMPANY, company2.CCName);
+            viewModel.SelectedCompany = company2.CCName;
             Assert.Equal(2, viewModel.Products.Count);
 
-            viewModel.FilterData(SearchProductsViewModel.FILTER_BY_SUPPLIER, company2.CCName);
-            Assert.Equal(2, viewModel.Products.Count);
+            viewModel.SelectedSupplier = supplier1.SupplierName;
+            Assert.Single(viewModel.Products);
+
+            var expected = viewModel.Products.First();
+
+            Assert.NotNull(expected.Company);
+            Assert.NotNull(expected.Company.Products);
+
+            Assert.Equal(2, expected.Company.Products.Count);
         }
     }
 }

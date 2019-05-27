@@ -5,18 +5,20 @@ using CrashPasswordSystem.UI;
 using CrashPasswordSystem.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Moq.EntityFramework;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity;
 
 namespace UnitTests
 {
     public abstract class CrashPasswordUnitTest
     {
+        public IDependencyContainer DependencyContainer { get; protected set; }
+        public IUnityContainer IoContainer { get; }
+
         public CrashPasswordUnitTest()
         {
-            //ContextMock = DbContextMockFactory.Create<DataContext>();
+            IoContainer = new UnityContainer();
         }
 
         #region Protected Methods
@@ -87,18 +89,19 @@ namespace UnitTests
             return new UserDataService(container);
         }
 
-        protected DataContext ConfigureDbContext(Mock<IDependencyContainer> containerMock)
+        protected DataContext ConfigureDbContext(Mock<IDependencyContainer> mock)
         {
             var options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(databaseName: "TestingDb")
                 .Options;
 
-            var dataContext = new DataContext(options);
+            IoContainer.RegisterInstance(options);
+            IoContainer.RegisterType<DataContext>();
 
-            containerMock.Setup(b => b.Resolve<DataContext>())
-                         .Returns(dataContext);
+            mock.Setup(b => b.Resolve<DataContext>())
+                         .Returns(IoContainer.Resolve<DataContext>());
 
-            return dataContext;
+            return IoContainer.Resolve<DataContext>();
         }
 
         #endregion

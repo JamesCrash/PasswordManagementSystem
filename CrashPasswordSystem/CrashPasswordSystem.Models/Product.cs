@@ -11,7 +11,15 @@ namespace CrashPasswordSystem.Models
         }
 
         public int ProductID { get; set; }
+
+        /// <summary>
+        /// Product-category ID
+        /// </summary>
         public int PCID { get; set; }
+
+        /// <summary>
+        /// Crash-company ID
+        /// </summary>
         public int CCID { get; set; }
         public int SupplierID { get; set; }
         public int StaffID { get; set; }

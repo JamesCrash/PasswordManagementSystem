@@ -5,9 +5,11 @@ using CrashPasswordSystem.UI;
 using CrashPasswordSystem.UI.Data;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Injection;
 
 namespace UnitTests
 {
@@ -91,12 +93,12 @@ namespace UnitTests
 
         protected DataContext ConfigureDbContext(Mock<IDependencyContainer> mock)
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-                .UseInMemoryDatabase(databaseName: "TestingDb")
-                .Options;
-
-            IoContainer.RegisterInstance(options);
-            IoContainer.RegisterType<DataContext>();
+            IoContainer.RegisterFactory(typeof(DataContext), 
+                f => new DataContext(
+                        new DbContextOptionsBuilder<DataContext>()
+                        .UseInMemoryDatabase(databaseName: "TestingDb" + Guid.NewGuid().ToString())
+                        .Options)
+            );
 
             mock.Setup(b => b.Resolve<DataContext>())
                          .Returns(IoContainer.Resolve<DataContext>());

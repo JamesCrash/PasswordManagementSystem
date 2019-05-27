@@ -157,9 +157,6 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             OpenDetailsCommand = new DelegateCommand<object>(OpenDetails);
             OpenAddProductCommand = new RelayCommand(OpenNewProduct);
 
-            LoadFilters();
-            LoadDataAsync();
-
             EventAggregator.GetEvent<SaveEvent<Product>>()
                            .Subscribe(OnSave, keepSubscriberReferenceAlive: true);
 
@@ -167,6 +164,9 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                            .Subscribe(OnDelete, keepSubscriberReferenceAlive: true);
 
             Products = new ObservableCollection<Product>();
+
+            LoadFilters();
+            LoadDataAsync();
         }
 
         private void OnDelete(Product instance)
@@ -197,7 +197,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
         public async void LoadDataAsync()
         {
             var data = await _ProductDataService.GetAllAsync();
-            Products = new ObservableCollection<Product>(data);
+            Products.AddRange(data);
         }
 
         private void OnSave(Product instance)

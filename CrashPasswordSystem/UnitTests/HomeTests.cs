@@ -52,6 +52,23 @@ namespace UnitTests
         [Fact]
         public void Home_Load()
         {
+            var dataContext = DependencyContainer.Resolve<DataContext>();
+
+            dataContext.Products.Add(new Product() { ProductDescription = "abc" });
+            dataContext.Products.Add(new Product() { ProductDescription = "abc" });
+            dataContext.Products.Add(new Product() { ProductDescription = "test" });
+
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "ghi" });
+            dataContext.CrashCompanies.Add(new CrashCompany() { CCName = "jkl" });
+
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "supplier1" });
+            dataContext.Suppliers.Add(new Supplier { SupplierName = "ghi" });
+
+            dataContext.ProductCategories.Add(new ProductCategory { PCName = "supplier1" });
+            dataContext.ProductCategories.Add(new ProductCategory { PCName = "ghi" });
+
+            dataContext.SaveChanges();
+
             var viewModel = new SearchProductsViewModel(DependencyContainer);
 
             Assert.NotNull(viewModel.Categories);

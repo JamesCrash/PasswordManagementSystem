@@ -109,15 +109,82 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Width="300" Background="LightGray"
+        <Grid Grid.Column="1" Background="LightGray"
               Visibility="{Binding IsBrowsing, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
             <Grid Background="DarkBlue" 
                   VerticalAlignment="Top">
                 <Label Content="Supplier Details" FontSize="20" Foreground="White"></Label>
                 <fa:ImageAwesome x:Name="CloseBrowseImage" Style="{StaticResource CloseButtonStyle}" />
             </Grid>
+            <ScrollViewer Grid.Row="2" Grid.Column="0" Margin="10" VerticalScrollBarVisibility="Auto">
+                <Grid MinWidth="310">
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Style.Setters>
+                                <Setter Property="TextTrimming" Value="WordEllipsis" />
+                                <Setter Property="TextWrapping" Value="WrapWithOverflow" />
+                            </Style.Setters>
+                        </Style>
+                    </Grid.Resources>
+                    <StackPanel Margin="0,20,0,0"
+                                DataContext="{Binding SelectedSupplier}">
+                        <Grid Margin="5">
+                            <Label Content="Supplier Name:" />
+                            <Label Width="200" HorizontalAlignment="Right">
+                                <Label.Content>
+                                    <TextBlock Text="{Binding SupplierName, UpdateSourceTrigger=PropertyChanged}" />
+                                </Label.Content>
+                            </Label>
+                        </Grid>
+                        <Grid Margin="5">
+                            <Label Content="Address:" />
+                            <Label  Width="200" HorizontalAlignment="Right">
+                                <Label.Content>
+                                    <TextBlock Text="{Binding SupplierAddress, UpdateSourceTrigger=PropertyChanged}" />
+                                </Label.Content>
+                            </Label>
+                        </Grid>
+                        <Grid Margin="5">
+                            <Label Content="Contact Number:" />
+                            <Label Width="200" HorizontalAlignment="Right" Content="{Binding SupplierContactNumber, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                        <Grid Margin="5">
+                            <Label Content="Supplier Email:" />
+                            <Label Width="200" HorizontalAlignment="Right">
+                                <Label.Content>
+                                    <TextBlock Text="{Binding SupplierEmail, UpdateSourceTrigger=PropertyChanged}" />
+                                </Label.Content>
+                            </Label>
+                        </Grid>
+                        <Grid Margin="5">
+                            <Label Content="Supplier Website:" />
+                            <Label  Width="200" HorizontalAlignment="Right">
+                                <Label.Content>
+                                    <TextBlock Text="{Binding SupplierWebsite, UpdateSourceTrigger=PropertyChanged}" />
+                                </Label.Content>
+                            </Label>
+                        </Grid>
+                        <Grid Margin="5">
+                            <Label Content="Date Added:" />
+                            <Label Width="200" HorizontalAlignment="Right">
+                                <Label.Content>
+                                    <TextBlock Text="{Binding SupplierDateAdded, UpdateSourceTrigger=PropertyChanged}" />
+                                </Label.Content>
+                            </Label>
+                        </Grid>
 
+                        <!--<Grid Margin="5">
+                            <Label Content="Added By:" />
+                            <Label Width="200" IsEnabled="False" HorizontalAlignment="Right" Content="{Binding Product.Staff.UserEmail, UpdateSourceTrigger=PropertyChanged}"></Label>
+                        </Grid>-->
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </core:UIModule>

@@ -40,9 +40,6 @@ namespace CrashPasswordSystem.UI.Views
 
             EventAggregator.GetEvent<CloseEvent>()
                            .Subscribe(OnClose, keepSubscriberReferenceAlive: true);
-
-            EventAggregator.GetEvent<BrowseEvent>()
-                           .Subscribe(OnBrowse, keepSubscriberReferenceAlive: true);
         }
 
         private void OnClose(object instance)
@@ -72,10 +69,6 @@ namespace CrashPasswordSystem.UI.Views
                 this.RemoveFromRegion(TargetRegion, RegionManager);
             }
             RegionManager.AddToRegion(TargetRegion, this);
-        }
-
-        private void OnBrowse(object obj)
-        {
         }
     }
 }

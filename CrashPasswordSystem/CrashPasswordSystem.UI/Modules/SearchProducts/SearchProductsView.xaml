@@ -50,7 +50,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0">
-                <DataGrid Grid.Row="0" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
+                <DataGrid Grid.Row="0" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
                       AutoGenerateColumns="False" 
                       CanUserAddRows="False" 
                       Margin="10,10,0,80">

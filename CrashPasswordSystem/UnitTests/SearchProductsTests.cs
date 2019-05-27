@@ -74,8 +74,8 @@ namespace UnitTests
             Assert.NotNull(viewModel.Categories);
             Assert.True(viewModel.Categories.Any());
             
-            Assert.NotNull(viewModel.Products);
-            Assert.True(viewModel.Products.Any());
+            Assert.NotNull(viewModel.Items);
+            Assert.True(viewModel.Items.Any());
 
             Assert.NotNull(viewModel.Suppliers);
             Assert.True(viewModel.Suppliers.Any());
@@ -99,7 +99,7 @@ namespace UnitTests
 
             viewModel.SearchBox = "test";
 
-            Assert.Single(viewModel.Products);
+            Assert.Single(viewModel.Items);
         }
 
         [Fact]
@@ -122,12 +122,12 @@ namespace UnitTests
             dataContext.SaveChanges();
 
             viewModel.SearchBox = "product 1";
-            Assert.Single(viewModel.Products);
+            Assert.Single(viewModel.Items);
 
             viewModel.SelectedCompany = company1.CCName;
-            Assert.Single(viewModel.Products);
+            Assert.Single(viewModel.Items);
 
-            var expected = viewModel.Products.First();
+            var expected = viewModel.Items.First();
 
             Assert.NotNull(expected.Company);
             Assert.NotNull(expected.Company.Products);
@@ -161,15 +161,15 @@ namespace UnitTests
             dataContext.SaveChanges();
 
             viewModel.SearchBox = "product-";
-            Assert.Equal(2, viewModel.Products.Count);
+            Assert.Equal(2, viewModel.Items.Count);
 
             viewModel.SelectedCompany = company2.CCName;
-            Assert.Equal(2, viewModel.Products.Count);
+            Assert.Equal(2, viewModel.Items.Count);
 
             viewModel.SelectedSupplier = supplier1.SupplierName;
-            Assert.Single(viewModel.Products);
+            Assert.Single(viewModel.Items);
 
-            var expected = viewModel.Products.First();
+            var expected = viewModel.Items.First();
 
             Assert.NotNull(expected.Company);
             Assert.NotNull(expected.Company.Products);

@@ -159,7 +159,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             LoadFilters();
             LoadDataAsync();
 
-            SetupPagination(3);
+            SetupPagination(pageCount: 5);
         }
 
         private void OnDelete(Product instance)

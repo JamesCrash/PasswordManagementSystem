@@ -1,5 +1,6 @@
 ﻿using CrashPasswordSystem.Core;
 using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,6 +16,37 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
         public ICommand GoNextPageCommand { get; set; }
 
         public ICommand GoPreviousPageCommand { get; set; }
+
+        public int PageElementStart
+        {
+            get
+            {
+                if (PaginatedCount == 0)
+                {
+                    return 0;
+                }
+                return (CurrentPage * PageCount) + 1;
+            }
+        }
+
+        public int PageElementEnd
+        {
+            get
+            {
+                var theEnd = PageElementStart + PageCount - 1;
+
+                if (theEnd > PaginatedCount)
+                {
+                    return PaginatedCount;
+                }
+                return theEnd;
+            }
+        }
+
+        public int PaginatedCount
+        {
+            get { return _mirroredItems.Count(); }
+        }
 
         private IEnumerable<T> _mirroredItems;
 
@@ -79,8 +111,7 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
             _items.AddRange(next);
 
-            RaisePropertyChanged(nameof(CanGoBack));
-            RaisePropertyChanged(nameof(CanGoNext));
+            NotifyPagination();
         }
 
         protected void GoPreviousPage()
@@ -95,9 +126,16 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             var next = _mirroredItems.Skip(CurrentPage * PageCount).Take(PageCount);
 
             _items.AddRange(next);
+            NotifyPagination();
+        }
 
+        private void NotifyPagination()
+        {
             RaisePropertyChanged(nameof(CanGoBack));
             RaisePropertyChanged(nameof(CanGoNext));
+            RaisePropertyChanged(nameof(PageElementStart));
+            RaisePropertyChanged(nameof(PageElementEnd));
+            RaisePropertyChanged(nameof(PaginatedCount));
         }
 
         protected void RefreshView()
@@ -106,11 +144,12 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
             if (PageCount > 0)
             {
+                CurrentPage = 0;
                 SetupPagination(PageCount);
             }
             CollectionViewSource.GetDefaultView(Items)?.Refresh();
-            RaisePropertyChanged(nameof(CanGoBack));
-            RaisePropertyChanged(nameof(CanGoNext));
+
+            NotifyPagination();
         }
 
         public void SetupPagination(int pageCount)

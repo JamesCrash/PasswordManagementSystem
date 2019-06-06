@@ -47,7 +47,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0">
                 <DataGrid Grid.Row="0" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" 
@@ -95,9 +95,43 @@
             </Grid>
         </Grid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <Button Content="Back" Command="{Binding GoPreviousPageCommand}" IsEnabled="{Binding CanGoBack, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Content="Next" Command="{Binding GoNextPageCommand}" IsEnabled="{Binding CanGoNext, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
+                    Margin="10,0,0,0">
+            <Label VerticalContentAlignment="Center" TextBlock.FontSize="14"
+                   MinWidth="100">
+                <Label.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PageElementStart, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="-" />
+                        <TextBlock Text="{Binding PageElementEnd, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text=" of " />
+                        <TextBlock Text="{Binding PaginatedCount, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Label.Content>
+            </Label>
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding GoPreviousPageCommand}" 
+                        IsEnabled="{Binding CanGoBack, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="2.5" Padding="5">
+                    <Button.Content>
+                        <fa:ImageAwesome Icon="AngleLeft"
+                                         Height="20" HorizontalAlignment="Center"
+                                         Foreground="Black"
+                                                />
+                    </Button.Content>
+                </Button>
+                <Button Command="{Binding GoNextPageCommand}" 
+                        IsEnabled="{Binding CanGoNext, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding CanGoNext, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="2.5" Padding="5">
+                    <Button.Content>
+                        <fa:ImageAwesome Icon="AngleRight"
+                                         Height="20" HorizontalAlignment="Center"
+                                         Foreground="Black"
+                                                />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </core:UIModule>

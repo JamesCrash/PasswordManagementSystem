@@ -78,9 +78,9 @@
                 <Button Content="Categories" Width="100" Margin="5"></Button>
             </StackPanel>-->
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                        Margin="0">
+                            Margin="0">
                     <Button Background="Green" Foreground="White" Padding="15" Margin="0,5,10,5"
-                        Command="{Binding OpenAddProductCommand}">
+                            Command="{Binding OpenAddProductCommand}">
                         <Button.Content>
                             <StackPanel Orientation="Vertical">
                                 <fa:ImageAwesome x:Name="CloseImage" Icon="PlusCircle"
@@ -95,7 +95,8 @@
             </Grid>
         </Grid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal"
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="3"
+                    Orientation="Horizontal"
                     Margin="10,0,0,0">
             <Label VerticalContentAlignment="Center" TextBlock.FontSize="14"
                    MinWidth="100">
@@ -110,8 +111,7 @@
                 </Label.Content>
             </Label>
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding GoPreviousPageCommand}" 
-                        IsEnabled="{Binding CanGoBack, UpdateSourceTrigger=PropertyChanged}"
+                <Button x:Name="GoPreviousButton" Command="{Binding GoPreviousPageCommand}" 
                         Margin="2.5" Padding="5">
                     <Button.Content>
                         <fa:ImageAwesome Icon="AngleLeft"
@@ -120,8 +120,7 @@
                                                 />
                     </Button.Content>
                 </Button>
-                <Button Command="{Binding GoNextPageCommand}" 
-                        IsEnabled="{Binding CanGoNext, UpdateSourceTrigger=PropertyChanged}"
+                <Button x:Name="GoNextButton" Command="{Binding GoNextPageCommand}" 
                         Visibility="{Binding CanGoNext, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="2.5" Padding="5">
                     <Button.Content>
@@ -131,6 +130,17 @@
                                                 />
                     </Button.Content>
                 </Button>
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="32,0,0,0">
+                    <Label Content="Rows per page" VerticalContentAlignment="Center" />
+                    <ComboBox VerticalAlignment="Center"
+                              IsSynchronizedWithCurrentItem="True"
+                              SelectedItem="{Binding SelectedPageSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding RowsPerPageOptions}">
+                        
+                    </ComboBox>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

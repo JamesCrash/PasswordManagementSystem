@@ -1,8 +1,8 @@
 ﻿using CrashPasswordSystem.Core;
 using Prism.Commands;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -12,6 +12,8 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
     public class ListViewModel<T> : ViewModelBase
         where T : class, new()
     {
+        #region Properties 
+
         public List<string> GlobalFilter { get; set; }
         public ICommand GoNextPageCommand { get; set; }
 
@@ -43,9 +45,19 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             }
         }
 
+        public ObservableCollection<int> RowsPerPageOptions { get; private set; }
+
+        private int _SelectedPageSize;
+
+        public int SelectedPageSize
+        {
+            get { return _SelectedPageSize; }
+            set { base.SetProperty(ref _SelectedPageSize, value); }
+        }
+
         public int PaginatedCount
         {
-            get { return _mirroredItems.Count(); }
+            get { return _mirroredItems == null ? 0 : _mirroredItems.Count(); }
         }
 
         private IEnumerable<T> _mirroredItems;
@@ -82,14 +94,19 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
                 }
                 return _mirroredItems.Count() / PageCount;
             }
-        }       
+        }
+
+        #endregion
 
         public ListViewModel()
         {
             GlobalFilter = new List<string>();
 
-            GoNextPageCommand = new DelegateCommand(() => GoNextPage(), () => CanGoNext);
+            GoNextPageCommand = new DelegateCommand(() => GoNextPage());
             GoPreviousPageCommand = new DelegateCommand(() => GoPreviousPage());
+
+            RowsPerPageOptions = new ObservableCollection<int>(new[] { 5, 10, 30, 50 });
+            SelectedPageSize = RowsPerPageOptions.First();
         }
 
         protected virtual void FilterData(string filter) { }
@@ -104,12 +121,18 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             {
                 return;
             }
-            CurrentPage++;
+            GoToPage(++CurrentPage);
+        }
+
+        private void GoToPage(int pageNumber)
+        {
             _items.Clear();
 
-            var next = _mirroredItems.Skip(CurrentPage * PageCount).Take(PageCount);
+            var next = _mirroredItems.Skip(pageNumber * PageCount).Take(PageCount);
 
             _items.AddRange(next);
+
+            CollectionViewSource.GetDefaultView(Items)?.Refresh();
 
             NotifyPagination();
         }
@@ -120,13 +143,15 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
             {
                 return;
             }
-            CurrentPage--;
-            _items.Clear();
-
-            var next = _mirroredItems.Skip(CurrentPage * PageCount).Take(PageCount);
-
-            _items.AddRange(next);
-            NotifyPagination();
+            if (!CanGoBack)
+            {
+                return;
+            }
+            if (!_mirroredItems.Any())
+            {
+                return;
+            }
+            GoToPage(--CurrentPage);
         }
 
         private void NotifyPagination()
@@ -140,24 +165,30 @@ namespace CrashPasswordSystem.UI.Search.SearchProducts
 
         protected void RefreshView()
         {
-            _mirroredItems = Items.ToArray();
-
-            if (PageCount > 0)
-            {
-                CurrentPage = 0;
-                SetupPagination(PageCount);
-            }
             CollectionViewSource.GetDefaultView(Items)?.Refresh();
 
             NotifyPagination();
         }
 
-        public void SetupPagination(int pageCount)
+        public void SetupPagination(int pageCount, T[] items)
         {
-            _mirroredItems = Items.ToArray();
+            _mirroredItems = items;
             PageCount = pageCount;
 
-            GoNextPage();
+            CurrentPage = 0;
+            GoToPage(CurrentPage);
+
+            this.PropertyChanged -= OnSelectedPageSizeChanged;
+            this.PropertyChanged += OnSelectedPageSizeChanged;
+        }
+
+        private void OnSelectedPageSizeChanged(object sender, PropertyChangedEventArgs property)
+        {
+            if (property.PropertyName == nameof(SelectedPageSize) && SelectedPageSize != PageCount)
+            {
+                CurrentPage = 0;
+                SetupPagination(SelectedPageSize, _mirroredItems.ToArray());
+            }
         }
     }
 }

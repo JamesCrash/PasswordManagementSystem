@@ -16,6 +16,36 @@ namespace CrashPasswordSystem.Data
         public virtual DbSet<UpdateHistory> UpdateHistories { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
+        /**********
+         * MIGRATIONS COMMANDS
+         *********/
+
+        /********
+         * Steps
+         * 
+         * 1) Uncomment OnConfiguringCommand
+         
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=ITDatabase;persist security info=True;user id=sa;password=12345abC;MultipleActiveResultSets=True;App=EntityFramework");
+        }
+
+         * 2) Comment the constructor of this class to have a parameterless constructor by default. Check out for other
+         * classes depending on the constructor
+         * 
+         
+         3) Run from the following command from "Package Manager Console"
+
+            EntityFrameworkCore\Add-Migration InitalMigration
+
+
+            **** Requiered packages to be installed in this project include before running the commands (already installed):
+        
+            dotnet tool install --global dotnet-ef
+
+            Install-Package Microsoft.EntityFrameworkCore.SqlServer
+            Install-Package Microsoft.EntityFrameworkCore.Tools
+        */
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

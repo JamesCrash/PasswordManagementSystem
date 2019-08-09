@@ -16,6 +16,12 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.Search.SearchProducts
 {
+    /// <summary>
+    /// Represents the Product search module VM. 
+    /// 
+    /// It contains all the logic under the hood for the search actions and reflects its state back to the UI 
+    /// through Bindings, Commands and Event(Aggregator)-s
+    /// </summary>
     public class SearchProductsViewModel : ListViewModel<Product>
     {
         private IProductDataService _ProductDataService;

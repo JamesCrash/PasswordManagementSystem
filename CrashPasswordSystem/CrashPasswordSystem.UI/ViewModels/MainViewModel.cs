@@ -22,8 +22,8 @@ namespace CrashPasswordSystem.UI.ViewModels
     /// 
     /// Follow-up other ViewModels in the root including:
     /// 
-    /// - 'HomeViewModel'
     /// - 'LoginViewModel'
+    /// - 'SearchProductsViewModel'
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
@@ -44,6 +44,13 @@ namespace CrashPasswordSystem.UI.ViewModels
         public LoginViewModel LoginViewModel { get; }
 
         private ViewModelBase _homeViewModel;
+
+        /// <summary>
+        /// Gets-sets the 'Home' module being displayed to the user when authenticated. 
+        /// 
+        /// Instead of having a Home module, this can be set and act like the current
+        /// UI been shown to the user, so it can be a combination of things (e.g product search, clients, etc).
+        /// </summary>
         public ViewModelBase HomeViewModel
         {
             get => _homeViewModel;

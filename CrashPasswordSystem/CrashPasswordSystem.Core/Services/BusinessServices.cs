@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 
 namespace CrashPasswordSystem.Services
 {
+    /// <summary>
+    /// Represents a data service abstraction for fetching data in the organization. By making it
+    /// generic it can be specialized into its own classes (DTOs)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IDataService<T>
         where T : class
     {

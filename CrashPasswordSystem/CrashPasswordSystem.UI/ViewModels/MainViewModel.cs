@@ -9,6 +9,22 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
+    /// <summary>
+    /// Represents the root ViewModel for the application. It consists in a combination of services, included:
+    /// 
+    /// - Authentication for the application
+    /// - Exit
+    /// - Current View (Home-> Module)
+    /// - Login View (Login-> Module)
+    /// 
+    /// Modules above are injected into the UI through Prism so they get wired-up by the 'prism:ViewModelLocator.AutoWireViewModel="True"'
+    /// feature of Prism. Then the ViewModels can be obtained in every module individually.
+    /// 
+    /// Follow-up other ViewModels in the root including:
+    /// 
+    /// - 'HomeViewModel'
+    /// - 'LoginViewModel'
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         public ObservableCollection<DetailViewModelBase> DetailViewModels { get; }

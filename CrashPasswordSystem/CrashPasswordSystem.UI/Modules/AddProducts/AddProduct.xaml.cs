@@ -13,7 +13,12 @@ namespace CrashPasswordSystem.UI.Views
     [Module(ModuleName = "AddProduct", OnDemand = true)]
     public partial class AddProduct : UIModule
     {
+        /// <summary>
+        /// Gets or sets the Context VM for this view. Use this when some specific logic between the UI->VM 
+        /// needs to be handled.
+        /// </summary>
         public AddProductViewModel Context => DataContext as AddProductViewModel;
+
         public override string TargetRegion => Startup.Regions.AsideSection;
 
         public AddProduct()

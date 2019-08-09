@@ -8,6 +8,9 @@ using Prism.Regions;
 
 namespace CrashPasswordSystem.UI.Views
 {
+    /// <summary>
+    /// Represents the section for displaying ProductDetails
+    /// </summary>
     partial class ProductDetails
     {
         public ProductDetails()
@@ -19,12 +22,14 @@ namespace CrashPasswordSystem.UI.Views
 
             CloseBrowseImage.MouseDown += (s, e) =>
                 (DataContext as ProductDetailsViewModel)?.CloseBrowseCommand?.Execute(new object());
-
         }
 
         public IRegionManager RegionManager { get; private set; }
         public IEventAggregator EventAggregator { get; private set; }
 
+        /// <summary>
+        /// Targets the 'AsideSection' but only displayed by EventAggregator when required
+        /// </summary>
         public override string TargetRegion => Startup.Regions.AsideSection;
 
         public override void OnInitialized(IContainerProvider containerProvider)
@@ -49,7 +54,6 @@ namespace CrashPasswordSystem.UI.Views
                 this.RemoveFromRegion(TargetRegion, RegionManager);
             }
         }
-         
 
         private void OnEdit(object instance)
         {

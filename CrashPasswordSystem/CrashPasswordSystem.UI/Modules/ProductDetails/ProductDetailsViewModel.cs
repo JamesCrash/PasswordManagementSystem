@@ -63,6 +63,10 @@ namespace CrashPasswordSystem.UI.ViewModels
         }
 
         private bool _IsBrowsing;
+
+        /// <summary>
+        /// Gets or sets the browsing flag to display more information in the view (Browse Supplier)
+        /// </summary>
         public bool IsBrowsing
         {
             get { return _IsBrowsing; }

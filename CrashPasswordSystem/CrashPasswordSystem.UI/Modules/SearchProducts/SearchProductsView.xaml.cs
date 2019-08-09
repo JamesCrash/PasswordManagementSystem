@@ -8,14 +8,22 @@ using System.Windows;
 
 namespace CrashPasswordSystem.UI.Search
 {
+    /// <summary>
+    /// Reprents the UI for Product-Search. It also handles the target region where is going to be displayed
+    /// </summary>
     [Module(ModuleName = "SearchProducts", OnDemand = true)]
-    public partial class SearchProductsView
+    public partial class SearchProductsView //: UIModule 
+    /*--> Note that the Module inherits from the UIModule for re-using its logic*/
     {
         public SearchProductsView()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Gets or sets the Context VM for this view. Use this when some specific logic between the UI->VM 
+        /// needs to be handled.
+        /// </summary>
         public SearchProductsViewModel Context => DataContext as SearchProductsViewModel;
         
         public override void OnInitialized(IContainerProvider containerProvider)
@@ -34,6 +42,7 @@ namespace CrashPasswordSystem.UI.Search
                 return;
             }
 
+            // Needed to track the visibility for the 'Back/Next' buttons for pagination here.
             Context.PropertyChanged -= OnGoChanged;
             Context.PropertyChanged += OnGoChanged;
         }

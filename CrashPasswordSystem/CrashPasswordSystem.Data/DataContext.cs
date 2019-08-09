@@ -23,21 +23,23 @@ namespace CrashPasswordSystem.Data
         /********
          * Steps
          * 
-         * 1) Uncomment OnConfiguringCommand
-         
+         * 1) Uncomment the following method. Make sure it targets the database in your machine
+         * 
+         *********/
+        /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("data source=localhost;initial catalog=ITDatabase;persist security info=True;user id=sa;password=12345abC;MultipleActiveResultSets=True;App=EntityFramework");
-        }
+        }*/
 
-         * 2) Comment the constructor of this class to have a parameterless constructor by default. Check out for other
-         * classes depending on the constructor
+        /********
+         * 2) Comment the constructor-parameter of this class in order to be a parameterless constructor 
+         * by default. Also check check-out for other depending on the constructor
          * 
          
-         3) Run from the following command from "Package Manager Console"
+         3) Run from the following command from "Package Manager Console" against this project
 
             EntityFrameworkCore\Add-Migration InitalMigration
-
 
             **** Requiered packages to be installed in this project include before running the commands (already installed):
         

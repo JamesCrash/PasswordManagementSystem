@@ -103,8 +103,8 @@
                     </Grid>
                 </ScrollViewer>
                 <Grid Grid.Row="3">
-                    <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}">
-                    </ListView>
+                    <!-- Holds the current validations in the backend class -->
+                    <ListView Foreground="Red" FontWeight="Bold" ItemsSource="{Binding Errors}" />
                 </Grid>
             </Grid>
         </Border>

@@ -13,6 +13,9 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
+    /// <summary>
+    /// A standard VM class with specific logic for handling data display, input validation and save operations
+    /// </summary>
     public class ProductDetailsViewModel : NotifyDataErrorInfoBase
     {
         private readonly Func<DataContext> _contextCreator;

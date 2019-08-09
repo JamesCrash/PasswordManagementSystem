@@ -4,6 +4,9 @@ using CrashPasswordSystem.Models;
 
 namespace CrashPasswordSystem.BusinessLogic.Validation
 {
+    /// <summary>
+    /// Drives the production validation before saving the data.
+    /// </summary>
     public class ProductDetailsValidation
     {
         #region Props

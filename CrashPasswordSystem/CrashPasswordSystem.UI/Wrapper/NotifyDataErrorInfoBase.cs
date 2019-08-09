@@ -9,6 +9,10 @@ using System.Collections.ObjectModel;
 
 namespace CrashPasswordSystem.UI.Wrapper
 {
+    /// <summary>
+    /// Encapsulates the validation state to be displayed to the user with a list of
+    /// data-entry errors (if any) for a given validation scenario.
+    /// </summary>
     public class NotifyDataErrorInfoBase : ViewModelBase, INotifyDataErrorInfo
     {
         private Dictionary<string, List<string>> _errorsByPropertyName

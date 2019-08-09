@@ -9,6 +9,9 @@ using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
+    /// <summary>
+    /// Represents the ViewModel interaction-class for a 'LoginView' mostly from properties and Event(Locator) and Command actions.
+    /// </summary>
     public class LoginViewModel : ViewModelBase
     {
         private IUserDataService _UserDataService;

@@ -1,58 +1,92 @@
-﻿using Autofac.Features.Indexed;
+﻿using CrashPasswordSystem.Core;
 using CrashPasswordSystem.UI.Event;
+using CrashPasswordSystem.UI.Search.SearchProducts;
 using CrashPasswordSystem.UI.Views.Services;
+using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CrashPasswordSystem.UI.ViewModels
 {
+    /// <summary>
+    /// Represents the root ViewModel for the application. It consists in a combination of services, included:
+    /// 
+    /// - Authentication for the application
+    /// - Exit
+    /// - Current View (Home-> Module)
+    /// - Login View (Login-> Module)
+    /// 
+    /// Modules above are injected into the UI through Prism so they get wired-up by the 'prism:ViewModelLocator.AutoWireViewModel="True"'
+    /// feature of Prism. Then the ViewModels can be obtained in every module individually.
+    /// 
+    /// Follow-up other ViewModels in the root including:
+    /// 
+    /// - 'LoginViewModel'
+    /// - 'SearchProductsViewModel'
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        public ObservableCollection<DetailViewModelBase> DetailViewModels { get; }
+        public IAuthenticationService AuthenticationService { get; set; }
 
-        public ObservableCollection<IDetailViewModel> DetailViewModels { get; }
         private IMessageDialogService _messageDialogService;
-        private IIndex<string, IDetailViewModel> _detailViewModelCreator;
+        //private IIndex<string, DetailViewModelBase> _detailViewModelCreator;
 
-        private IDetailViewModel _selectedDetailViewModel;
+        public ICommand ExitCommand { get; set; }
 
-        public IDetailViewModel SelectedDetailViewModel
+        public override bool IsVisible
         {
-            get { return _selectedDetailViewModel; }
-            set
-            {
-                _selectedDetailViewModel = value;
-                OnPropertyChanged();
-            }
+            get => LoginViewModel != null
+                    && LoginViewModel.User != null && LoginViewModel.IsValid;
         }
 
-       
+        public LoginViewModel LoginViewModel { get; }
 
-        public ILoginViewModel LoginViewModel { get; }
-        public IHomeViewModel HomeViewModel { get; }
+        private ViewModelBase _homeViewModel;
 
-        public MainViewModel(IHomeViewModel homeViewModel, ILoginViewModel loginViewModel, IEventAggregator iEventAggregator, IIndex<string, IDetailViewModel> detailViewModelCreator)
+        /// <summary>
+        /// Gets-sets the 'Home' module being displayed to the user when authenticated. 
+        /// 
+        /// Instead of having a Home module, this can be set and act like the current
+        /// UI been shown to the user, so it can be a combination of things (e.g product search, clients, etc).
+        /// </summary>
+        public ViewModelBase HomeViewModel
         {
-
-            DetailViewModels = new ObservableCollection<IDetailViewModel>();
-            _detailViewModelCreator = detailViewModelCreator;
-            LoginViewModel = loginViewModel;
-
-
-            //CreateLogin(loginViewModel.GetType());
-            //iEventAggregator
-            //    .GetEvent<LoggedInEvent>()
-            //    .Subscribe(login);
+            get => _homeViewModel;
+            set => base.SetProperty(ref _homeViewModel, value);
         }
 
-        public async Task LoadAsync()
+        public MainViewModel(IDependencyContainer container)
         {
+            DetailViewModels = new ObservableCollection<DetailViewModelBase>();
+            //_detailViewModelCreator = detailViewModelCreator;
 
-            await LoginViewModel.LoadAsync();
+            LoginViewModel = container.Resolve<LoginViewModel>();
+            EventAggregator = container.Resolve<IEventAggregator>();
+            HomeViewModel = container.Resolve<SearchProductsViewModel>();
+            AuthenticationService = container.Resolve<IAuthenticationService>();
 
+            EventAggregator
+                .GetEvent<LoginEvent>()
+                .Subscribe(LogInOut);
+
+            EventAggregator
+                .GetEvent<LogoutEvent>()
+                .Subscribe(LogInOut);
+
+            ExitCommand = new DelegateCommand(() => App.Current?.Shutdown());
+        }
+
+        private void LogInOut(AuthEventArgs e)
+        {
+            AuthenticationService.User = e.User;
+            RaisePropertyChanged(nameof(IsVisible));
+        }
+
+        public void Load()
+        {
+            LoginViewModel.Load();
         }
 
         //private async void OnOpenDetailView(OpenDetailViewEventArgs args)
@@ -82,7 +116,7 @@ namespace CrashPasswordSystem.UI.ViewModels
 
         //    SelectedDetailViewModel = detailViewModel;
         //}
-        
+
         //private async void CreateHome(Type viewModelType)
         //{
         //    OnOpenDetailView(
@@ -99,13 +133,5 @@ namespace CrashPasswordSystem.UI.ViewModels
         //            ViewModelName = viewModelType.Name
         //        });
         //}
-
-        public async void login(LoggedInEventArgs args)
-        {
-            if (args.Valid)
-            {
-
-            }
-        }
     }
 }

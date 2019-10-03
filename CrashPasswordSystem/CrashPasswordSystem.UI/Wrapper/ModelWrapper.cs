@@ -17,13 +17,14 @@ namespace CrashPasswordSystem.UI.Wrapper
           [CallerMemberName]string propertyName = null)
         {
             typeof(T).GetProperty(propertyName).SetValue(Model, value);
-            OnPropertyChanged(propertyName);
+            RaisePropertyChanged(propertyName);
             ValidatePropertyInternal(propertyName, value);
         }
 
         protected virtual TValue GetValue<TValue>([CallerMemberName]string propertyName = null)
         {
-            return (TValue)typeof(T).GetProperty(propertyName).GetValue(Model);
+            // TODO: Refactor this (no reflection)
+            return (TValue)Model.GetType().GetProperty(propertyName).GetValue(Model);
         }
 
         private void ValidatePropertyInternal(string propertyName, object currentValue)

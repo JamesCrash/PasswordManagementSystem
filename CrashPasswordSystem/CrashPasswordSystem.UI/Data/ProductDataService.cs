@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using CrashPasswordSystem.Models;
 using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace CrashPasswordSystem.UI.Data
 {
     public class ProductDataService : IProductDataService
     {
-        private readonly Func<ITDatabaseContext> _contextCreator;
+        private readonly Func<DataContext> _contextCreator;
 
-        public ProductDataService(Func<ITDatabaseContext> contextCreator)
+        public ProductDataService(Func<DataContext> contextCreator)
         {
             _contextCreator = contextCreator;
         }
@@ -20,15 +20,17 @@ namespace CrashPasswordSystem.UI.Data
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Products.AsNoTracking().SingleAsync(f => f.ProductId == productID);
+                return await ctx.Products.FirstOrDefaultAsync(f => f.ProductID == productID);
             }
         }
 
-        public async Task<List<Product>> GetAll()
+        public async Task<List<Product>> GetAllAsync()
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Products.ToListAsync();
+                return await ctx.Products
+                                .Include(b => b.Staff)
+                                .ToListAsync();
             }
         }
     }

@@ -1,21 +1,22 @@
-﻿using System.Windows;
-using CrashPasswordSystem.UI.ViewModels;
+﻿using CrashPasswordSystem.UI.ViewModels;
+using System.Windows;
 
 namespace CrashPasswordSystem.UI
 {
     public partial class MainWindow : Window
     {
-        private MainViewModel _viewModel;
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow()
         {
             InitializeComponent();
-            _viewModel = viewModel;
-            DataContext = _viewModel;
+            
             Loaded += MainWindow_Loaded;
         }
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await _viewModel.LoadAsync();
+            var viewModel = DataContext as MainViewModel;
+
+            viewModel?.Load();
         }
     }
 }

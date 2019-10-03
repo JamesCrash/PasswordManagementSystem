@@ -1,38 +1,45 @@
 ﻿using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Models;
+using CrashPasswordSystem.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CrashPasswordSystem.UI.Data
 {
     public class UserDataService : IUserDataService
     {
-        private Func<ITDatabaseContext> _contextCreator;
+        private readonly Func<DataContext> _contextCreator;
 
-        public UserDataService(Func<ITDatabaseContext> contextCreator)
+        public UserDataService(IDependencyContainer container)
         {
-            _contextCreator = contextCreator;
+            _contextCreator = () => container.Resolve<DataContext>();
         }
 
         public async Task<List<User>> GetAllAsync()
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Users.AsNoTracking().ToListAsync();
+                return await ctx.Users.ToListAsync();
+            }
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        {
+            using (var ctx = _contextCreator())
+            {
+                return await ctx.Users
+                    .FirstOrDefaultAsync(f => f.UserID == id);
             }
         }
 
         public async Task<User> GetUserByEmail(string email)
         {
-
             using (var ctx = _contextCreator())
             {
                 return await ctx.Users
-                    .SingleAsync(f => f.UserEmail == email);
+                    .FirstOrDefaultAsync(f => f.UserEmail == email);
             }
         }
 

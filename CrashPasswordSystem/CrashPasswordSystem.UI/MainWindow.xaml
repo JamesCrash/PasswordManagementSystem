@@ -1,67 +1,77 @@
-﻿<Window x:Class="CrashPasswordSystem.UI.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:view="clr-namespace:CrashPasswordSystem.UI.Views"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CrashPasswordSystem.UI"
-        xmlns:viewModel="clr-namespace:CrashPasswordSystem.UI.ViewModels"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
-    <!--<Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
+﻿<Window 
+    x:Class="CrashPasswordSystem.UI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:CrashPasswordSystem.UI"
+    mc:Ignorable="d"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:views="clr-namespace:CrashPasswordSystem.UI.Views"
+    Title="MainWindow" Height="600" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
+        <!--<DataTemplate DataType="{x:Type viewModel:LoginViewModel}">
             <view:Login></view:Login>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:Home></view:Home>
-        </DataTemplate>
-    </Window.Resources>-->
+        </DataTemplate>-->
+    </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
-            <MenuItem Header="Crash">
-                <MenuItem Header="Login">
+        <Grid Visibility="{Binding Path=IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MaxHeight="25"/>
+                <RowDefinition Height="Auto" MaxHeight="40"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                </MenuItem>
-                <MenuItem Header="Exit">
-                    
-                </MenuItem>
-            </MenuItem>
-        </Menu>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <!--<TabControl Grid.Row="1"
+                        ItemsSource="{Binding DetailViewModels}"
+                        SelectedItem="{Binding SelectedDetailViewModel,Mode=TwoWay}">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem"
+                           BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="Background" Value="#333333"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Title}"/>
+                            -->
+            <!--<TextBlock Text="*" Visibility="{Binding HasChanges,
+                  Converter={StaticResource booleanToVisibilityConverter}}"/>
+                            <Button Command="{Binding CloseDetailViewCommand}" 
+                                    Style="{StaticResource ChromelessButtonStyle}"
+                                    VerticalContentAlignment="Top" Margin="2 0 2 2"
+                                    Content="X" FontSize="20"/>-->
+            <!--
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>-->
+            <ContentControl Grid.Row="0" Grid.ColumnSpan="2" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.ApplicationBar}" />
+            <Label Grid.Row="1" Content="Products" FontSize="20" Background="Blue" Foreground="White" Grid.ColumnSpan="2" />
 
+            <ContentControl Grid.Row="1" Grid.Column="1" Grid.RowSpan="3"
+                            prism:RegionManager.RegionName="{x:Static local:Startup.Regions.AsideSection}" />
 
+            <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static local:Startup.Regions.MainContentSection}" />
+        </Grid>
 
-        <!--<TabControl Grid.Row="1"
-                    ItemsSource="{Binding DetailViewModels}"
-                    SelectedItem="{Binding SelectedDetailViewModel,Mode=TwoWay}">
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="TabItem"
-                       BasedOn="{StaticResource {x:Type TabItem}}">
-                    <Setter Property="Background" Value="#333333"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="2"/>
-                </Style>
-            </TabControl.ItemContainerStyle>
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Title}"/>
-                        --><!--<TextBlock Text="*" Visibility="{Binding HasChanges,
-              Converter={StaticResource booleanToVisibilityConverter}}"/>
-                        <Button Command="{Binding CloseDetailViewCommand}" 
-                                Style="{StaticResource ChromelessButtonStyle}"
-                                VerticalContentAlignment="Top" Margin="2 0 2 2"
-                                Content="X" FontSize="20"/>--><!--
-                    </StackPanel>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-        </TabControl>-->
-
-
-        <!--<view:Home Grid.Row="1"  DataContext="{Binding HomeViewModel}" Visibility="{Binding Home}"></view:Home>-->
-        <view:Login Grid.Row="1" DataContext="{Binding LoginViewModel}" ></view:Login>
+        <ContentControl prism:RegionManager.RegionName="{x:Static local:Startup.Regions.LoginSection}"
+                        DataContext="{Binding LoginViewModel}" 
+                        Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    />
     </Grid>
 </Window>

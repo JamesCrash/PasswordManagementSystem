@@ -1,54 +1,87 @@
-﻿using Autofac;
-using CrashPasswordSystem.UI.Data;
-using CrashPasswordSystem.UI.Views;
-using System.ComponentModel;
+﻿using CrashPasswordSystem.Core;
 using CrashPasswordSystem.Data;
+using CrashPasswordSystem.Services;
+using CrashPasswordSystem.UI.Data;
 using CrashPasswordSystem.UI.ViewModels;
+using CrashPasswordSystem.UI.Views;
+using Microsoft.EntityFrameworkCore;
 using Prism.Events;
+using Prism.Ioc;
+using Prism.Modularity;
+using Prism.Mvvm;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace CrashPasswordSystem.UI.Startup
 {
-    public class Bootstrapper
+    public static class Regions
     {
+        public const string MainContentSection = "MainContentSection";
+        public const string ApplicationBar = "ApplicationBarRegion";
+        public const string AsideSection = "AsideSection";
+        public const string LoginSection = "LoginSection";
+    }
 
-        public Autofac.IContainer Bootstrap()
+    public class Bootstrapper : IDependencyContainer
+    {
+        public IContainerProvider Container { get; private set; }
+
+        public Bootstrapper(IContainerProvider container)
         {
+            Container = container;
+        }
+        
+        public void RegisterTypes(IContainerRegistry builder)
+        {
+            builder.RegisterInstance<IDependencyContainer>(this);
+            builder.RegisterSingleton<IEventAggregator, EventAggregator>();
+            builder.Register<DetailViewModelBase>();
 
-            var builder = new ContainerBuilder();
+            var sqlServerOptions = new DbContextOptionsBuilder<DataContext>()
+                .UseSqlServer(ConfigurationManager.ConnectionStrings["CrashDbContext"].ConnectionString)
+                .Options;
 
-            builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
-            builder.RegisterType<DetailViewModelBase>().As<IDetailViewModel>();
-            builder.RegisterType<ITDatabaseContext>().AsSelf();
+            builder.RegisterInstance(sqlServerOptions);
 
-            builder.RegisterType<MainViewModel>().AsSelf();
-            builder.RegisterType<MainWindow>().AsSelf();
+            builder.Register<MainViewModel>();
+            builder.Register<MainWindow>();
 
-            builder.RegisterType<Login>().AsSelf();
-            builder.RegisterType<LoginViewModel>().As<ILoginViewModel>();
+            builder.Register<Login>();
+            builder.Register<LoginViewModel>();
 
-            builder.RegisterType<Home>().AsSelf();
-            builder.RegisterType<HomeViewModel>().As<IHomeViewModel>();
+            builder.Register<AddProductViewModel>();
+            builder.Register<ProductDetails>();
 
-            builder.RegisterType<AddProduct>().AsSelf();
+            builder.Register<ViewModelBase>();
 
-            builder.RegisterType<ProductDetails>().AsSelf();
+            builder.Register<IUserDataService, UserDataService>();
+            builder.Register<IProductDataService, ProductDataService>();
+            builder.Register<ICompanyDataService, CompanyDataService>();
+            builder.Register<ICategoryDataService, CategoryDataService>();
+            builder.Register<ISupplierDataService, SupplierDataService>();
+            builder.RegisterSingleton<IAuthenticationService, AuthenticationService>();
 
-            builder.RegisterType<ViewModelBase>().AsSelf();
+            ViewModelLocationProvider.Register(typeof(MainWindow).ToString(), typeof(MainViewModel));
 
-
-            builder.RegisterType<UserDataService>().As<IUserDataService>();
-            builder.RegisterType<ProductDataService>().As<IProductDataService>();
-            builder.RegisterType<CompanyDataService>().As<ICompanyDataService>();
-            builder.RegisterType<CategoryDataService>().As<ICategoryDataService>();
-            builder.RegisterType<SupplierDataService>().As<ISupplierDataService>();
-
-            
-
-
-
-            return builder.Build();
-
+            ViewModelLocationProvider.SetDefaultViewModelFactory((type) =>
+            {
+                return Container.Resolve(type);
+            });
         }
 
+        public void ConfigureModuleCatalog(IModuleCatalog catalog)
+        {
+            catalog.AddModule(typeof(Search.SearchProductsView));
+            catalog.AddModule(typeof(ApplicationBar));
+            catalog.AddModule(typeof(AddProduct));
+            catalog.AddModule(typeof(ProductDetails));
+            catalog.AddModule(typeof(Login));
+        }
+
+        public T Resolve<T>()
+        {
+            Debug.Assert(Container != null);
+            return Container.Resolve<T>();
+        }
     }
 }
